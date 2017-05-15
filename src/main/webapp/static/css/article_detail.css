@@ -1,0 +1,102 @@
+.article-detail {
+	margin: 20px auto;
+}
+
+.article-detail .col-md-1 a img {
+	width: 100%;
+	border-radius: 50%;
+}
+
+.article-detail .col-md-1, .col-sm-1 {
+	margin: 0;
+	padding-right: 0px;
+}
+
+.article-detail .col-md-9, .col-sm-9, col-md-2 {
+	padding-top: 0.5em;
+}
+
+.article-detail .row {
+	padding-bottom: 3em;
+}
+
+.article-detail .article-detail-title {
+	font-size: 3em;
+	font-weight: bold;
+	margin-bottom: 1em;
+}
+
+.article-detail .article-author {
+	font-size: 1.2em;
+	display: inline;
+	font-weight: bold;
+	margin-bottom: 1em;
+}
+
+.article-detail .article-property {
+	padding-top: 0.5em;
+}
+
+.article-detail .article-property span {
+	padding-right: 1em;
+	color: #848181;
+}
+
+.article-detail .article-content {
+	min-height: 300px;
+}
+
+.article-detail .article-content a {
+	text-decoration: none;
+}
+
+.article-detail .btn-praise {
+	width: 100%;
+	border: 1px solid red;
+	height: 4em;
+	border-radius: 2em;
+	text-align: center;
+}
+
+.article-detail .btn-praise span {
+	font-size: 2em;
+}
+
+.article-detail .btn-praise div {
+	display: inline;
+	height: 2em;
+	padding-left: 1em;
+	border-left: 1px solid red;
+	font-size: 2em;
+}
+
+.blog-btn-active {
+	background-color: red;
+	color: #fff;
+}
+.comment-li{
+	padding: 1em;
+	border-bottom: 1px dashed #fff;
+}
+.comment-li img{
+	height:5em;
+}
+.comment-li a img{
+	border-radius: 50%;
+}
+.comment-li .media-body p{
+	padding-top: 1em;
+}
+.comment-li .media-body p span{
+	padding: 1em;
+}
+.comment-li .comment-head{
+	float: right;
+	text-align: right;
+}
+.comment-li p i{
+	cursor: pointer;
+}
+.comment-li .icomment{
+	cursor: pointer;
+}

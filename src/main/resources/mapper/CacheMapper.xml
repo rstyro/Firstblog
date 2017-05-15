@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lrs.blog.dao.CacheDao" >
+	<!-- 获取音乐列表 -->
+	<select id="findMusiclist" parameterType="pm" resultType="pm">
+		select 
+			music_id,
+			music_name
+		from
+			blog_music
+		where music_name is not null
+	</select>
+	
+	
+	<!-- 获取友情链接列表 -->
+	<select id="friendlinkList" parameterType="pm" resultType="pm">
+		SELECT link_name,link FROM blog_firend_link
+	</select>
+	
+</mapper>

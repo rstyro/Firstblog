@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lrs.blog.dao.PublicDao" >
+	<!-- 新增浏览记录-->
+	<insert id="saveBrowse" parameterType="pm">
+		insert into blog_browse(
+			table_id
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+		) values(
+			#{table_id}
+			<if test="user_id != null and user_id != ''">
+				,#{user_id}
+			</if>
+		)
+	</insert>
+	
+	<!-- 新增评论记录-->
+	<insert id="saveComment" parameterType="pm" useGeneratedKeys="true" keyProperty="comment_id">
+		insert into blog_comment(
+			table_id,
+			content,
+			reply_user_id,
+			create_time
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+			<if test="parent_id != null and parent_id != ''">
+				,parent_id
+			</if>
+		) values(
+			#{table_id},
+			#{content},
+			#{reply_user_id},
+			#{create_time}
+			<if test="user_id != null and user_id != ''">
+				,#{user_id}
+			</if>
+			<if test="parent_id != null and parent_id != ''">
+				,#{parent_id}
+			</if>
+		)
+	</insert>
+	
+	
+	<!-- 新增点赞记录-->
+	<insert id="savePraise" parameterType="pm">
+		insert into blog_praise(
+			table_id,
+			table_type
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+		) values(
+			#{table_id},
+			#{table_type}
+			<if test="user_id != null and user_id != ''">
+			,#{user_id}
+			</if>
+		)
+	</insert>
+	
+	
+	<!-- 新增留言记录-->
+	<insert id="saveLeaveWord" parameterType="pm">
+		insert into blog_leaveword(
+			content,
+			<if test="user_id != null and user_id != ''">
+			user_id,
+			</if>
+			ip
+		) values(
+			#{content},
+			<if test="user_id != null and user_id != ''">
+			#{user_id},
+			</if>
+			#{ip}
+		)
+	</insert>
+	
+	
+	<select id="repeatPraise" parameterType="pm" resultType="pm">
+		select praise_id from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</select>
+	
+	<!-- 获取楼主评论 -->
+	<select id="getCommentlistPage" parameterType="page" resultType="pm">
+		SELECT 
+			a.comment_id,
+			a.parent_id,
+			a.table_id,
+			a.user_id,
+			a.reply_user_id,
+			a.content,
+			a.create_time,
+			a.praise_num,
+			b.`name`,
+			b.img
+		from 
+			blog_comment a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id = b.user_id
+		WHERE
+			table_id=#{pm.table_id} and (a.parent_id is null or a.parent_id='')
+		order by
+			a.create_time asc,a.praise_num desc
+	</select>
+	
+	<!-- 获取回复楼主的 -->
+	<select id="getCommentlist" parameterType="pm" resultType="pm">
+		SELECT 
+			a.comment_id,
+			a.parent_id,
+			a.table_id,
+			a.user_id,
+			a.reply_user_id,
+			a.content,
+			a.create_time,
+			a.praise_num,
+			b.`name`,
+			b.img
+		from 
+			blog_comment a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id = b.user_id
+		WHERE
+			table_id=#{table_id} and (a.parent_id is not null or a.parent_id != '')
+		order by
+			a.praise_num desc,a.create_time asc
+	</select>
+	
+	
+	<!-- 更新浏览数 -->
+	<update id="updateBrowseNum" parameterType="pm" >
+		update blog_article
+				set browse_num = browse_num+1
+		where
+			article_id=#{table_id}
+	</update>
+	
+	<!-- 删除点赞记录 -->
+	<delete id="delPraise" parameterType="pm">
+		delete from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</delete>
+	
+	<!-- 更新浏览数 -->
+	<update id="updatePraiseNum" parameterType="pm" >
+		update 
+		<if test="table_type == 'article'">
+			blog_article
+		</if>
+		
+		<if test="table_type == 'comment'">
+			blog_comment
+		</if>
+			<if test="praise_type == 'add'">
+				set praise_num = praise_num+1
+			</if>
+			<if test="praise_type == 'sub'">
+				set praise_num = praise_num-1
+			</if>
+		where
+			<if test="table_type == 'article'">
+			article_id=#{table_id}
+			</if>
+			<if test="table_type == 'comment'">
+			comment_id=#{table_id}
+			</if>
+	</update>
+	
+	<!-- 更新评论数 -->
+	<update id="updateCommentNum" parameterType="pm" >
+		update blog_article
+			<if test="comment_type == 'add'">
+				set comment_num = comment_num+1
+			</if>
+			<if test="comment_type == 'sub'">
+				set comment_num = comment_num-1
+			</if>
+		where
+			article_id=#{table_id}
+	</update>
+
+	
+</mapper>

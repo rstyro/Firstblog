@@ -66,6 +66,14 @@ body {
 							class="glyphicon glyphicon-headphones"></span> 音乐</a></li>
 					<li><a href="<%=root%>/toLeaveWord"><span
 							class="glyphicon glyphicon-comment"></span> 留言</a></li>
+					<% 
+					if(!"".equals(username)){
+					%>
+					<li><a href="<%=root%>/toNotice"><span
+							class="glyphicon glyphicon-bell"></span> 消息<i class="badge">${notice.noticeNum }</i></a></li>
+					<%
+						}
+					%>
 					<li data-toggle="modal" data-target="#myModal"><a href="#"><span
 							class="glyphicon glyphicon-magnet"></span> 关于</a></li>
 				</ul>

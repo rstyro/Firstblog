@@ -161,6 +161,21 @@ public class PageController extends BaseController{
 		return view;
 	}
 	
+	
+	/**
+	 * 消息
+	 * @return
+	 */
+	@RequestMapping(value="/toNotice",method=RequestMethod.GET)
+	public ModelAndView toNotice(){
+		ModelAndView view = this.getModelAndView();
+		System.out.println(".............notice");
+		String ip = this.getRemortIP();
+		log.info("有人访问注册页面，ip="+ip);
+		view.setViewName("notice");
+		return view;
+	}
+	
 	/**
 	 * 生成验证码
 	 */

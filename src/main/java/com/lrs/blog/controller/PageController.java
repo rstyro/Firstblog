@@ -177,6 +177,20 @@ public class PageController extends BaseController{
 	}
 	
 	/**
+	 * 去控制台管理界面
+	 * @return
+	 */
+	@RequestMapping(value="/toAdmin",method=RequestMethod.GET)
+	public ModelAndView toAdmin(){
+		ModelAndView view = this.getModelAndView();
+		System.out.println(".............toadmin");
+		String ip = this.getRemortIP();
+		log.info("进入控制台，ip="+ip);
+		view.setViewName("admin/admin");
+		return view;
+	}
+	
+	/**
 	 * 生成验证码
 	 */
 	@RequestMapping(value="/code")

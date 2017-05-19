@@ -39,7 +39,6 @@ body {
 .navbar-toggle .icon-bar{
 	background-color: #fff;
 }
-
 </style>
 <link href="<%=root%>/static/css/top.css" rel="stylesheet"
 	media="screen" type="text/css">

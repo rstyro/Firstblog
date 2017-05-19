@@ -63,11 +63,16 @@ a {
 .list-group li {
 	cursor: pointer;
 }
+a.index-user{
+	text-decoration: none;
+	color: #111;
+}
 
 .blog-labels {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
+	clear: both;
 }
 
 .blog-labels div {

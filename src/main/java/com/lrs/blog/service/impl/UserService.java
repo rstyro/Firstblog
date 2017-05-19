@@ -1,6 +1,7 @@
 package com.lrs.blog.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -21,10 +22,14 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lrs.blog.dao.ArticleDao;
+import com.lrs.blog.dao.LabelDao;
 import com.lrs.blog.dao.UserDao;
 import com.lrs.blog.entity.Lock;
 import com.lrs.blog.entity.User;
+import com.lrs.blog.service.ICacheService;
 import com.lrs.blog.service.IUserService;
+import com.lrs.plugin.Page;
 import com.lrs.thread.EmailThread;
 import com.lrs.util.Const;
 import com.lrs.util.DateUtil;
@@ -38,7 +43,59 @@ public class UserService implements IUserService{
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private ArticleDao articleDao;
+	
+	@Autowired
+	private LabelDao labelDao;
+	
+	@Autowired
+	private ICacheService cacheService;
+	
 	private MyLogger log = MyLogger.getLogger(this.getClass());
+	
+	
+	@Override
+	public Map<String,Object> getUserInfo(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			Page page = new Page();
+			int pageNo = 1;
+			int pageSize = 10;
+			if(StringUtils.isNotBlank(pm.getString("page_no"))){
+				pageNo = Integer.parseInt(pm.getString("page_no"));
+				page.setCurrentPage(pageNo);
+			}
+			if(StringUtils.isNotBlank(pm.getString("page_size"))){
+				pageSize = Integer.parseInt(pm.getString("page_size"));
+				page.setShowCount(pageSize);
+			}
+			page.setPm(pm);
+			List<ParameterMap> articleList = articleDao.getArticlelistPage(page);
+			map.put("articleList", articleList);
+			
+			ParameterMap pmpage = new ParameterMap(page);
+			map.put("page", pmpage);
+			
+			//用户信息
+			ParameterMap user = userDao.getUserInfo(pm);
+			map.put("user", user);
+			//用户标签
+			List<ParameterMap> userLabels = null;
+			if("1".equals(pm.getString("user_id"))){
+				userLabels=cacheService.getCacheBloggerLabel("1");
+			}else{
+				userLabels = labelDao.getUserLabel(pm);
+			}
+			map.put("userLabels", userLabels);
+			
+		} catch (Exception e) {
+			log.info(e.getMessage(), e);
+		}
+		return map;
+	}
+	
+	
 	
 	@Override
 	public Map<String, Object> login(ParameterMap pm){

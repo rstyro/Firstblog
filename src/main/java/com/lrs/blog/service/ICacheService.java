@@ -64,6 +64,20 @@ public interface ICacheService {
 	public int cacheFriendLink ();
 	
 	/**
+	 * 缓存博主标签
+	 * @return
+	 */
+	public int cacheBloggerLabel (ParameterMap pm);
+	
+	/**
+	 * 获取博主标签
+	 * @param pm
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ParameterMap> getCacheBloggerLabel (String userId) throws Exception;
+	
+	/**
 	 * 获取音乐列表
 	 * @param pm
 	 * @return

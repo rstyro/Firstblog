@@ -293,6 +293,40 @@ public class CacheService implements ICacheService {
 		}
 		return 1;
 	}
+	
+	@Override
+	public int cacheBloggerLabel(ParameterMap pm) {
+		try {
+			String userId = pm.getString("user_id");
+			if(StringUtils.isBlank(userId)){
+				userId="1";
+			}
+			pm.put("user_id",userId);
+			List<ParameterMap> labels = labelDao.getUserLabel(pm);
+			if(labels != null && labels.size() > 0){
+				byte[] bys = listTranscoder.serialize(labels);
+				redis.set((Const.BLOG_USER_LABEL_+userId).getBytes(), bys);
+				log.info("cache blogger labels success");
+			} else {
+				redis.set((Const.BLOG_USER_LABEL_+userId).getBytes(), listTranscoder.serialize(new ArrayList<ParameterMap>()));
+				log.info("cache blogger labels success but labels is null");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.getMessage();
+			log.error("cache blogger labels error", e);
+			return 0;
+		}
+		return 1;
+	}
+	
+	@Override
+	public List<ParameterMap> getCacheBloggerLabel(String userId) throws Exception {
+		byte[] bys = redis.get((Const.BLOG_USER_LABEL_+userId).getBytes());
+		if (bys != null && bys.length > 3)
+			return listTranscoder.deserialize(bys);
+		return new ArrayList<>();
+	}
 
 	@Override
 	public List<ParameterMap> getCacheAllArticle(ParameterMap pm) throws Exception {

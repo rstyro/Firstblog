@@ -35,6 +35,7 @@ public class InitRedis {
 			cacheService.cacheMusicList(pm);
 			cacheService.cacheRecommendArticle(pm);
 			cacheService.cacheHotArticle(pm);
+			cacheService.cacheBloggerLabel(pm);
 			log.info("缓存成功");
 		} catch (Exception e) {
 			// TODO: handle exception

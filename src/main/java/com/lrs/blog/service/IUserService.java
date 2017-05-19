@@ -5,6 +5,14 @@ import java.util.Map;
 import com.lrs.util.ParameterMap;
 
 public interface IUserService {
+	
+	/**
+	 * 获取用户信息
+	 * @param pm
+	 * @return
+	 */
+	public Map<String,Object> getUserInfo(ParameterMap pm);
+	
 	/**
 	 * 登陆
 	 * @param pm

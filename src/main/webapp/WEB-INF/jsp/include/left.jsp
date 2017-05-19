@@ -17,10 +17,10 @@
 						class="glyphicon glyphicon-envelope"></span><span> 私信</span></a>
 				</div>
 				<div class="col-md-8">
-					<h4>
+					<a href="<%=request.getContextPath()%>/user/1/1" class="index-user"><h4>
 						<i class="glyphicon glyphicon-fire red"></i> <font
 							style="font-weight: bold;">这个冬天不太冷</font>
-					</h4>
+					</h4></a>
 					<p>
 						<i class="glyphicon glyphicon-info-sign green"></i> 无寻处，惟有少年心
 					</p>
@@ -33,12 +33,18 @@
 						</div>
 						<div class="col-sm-11 col-md-10">
 							<div class="blog-labels">
-								<div class="danger">90后</div>
-								<div class="primary">夜猫子</div>
-								<div class="info">潜力派</div>
-								<div class="friend">帅的黑吻</div>
-								<div class="success">技术宅</div>
-								<div class="warning">JAVA</div>
+								<c:choose>
+									<c:when test="${not empty userLabels}">
+										<c:forEach items="${userLabels}" var="label" varStatus="vs">
+											<div class="${label.label_class}">
+												<a title="${label.label_name } 的标签">${label.label_name }</a>
+											</div>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<div class="center">没有标签</div>
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</div>
 					</div>
@@ -98,7 +104,6 @@
 		</div>
 		<div class="panel-body">
 			<div class="blog-labels">
-
 				<c:choose>
 					<c:when test="${not empty article_labels}">
 						<c:forEach items="${article_labels}" var="label" varStatus="vs">

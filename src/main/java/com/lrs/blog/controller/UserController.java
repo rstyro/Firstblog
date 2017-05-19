@@ -1,12 +1,16 @@
 package com.lrs.blog.controller;
 
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.lrs.blog.controller.base.BaseController;
 import com.lrs.blog.service.IUserService;
@@ -19,6 +23,39 @@ public class UserController extends BaseController{
 	
 	@Autowired
 	private IUserService userService;
+	
+	/**
+	 * 去用户的页面
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/{user_id}/{pageNo}",method=RequestMethod.GET)
+	public ModelAndView toUser(@PathVariable(value="user_id") String userId,@PathVariable(value="pageNo") String pageNo){
+		System.out.println("comment in...");
+		ModelAndView view = this.getModelAndView();
+		ParameterMap pm = this.getParameterMap();
+		pm.put("user_id", userId);
+		pm.put("page_no", pageNo);
+		if(StringUtils.isBlank(pageNo)){
+			pm.put("page_no", "1");
+			
+		}
+		if(!StringUtils.isNumeric(pageNo)){
+			return this.get404ModelAndView();
+		}
+		Map<String,Object> map = userService.getUserInfo(pm);
+		ParameterMap user = (ParameterMap) map.get("user");
+		List<ParameterMap> articleList = (List<ParameterMap>) map.get("articleList");
+		List<ParameterMap> userLabels = (List<ParameterMap>) map.get("userLabels");
+		ParameterMap page = (ParameterMap) map.get("page");
+		view.addObject("user", user);
+		view.addObject("articles", articleList);
+		view.addObject("userLabels", userLabels);
+		view.addObject("page", page);
+		view.setViewName("user");
+		return view;
+	}
 	
 	/**
 	 * 登陆

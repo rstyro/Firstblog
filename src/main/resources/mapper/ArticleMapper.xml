@@ -150,6 +150,9 @@
 				a.title like '%' #{pm.keyword} '%'
 				)
 			</if>
+			<if test="pm.user_id != null and pm.user_id != ''">
+				and a.user_id=#{pm.user_id}
+			</if>
 			and isdel=0
 		order by
 			a.create_time desc,a.update_time desc

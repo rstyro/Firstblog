@@ -55,6 +55,7 @@ public class PageController extends BaseController{
 		List<ParameterMap> articleList=null;
 		List<ParameterMap> articleRecomend = null;
 		List<ParameterMap> linkList=null;
+		List<ParameterMap> userLabels=null;
 		Page page = new Page();
 		if(StringUtils.isNumber(pageNo)){
 			page.setCurrentPage(Integer.parseInt(pageNo));
@@ -102,7 +103,14 @@ public class PageController extends BaseController{
 				articleList = MyUtil.getRusultList(articleList, page);
 				log.info("首页的文章是缓存获取的");
 			}
-			//
+			//博主标签
+			try {
+				userLabels = (List<ParameterMap>) cacheService.getCacheBloggerLabel("1");
+			} catch (Exception e) {
+				e.printStackTrace();
+				userLabels = new ArrayList<ParameterMap>();
+			}
+			
 			pm.put("type", "home");
 			ParameterMap jumbotron = articleService.getJumbotron(pm);
 			ParameterMap pmpage = new ParameterMap(page);
@@ -113,6 +121,7 @@ public class PageController extends BaseController{
 			view.addObject("article_recommend", articleRecomend);
 			view.addObject("linkList", linkList);
 			view.addObject("jumbotron", jumbotron);
+			view.addObject("userLabels", userLabels);
 			System.out.println("pmpage="+pmpage);
 			System.out.println(",page="+page);
 			view.setViewName("index");

@@ -20,7 +20,7 @@
 					<p class="article-detail-title">${article.title }</>
 					<div class="row">
 						<div class="col-sm-1 col-md-1">
-							<a href="<%=root%>/user/${article.user_id}" target="_blank"><img
+							<a href="<%=root%>/user/${article.user_id}/1" target="_blank"><img
 								src="/${article.img}" /></a>
 						</div>
 						<div class="col-sm-9 col-md-9">

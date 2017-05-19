@@ -186,6 +186,30 @@ public class CacheController extends BaseController{
 		return map;
 	}
 	
+	
+	/**
+	 * 刷新博主标签缓存
+	 * @return
+	 * @throws Exception
+	 * @param label_id
+	 */
+	@RequestMapping(value="/bloggerLabels",method=RequestMethod.GET)
+	@ResponseBody
+	public Object cacheBloggerLabels() throws Exception{
+		printLogger(log, "刷新博主标签缓存");
+		Map<String, Object> map = new HashMap<>();
+		ParameterMap pm = this.getParameterMap();
+		int issuccess = cacheService.cacheBloggerLabel(pm);
+		if(issuccess == 1){
+			map.put("msg", "缓存成功");
+			map.put("status", "success");
+		}else{
+			map.put("msg", "缓存失败");
+			map.put("status", "failed");
+		}
+		return map;
+	}
+	
 	/**
 	 * 主动刷新 热门搜索的ids 
 	 * @return

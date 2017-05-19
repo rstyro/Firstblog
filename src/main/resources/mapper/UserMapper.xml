@@ -67,6 +67,8 @@
 			a.sex,
 			a.sign,
 			a.locate,
+			a.concern_num,
+			a.fans_num,
 			a.register_type,
 			a.third_uuid,
 			a.last_login,

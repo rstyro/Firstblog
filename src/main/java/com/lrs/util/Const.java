@@ -45,6 +45,10 @@ public class Const {
 	//归档下的文字列表
 	public static final String BLOG_FRIEND_LINK="BLOG_FRIEND_LINK";				//友情链接
 	
+	//博主标签
+	public static final String BLOG_USER_LABEL_="BLOG_USER_LABEL_";					//博主标签
+	
+	
 	//热门搜索缓存的id 
 	public static final String HOT_ARTICLE_ID_LIST="HOT_ARTICLE_ID_LIST";					//归档下的文字列表
 	

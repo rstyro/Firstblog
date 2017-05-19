@@ -24,6 +24,8 @@
 			label_class
 		from 
 			blog_labels
+		where
+			label_type='article'
 		order by
 			create_time desc
 	</select>
@@ -42,6 +44,23 @@
 			b.label_id=c.label_id
 		where
 			b.article_id=#{article_id}
+	</select>
+	
+	
+	<!-- 获取用户标签 -->
+	<select id="getUserLabel" parameterType="pm" resultType="pm">
+		SELECT 
+			b.label_id,
+			c.label_name,
+			c.label_class
+		from 
+			blog_user_label b
+		LEFT JOIN
+			blog_labels c
+		ON
+			b.label_id=c.label_id
+		where
+			b.user_id=#{user_id}
 	</select>
 	
 	<delete id="delArticleLabel" parameterType="pm">

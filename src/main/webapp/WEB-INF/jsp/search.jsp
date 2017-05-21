@@ -141,8 +141,8 @@ body {
 											<a
 												href="<%=request.getContextPath()%>/article/${hot.article_id }">
 												<c:choose>
-													<c:when test="${fn:length(hot.title) > 15}">
-														<c:out value="${fn:substring(hot.title, 0, 15)}..." />
+													<c:when test="${fn:length(hot.title) > 17}">
+														<c:out value="${fn:substring(hot.title, 0, 17)}..." />
 													</c:when>
 													<c:otherwise>
 														<c:out value="${hot.title}" />
@@ -173,8 +173,8 @@ body {
 											<a
 												href="<%=request.getContextPath()%>/article/${recommend.article_id }">
 												<c:choose>
-													<c:when test="${fn:length(recommend.title) > 15}">
-														<c:out value="${fn:substring(recommend.title, 0, 15)}..." />
+													<c:when test="${fn:length(recommend.title) > 17}">
+														<c:out value="${fn:substring(recommend.title, 0, 17)}..." />
 													</c:when>
 													<c:otherwise>
 														<c:out value="${recommend.title}" />

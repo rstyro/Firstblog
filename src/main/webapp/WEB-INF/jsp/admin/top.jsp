@@ -5,10 +5,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style>
+	body{
+		margin:0px;
+		padding:0px;
+		color: #fff;
+	}
+	.admin-top{
+		background-color: #111;
+	}
+</style>
 </head>
 <body>
-	<div>
-		我是订单列表 <(￣ˇ￣)/
+<div class="admin-top">
+	<div class="container">
+		<h2>Blog管理</h2>
 	</div>
+</div>
 </body>
 </html>

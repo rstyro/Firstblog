@@ -56,7 +56,7 @@ public class UserController extends BaseController{
 		view.addObject("userLabels", userLabels);
 		view.addObject("page", page);
 		view.addObject("notice",notice);
-		view.setViewName("user");
+		view.setViewName("user/user");
 		return view;
 	}
 	

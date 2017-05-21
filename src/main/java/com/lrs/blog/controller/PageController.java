@@ -143,7 +143,7 @@ public class PageController extends BaseController{
 		System.out.println(".............login");
 		String ip = this.getRemortIP();
 		log.info("有人访问登录页面，ip="+ip);
-		view.setViewName("login");
+		view.setViewName("account/login");
 		return view;
 	}
 	
@@ -157,7 +157,7 @@ public class PageController extends BaseController{
 		System.out.println(".............register");
 		String ip = this.getRemortIP();
 		log.info("有人访问注册页面，ip="+ip);
-		view.setViewName("register");
+		view.setViewName("account/register");
 		return view;
 	}
 	
@@ -172,21 +172,7 @@ public class PageController extends BaseController{
 		System.out.println(".............notice");
 		String ip = this.getRemortIP();
 		log.info("有人访问注册页面，ip="+ip);
-		view.setViewName("notice");
-		return view;
-	}
-	
-	/**
-	 * 去控制台管理界面
-	 * @return
-	 */
-	@RequestMapping(value="/toAdmin",method=RequestMethod.GET)
-	public ModelAndView toAdmin(){
-		ModelAndView view = this.getModelAndView();
-		System.out.println(".............toadmin");
-		String ip = this.getRemortIP();
-		log.info("进入控制台，ip="+ip);
-		view.setViewName("admin/admin");
+		view.setViewName("user/notice");
 		return view;
 	}
 	
@@ -220,7 +206,7 @@ public class PageController extends BaseController{
 		ModelAndView view = this.getModelAndView();
 		String ip = this.getRemortIP();
 		log.info("有人访问找回密码页面，ip="+ip);
-		view.setViewName("resetPsw");
+		view.setViewName("account/resetPsw");
 		return view;
 	}
 	

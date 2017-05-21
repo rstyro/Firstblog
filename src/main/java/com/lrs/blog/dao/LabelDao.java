@@ -3,7 +3,6 @@ package com.lrs.blog.dao;
 import java.util.List;
 
 import com.lrs.util.ParameterMap;
-import com.mysql.fabric.xmlrpc.base.Param;
 
 public interface LabelDao {
 	/**

@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>文章列表</title>
 </head>
 <body>
-	<div>
-		我是用户列表 (っ´Ι`)っ
-	</div>
+	<h1>文章列表</h1>
 </body>
 </html>

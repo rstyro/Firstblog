@@ -78,7 +78,7 @@ public class CacheService implements ICacheService {
 			if (hotList != null && hotList.size() > 0) {
 				byte[] bys = listTranscoder.serialize(hotList);
 				redis.set(Const.ARTICLE_HOT.getBytes(), bys);
-				log.info("cache recommend article success");
+				log.info("cache hot article success");
 			} else {
 				redis.set(Const.ARTICLE_HOT.getBytes(), listTranscoder.serialize(new ArrayList<ParameterMap>()));
 				log.info("cache hot article success but hot Article is null");

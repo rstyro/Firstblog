@@ -11,7 +11,7 @@
 <link rel="icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/static/images/favicon.ico">
 </head>
-	<%@include file="./include/top.jsp"%>
+	<%@include file="../include/top.jsp"%>
 <style>
 	.blog-user{
 		padding-top: 1em;
@@ -79,12 +79,12 @@
 		<hr style="padding: 20px;">
 		<div class="row">
 			<div class="col-sm-10 col-md-10">
-				<%@include file="./include/right.jsp" %>
+				<%@include file="../include/right.jsp" %>
 			</div>
 		</div>
 	</div>
 	<!-- footer -->
-	<%@include file="./include/footer.jsp"%>
+	<%@include file="../include/footer.jsp"%>
 </body>
 <script type="text/javascript">
 $(function(){

@@ -4,13 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>500</title>
+<title>用户列表</title>
 </head>
 <body>
-	<%@include file="./include/top.jsp"%>
-	<div style="margin: 100px auto;font-size: 164px;text-align: center;">
-		<h1>服务器崩溃了，请联系管理员。</h1>
-		<h1>QQ:1006059906</h1>
-	</div>
+	<h1>用户列表</h1>
+	<table>
+		<thead></thead>
+		<tr>
+			<td></td>
+		</tr>		
+	</table>
 </body>
 </html>

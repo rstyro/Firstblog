@@ -8,7 +8,7 @@
 <link rel="icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/static/images/favicon.ico">
 </head>
-<%@include file="./include/top.jsp"%>
+<%@include file="../include/top.jsp"%>
 <style>
 	.row img{
 		width: 100%;
@@ -132,6 +132,6 @@
 		</script>
 	</div>
 	<!-- footer -->
-	<%@include file="./include/footer.jsp"%>
+	<%@include file="../include/footer.jsp"%>
 </body>
 </html>

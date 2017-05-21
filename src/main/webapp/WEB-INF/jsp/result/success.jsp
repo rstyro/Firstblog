@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>failed</title>
+<title>success</title>
 <style>
-	.blog-failed{
+	.blog-success{
 		margin: 3em auto;
 		font-size: 3em;
 		text-align: center;
 	}
-	.blog-failed .failed-icon{
+	.blog-success .success-icon{
 		border-radius: 50%;
 		height: 2em;
 		width:13%;
@@ -21,25 +21,26 @@
 		font-size: 2em;
 		text-align: center;
 	}
-	.blog-failed .failed-icon span{
+	.blog-success .success-icon span{
 		padding-top: 0.3em;
 	}
-	.blog-failed h2 a{
+	.blog-success h2 a{
 		text-decoration: none;
 	}
-	.blog-failed p{
+	.blog-success p{
 		padding-top: 1.5em;
 	}
-	.blog-failed p a{
+	.blog-success p a{
 		text-decoration: none;
 		color: #000;
 	}
 </style>
 </head>
 <body>
-	<%@include file="./include/top.jsp" %>
-	<div class="blog-failed">
-		<div class="failed-icon"><span class="glyphicon glyphicon-ok"></span></div>
+	<%@include file="../include/top.jsp" %>
+	<div class="blog-success">
+		<div class="success-icon"><span class="glyphicon glyphicon-ok"></span></div>
+		<p><a href="<%=root %>/${url }">${title }</a></p>
 		<h1 class="${msg_class }">${msg }</h1>
 		<h2><a href="<%=request.getContextPath()%>/">回到首页</a></h2>
 	</div>

@@ -60,7 +60,7 @@ public class ArticleController extends BaseController {
 			try {
 				id = Integer.parseInt(articleId);
 			} catch (Exception e) {
-				view.setViewName("404");
+				view.setViewName("error/404");
 				return view;
 			}
 			try {
@@ -79,7 +79,7 @@ public class ArticleController extends BaseController {
 			pm.put("article_id", id);
 			ParameterMap article = articleService.getArticleDetail(pm);
 			if (article == null || article.size() < 1) {
-				view.setViewName("404");
+				view.setViewName("error/404");
 				return view;
 			}
 			long praise_flag = (long) article.get("praise_flag");
@@ -339,14 +339,14 @@ public class ArticleController extends BaseController {
 				view.addObject("url", "/");
 			}
 			view.addObject("title", pm.getString("title"));
-			view.setViewName("success");
+			view.setViewName("result/success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 			view.addObject("msg", "保存文章失败，重试多次失败，请联系博主");
 			view.addObject("msg_class", "red");
-			view.setViewName("failed");
+			view.setViewName("result/failed");
 		}
 		return view;
 	}
@@ -368,14 +368,14 @@ public class ArticleController extends BaseController {
 			articleService.updateArticle(pm);
 			view.addObject("url", "article/"+articleId);
 			view.addObject("title", pm.getString("title"));
-			view.setViewName("success");
+			view.setViewName("result/success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 			view.addObject("msg", "更新文章失败，重试多次失败，请联系博主");
 			view.addObject("msg_class", "red");
-			view.setViewName("failed");
+			view.setViewName("result/failed");
 		}
 		return view;
 	}
@@ -426,14 +426,14 @@ public class ArticleController extends BaseController {
 			
 			view.addObject("url", "#");
 			view.addObject("title", "操作成功");
-			view.setViewName("success");
+			view.setViewName("result/success");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 			view.addObject("msg", "删除文章失败，重试多次失败，请联系博主");
 			view.addObject("msg_class", "red");
-			view.setViewName("failed");
+			view.setViewName("result/failed");
 		}
 		return view;
 	}
@@ -458,7 +458,7 @@ public class ArticleController extends BaseController {
 			if(subject.isAuthenticated()){
 				ParameterMap article = articleService.getArticleDetail(pm);
 				if (article == null || article.size() < 1) {
-					view.setViewName("404");
+					view.setViewName("error/404");
 					return view;
 				}
 				User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
@@ -480,7 +480,7 @@ public class ArticleController extends BaseController {
 				view.addObject("labelList", articleLabels);
 				view.addObject("article", article);
 			}else{
-				view.setViewName("404");
+				view.setViewName("error/404");
 				return view;
 			}
 		} catch (Exception e) {

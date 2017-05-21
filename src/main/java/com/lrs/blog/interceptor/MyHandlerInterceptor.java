@@ -84,7 +84,7 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 				try {
 					id = Integer.parseInt(articleId);
 				} catch (Exception e) {
-					request.getRequestDispatcher(request.getContextPath()+"/WEB-INF/jsp/404.jsp").forward(request, response);
+					request.getRequestDispatcher(request.getContextPath()+"/WEB-INF/jsp/error/404.jsp").forward(request, response);
 				}
 				pm.put("table_id", id);
 				//保存浏览记录

@@ -5,7 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>404</title>
-<%@include file="./include/top.jsp"%>
+<%
+String root = request.getContextPath();
+%>
 <style>
 	body{
 		background-color: #fff;
@@ -20,6 +22,12 @@
 	}
 	.fourTofour h1{
 		font-size: 4em;
+		padding: 0;
+		margin: 0;
+	}
+	.fourTofour h2{
+		padding: 0;
+		margin: 0;
 	}
 	
 </style>

@@ -1,10 +1,5 @@
 ﻿package com.lrs.blog.interceptor;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,8 +15,6 @@ import com.lrs.blog.service.IPublicService;
 import com.lrs.util.Const;
 import com.lrs.util.MyLogger;
 import com.lrs.util.ParameterMap;
-
-import net.sf.json.JSONObject;
 
 public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 	private String saveBrowseUrl;
@@ -84,7 +77,9 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 				try {
 					id = Integer.parseInt(articleId);
 				} catch (Exception e) {
+					e.printStackTrace();
 					request.getRequestDispatcher(request.getContextPath()+"/WEB-INF/jsp/error/404.jsp").forward(request, response);
+					return false;
 				}
 				pm.put("table_id", id);
 				//保存浏览记录

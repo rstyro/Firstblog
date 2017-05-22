@@ -296,7 +296,6 @@
 		        dataType:"json",
 		        cache:false,
 		        success: function(data){
-		        	console.log(data);
 		       	 if("success" == data.status){
 		       		this.floorNum = data.page.totalResult;
 		       		if(data.page.totalPage > 1){

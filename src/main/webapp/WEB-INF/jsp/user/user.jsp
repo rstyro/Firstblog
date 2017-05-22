@@ -79,7 +79,9 @@
 		<hr style="padding: 20px;">
 		<div class="row">
 			<div class="col-sm-10 col-md-10">
+				<div class="blog-user-article">
 				<%@include file="../include/right.jsp" %>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -114,6 +116,10 @@ $(function(){
 	      }
 	  };
 	  element.bootstrapPaginator(options);
+	  
+	  var wh = $(document).height();
+	  var h = $(".blog-user").height();
+	  $(".blog-user-article").css("height",wh-h-200);
 	
 });
 </script>

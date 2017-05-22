@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lrs.blog.dao.NoticeDao" >
+	
+	<!-- 获取消息列表 -->
+	<select id="getNoticelistPage" parameterType="page" resultType="pm">
+		SELECT
+			a.notice_id,
+			a.table_id,
+			a.is_read,
+			a.create_time,
+			a.from_user_id,
+			b.`name`,
+			<if test="pm.notice_type == 'praise'">
+			c.title,
+			</if>
+			b.img
+		from 
+			blog_notice a
+		LEFT JOIN
+			blog_user b
+		ON
+			a.from_user_id=b.user_id
+			<if test="pm.notice_type == 'praise'">
+				left join
+					blog_article c
+				on
+					c.article_id=a.table_id
+			</if>
+		WHERE
+			a.user_id=#{pm.user_id}
+			<if test="pm.notice_type != null and pm.notice_type != ''">
+				and a.notice_type=#{pm.notice_type}
+			</if>
+		ORDER BY
+			is_read ASC
+	</select>
+	
+</mapper>

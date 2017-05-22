@@ -43,7 +43,7 @@ public class AdminController extends BaseController{
 	 * 用户列表
 	 * @return
 	 */
-	@RequestMapping(value="/author/list",method=RequestMethod.GET)
+	@RequestMapping(value="/author_list",method=RequestMethod.GET)
 	public ModelAndView toUserList(){
 		ModelAndView view = this.getModelAndView();
 		System.out.println(".............admin userlist");
@@ -56,20 +56,21 @@ public class AdminController extends BaseController{
 	 * 文章列表
 	 * @return
 	 */
-	@RequestMapping(value="/article/list",method=RequestMethod.GET)
+	@RequestMapping(value="/article_list",method=RequestMethod.GET)
 	public ModelAndView toArticleList(){
 		ModelAndView view = this.getModelAndView();
 		System.out.println(".............admin article");
 		String ip = this.getRemortIP();
 		log.info("进入控制台，ip="+ip);
 		view.setViewName("admin/article/list");
+		System.out.println("viewName="+view.getViewName());
 		return view;
 	}
 	/**
 	 * 标签列表
 	 * @return
 	 */
-	@RequestMapping(value="/label/list",method=RequestMethod.GET)
+	@RequestMapping(value="/label_list",method=RequestMethod.GET)
 	public ModelAndView tolabelList(){
 		ModelAndView view = this.getModelAndView();
 		System.out.println(".............admin label");

@@ -7,7 +7,7 @@
 <title>500</title>
 </head>
 <body>
-	<div style="margin: 100px auto;font-size: 164px;text-align: center;">
+	<div style="margin: 100px auto;font-size: 2em;text-align: center;">
 		<h1>服务器崩溃了，请联系管理员。</h1>
 		<h1>QQ:1006059906</h1>
 		<h2><a href="<%=request.getContextPath()%>/">回到首页</a></h2>

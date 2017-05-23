@@ -516,7 +516,7 @@
 							var sli = "<li class='media'><a class='pull-right' href='<%=root%>/user/"+userId+"/1'>"
 							+"<img class='media-object' src='<%=root%>/../"+userimg+"' alt='用户头像'></a>"
 							+"<div class='media-body pull-right'><p>"+text+"</p><p>"+nowTime+"</p></div></li>";
-							$("#let"+lastDetailId).append(sli);
+							$("#let"+lastDetailId).children(".media-list").append(sli);
 			       	 }else{
 						alert(data.msg);
 					}

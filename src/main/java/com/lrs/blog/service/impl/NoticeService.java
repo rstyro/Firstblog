@@ -16,6 +16,7 @@ import com.lrs.blog.entity.User;
 import com.lrs.blog.service.INoticeService;
 import com.lrs.plugin.Page;
 import com.lrs.util.Const;
+import com.lrs.util.DateUtil;
 import com.lrs.util.MyLogger;
 import com.lrs.util.ParameterMap;
 
@@ -48,6 +49,50 @@ public class NoticeService implements INoticeService{
 			ParameterMap pmpage = new ParameterMap(page);
 			map.put("data", notices);
 			map.put("page",pmpage);
+			map.put("status", "success");
+			map.put("msg", "ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("notice get error", e);
+			map.put("status", "failed");
+			map.put("msg", "获取消息错误");
+		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> getLetterDetail(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			Session session = subject.getSession();
+			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+			String userId = user.getUser_id();
+			pm.put("user_id", userId);
+			List<ParameterMap> list = noticeDao.getLetterDetailList(pm);
+			map.put("data", list);
+			map.put("status", "success");
+			map.put("msg", "ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("notice get error", e);
+			map.put("status", "failed");
+			map.put("msg", "获取消息错误");
+		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> replyLetter(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			Session session = subject.getSession();
+			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+			String userId = user.getUser_id();
+			pm.put("user_id", userId);
+			pm.put("create_time", DateUtil.getTime());
+			noticeDao.saveLetter(pm);
 			map.put("status", "success");
 			map.put("msg", "ok");
 		} catch (Exception e) {

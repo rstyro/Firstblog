@@ -63,4 +63,33 @@ public class NoticeController extends BaseController{
 		Map<String,Object> map = noticeService.getNoticeListByType(pm);
 		return MyUtil.returnObject(pm, map);
 	}
+	
+	/**
+	 * 获取信件详情
+	 * @return
+	 */
+	@RequestMapping(value="/getLetterDetail",method=RequestMethod.GET)
+	@ResponseBody
+	public Object getLetterDetail(){
+		printLogger(log, "信件消息详情");
+		ParameterMap pm = this.getParameterMap();
+		Map<String,Object> map = noticeService.getLetterDetail(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	
+	/**
+	 * 获取信件详情
+	 * @return
+	 */
+	@RequestMapping(value="/replyLetter",method=RequestMethod.POST)
+	@ResponseBody
+	public Object replyLetter(){
+		printLogger(log, "回复信件");
+		ParameterMap pm = this.getParameterMap();
+		Map<String,Object> map = noticeService.replyLetter(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	
 }

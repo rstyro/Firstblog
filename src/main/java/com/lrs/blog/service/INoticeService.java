@@ -12,4 +12,8 @@ public interface INoticeService {
 	 * @return
 	 */
 	public Map<String,Object> getNoticeListByType(ParameterMap pm);
+	
+	public Map<String,Object> getLetterDetail(ParameterMap pm);
+	
+	public Map<String,Object> replyLetter(ParameterMap pm);
 }

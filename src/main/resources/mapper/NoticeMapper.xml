@@ -36,4 +36,40 @@
 			is_read ASC
 	</select>
 	
+	<select id="getLetterDetailList" parameterType="pm" resultType="pm">
+		SELECT
+			a.letter_id,
+			a.parent_id,
+			a.user_id,
+			a.from_user_id,
+			a.content,
+			a.create_time,
+			b.`name`,
+			b.img
+		from 
+			blog_letter a
+		LEFT JOIN
+			blog_user b
+		ON
+			a.from_user_id=b.user_id
+		WHERE
+			(parent_id=#{table_id} OR letter_id=#{table_id}) AND (a.user_id=#{user_id} OR a.from_user_id=#{user_id})
+	</select>
+	
+	<insert id="saveLetter" parameterType="pm">
+		insert into blog_letter(
+			parent_id,
+			user_id,
+			from_user_id,
+			content,
+			create_time
+		) values (
+			#{parent_id},
+			#{from_user_id},
+			#{user_id},
+			#{content},
+			#{create_time}
+		)
+	</insert>
+	
 </mapper>

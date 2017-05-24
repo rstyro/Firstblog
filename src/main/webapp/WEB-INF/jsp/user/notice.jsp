@@ -88,6 +88,10 @@
 #letterDetailList .container .row .media-list div.pull-right {
 	background-color: #646962;
 }
+#myTab li span.badge{
+	background-color: #ffe;
+	color: red;
+}
 </style>
 <body>
 	<div class="container">
@@ -95,57 +99,25 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2">
 				<ul id="myTab" class="nav nav-tabs nav-pills nav-stacked">
-					<li class="active"><a href="#comment" data-toggle="tab"><span
-							class="glyphicon glyphicon-comment"></span> 评论</a></li>
+					<li id="li-comment" class="active"><a href="#comment" data-toggle="tab"><span
+							class="glyphicon glyphicon-comment"></span> 评论  <span class="badge">${notice.comentNum }</span></a> </li>
 					<li id="li-letter"><a href="#privateLetter" data-toggle="tab"><span
-							class="glyphicon glyphicon-envelope"></span> 私信</a></li>
+							class="glyphicon glyphicon-envelope"></span> 私信 <span class="badge">${notice.letterNum }</span></a></li>
 					<li id="li-concern"><a href="#concern" data-toggle="tab"><span
-							class="glyphicon glyphicon-thumbs-up"></span> 关注</a></li>
+							class="glyphicon glyphicon-thumbs-up"></span> 关注 <span class="badge">${notice.concernNum }</span></a></li>
 					<li id="li-praise"><a href="#praise" data-toggle="tab"><span
-							class="glyphicon glyphicon-thumbs-up"></span> 点赞</a></li>
+							class="glyphicon glyphicon-thumbs-up"></span> 点赞 <span class="badge">${notice.praiseNum }</span></a></li>
+					<li id="li-system"><a href="#system" data-toggle="tab"><span
+							class="glyphicon glyphicon-thumbs-up"></span> 其他 <span class="badge">${notice.systemNum }</span></a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-md-10">
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="comment">
-						<div class="row">
-							<div class="col-sm-1 col-md-1">
-								<a href="#"><img src="/upload/user/default.png"></a>
-							</div>
-							<div class="col-sm-10 col-md-10">
-								<p>
-									<a href="#">匿名用户</a> 在文章<a href="#">《Linux 下安装配置svn服务器》</a>
-									中评论了你
-								</p>
-								<p>
-									<a href="#">@这个冬天不太冷</a> <span>这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！</span>
-								</p>
-								<p class="pull-right">
-									<a href="#">回复</a>
-								</p>
-								<p>2017.05.19 17:35:02</p>
-							</div>
+						<div id="commentList"></div>
+						<div class="pull-right">
+							<ul id='commentPage' class="pagination"></ul>
 						</div>
-						<div class="notice-border"></div>
-						<div class="row">
-							<div class="col-sm-1 col-md-1">
-								<a href="#"><img src="/upload/user/default.png"></a>
-							</div>
-							<div class="col-sm-10 col-md-10">
-								<p>
-									<a href="#">匿名用户</a> 在文章<a href="#">《Linux 下安装配置svn服务器》</a>
-									中评论了你
-								</p>
-								<p>
-									<a href="#">@这个冬天不太冷</a> <span>这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！这个冬天确实不怎么冷哦，夏天还比较冷！！！！</span>
-								</p>
-								<p class="pull-right">
-									<a href="#">回复</a>
-								</p>
-								<p>2017.05.19 17:35:02</p>
-							</div>
-						</div>
-						<div class="notice-border"></div>
 					</div>
 					<div class="tab-pane fade" id="privateLetter">
 						<div id="letterDetailList">
@@ -187,6 +159,13 @@
 							<ul id='praisePage' class="pagination"></ul>
 						</div>
 					</div>
+					
+					<div class="tab-pane fade" id="system">
+						<div id="systemList"></div>
+						<div class="pull-right">
+							<ul id='systemPage' class="pagination"></ul>
+						</div>
+					</div>
 
 				</div>
 			</div>
@@ -198,6 +177,12 @@
 				var wh = $(document).height();
 				$("#myTabContent").css("min-height",wh-150);
 				$(".media-list").css("max-height",wh-150);
+				addCommentList(1);
+				$("#li-comment").click(function(){
+					if($("#commentList").children(".row").length == 0){//如果是空节点再请求
+						addCommentList(1);
+					}
+				});
 				$("#li-concern").click(function(){
 					if($("#concernList").children(".row").length == 0){//如果是空节点再请求
 						addConcernList(1);
@@ -217,6 +202,12 @@
 					}
 				});
 				
+				$("#li-system").click(function(){
+					if($("#systemList").children(".row").length == 0){//如果是空节点再请求
+						addSystemList(1);
+					}
+				});
+				
 				$("#returnlist").click(function(){
 					$("#letterDetailList").hide();
 					$("#letterList").show();
@@ -233,12 +224,83 @@
 				
 			});
 			
+			//添加评论列表
+			function addCommentList(pageNo){
+				$.ajax({
+					type:"GET",
+			        url:"<%=root%>/notice/getCommentList",
+			        data:{page_no:pageNo,notice_type:"comment",time:new Date().getTime()},
+			        dataType:"json",
+			        cache:false,
+			        success: function(data){
+			        console.log(data);
+			       	 if("success" == data.status){
+			       		if(data.page.totalPage > 1){
+				       		//分页
+						    var element = $('#commentPage');
+							  options = {
+							      bootstrapMajorVersion:3, //对应的bootstrap版本
+							      currentPage:data.page.currentPage, //当前页数，
+							      numberOfPages:data.page.showCount, //每页的大小
+							      totalPages:data.page.totalPage, //总页数，
+							      itemTexts: function (type, page, current) {//设置显示的样式，默认是箭头
+							          switch (type) {
+							              case "first":
+							                  return "首页";
+							              case "prev":
+							                  return "上一页";
+							              case "next":
+							                  return "下一页";
+							              case "last":
+							                  return "末页";
+							              case "page":
+							                  return page;
+							          }
+							      },
+							    //点击事件
+							      onPageClicked: function (event, originalEvent, type, page) {
+							    	  addCommentList(page);
+							      }
+							  };
+							  element.bootstrapPaginator(options);
+			       		}
+			       		addCommentData(data.data);
+			       	 }else if("auth" == data.status){
+			       		window.location.href="<%=root%>/toLogin";
+			       	 }else{
+			       		 alert(data.msg);
+			       	 }
+			        }
+				})
+			}
+			
+			//添加评论数据
+			function addCommentData(data){
+				$("#commentList").empty();
+				var str = "";
+				for(var i=0;i<data.length;i++){
+					var obj = data[i];
+					str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+						+"<img src='<%=root%>/../"+obj.from_img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+						+obj.from_name+"</a> 在文章<a href='<%=root%>/article/"+obj.table_id+"'>《"+obj.title+"》</a>评论了你</p>"
+						+"<p><a href='<%=root%>/user/"+obj.user_id+"/1'>@"+obj.name+"</a><span> "+obj.content+"</span></p>"
+						+"<p class='pull-right'><a href='javascript:void();' onclick=newComment("+obj.parent_id+","+obj.comment_id+")>回复</a></p>"
+						+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+				}
+				$("#commentList").prepend(str);
+			}
+			function newComment(parentId,tableId){
+				alert(parentId);
+				alert(tableId);
+			}
+			
+			
 			//添加关注列表
 			function addConcernList(pageNo){
 				$.ajax({
 					type:"GET",
-			        url:"<%=root%>/notice/getConcernList",
-			        data:{page_no:pageNo,time:new Date().getTime()},
+			        url:"<%=root%>/notice/getNoticeList",
+			        data:{page_no:pageNo,notice_type:"concern",time:new Date().getTime()},
 			        dataType:"json",
 			        cache:false,
 			        success: function(data){
@@ -300,8 +362,8 @@
 			function addPraiseList(pageNo){
 				$.ajax({
 					type:"GET",
-			        url:"<%=root%>/notice/getPraiseList",
-			        data:{page_no:pageNo,time:new Date().getTime()},
+			        url:"<%=root%>/notice/getNoticeList",
+			        data:{page_no:pageNo,notice_type:"praise",time:new Date().getTime()},
 			        dataType:"json",
 			        cache:false,
 			        success: function(data){
@@ -359,13 +421,75 @@
 				$("#praiseList").prepend(str);
 			}
 			
+			//添加系统数据列表
+			function addSystemList(pageNo){
+				$.ajax({
+					type:"GET",
+			        url:"<%=root%>/notice/getNoticeList",
+			        data:{page_no:pageNo,notice_type:"system",time:new Date().getTime()},
+			        dataType:"json",
+			        cache:false,
+			        success: function(data){
+			        console.log(data);
+			       	 if("success" == data.status){
+			       		if(data.page.totalPage > 1){
+				       		//分页
+						    var element = $('#systemPage');
+							  options = {
+							      bootstrapMajorVersion:3, //对应的bootstrap版本
+							      currentPage:data.page.currentPage, //当前页数，
+							      numberOfPages:data.page.showCount, //每页的大小
+							      totalPages:data.page.totalPage, //总页数，
+							      itemTexts: function (type, page, current) {//设置显示的样式，默认是箭头
+							          switch (type) {
+							              case "first":
+							                  return "首页";
+							              case "prev":
+							                  return "上一页";
+							              case "next":
+							                  return "下一页";
+							              case "last":
+							                  return "末页";
+							              case "page":
+							                  return page;
+							          }
+							      },
+							    //点击事件
+							      onPageClicked: function (event, originalEvent, type, page) {
+							    	  addSystemList(page);
+							      }
+							  };
+							  element.bootstrapPaginator(options);
+			       		}
+			       		addsystemData(data.data);
+			       	 }else if("auth" == data.status){
+			       		window.location.href="<%=root%>/toLogin";
+			       	 }else{
+			       		 alert(data.msg);
+			       	 }
+			        }
+				})
+			}
+			//添加系统数据
+			function addsystemData(data){
+				$("#systemList").empty();
+				var str = "";
+				for(var i=0;i<data.length;i++){
+					var obj = data[i];
+					str += "<div class='row'><div>"+obj.text+"</div>"
+						+"<p>"+obj.create_time+"</p></div><div class='notice-border'></div>";
+				}
+				
+				$("#systemList").prepend(str);
+			}
+			
 			
 			//添加信件列表
 			function addLetterList(pageNo){
 				$.ajax({
 					type:"GET",
-			        url:"<%=root%>/notice/getLetterList",
-			        data:{page_no:pageNo,time:new Date().getTime()},
+			        url:"<%=root%>/notice/getNoticeList",
+			        data:{page_no:pageNo,notice_type:"letter",time:new Date().getTime()},
 			        dataType:"json",
 			        cache:false,
 			        success: function(data){

@@ -50,7 +50,6 @@ public class UserController extends BaseController{
 		List<ParameterMap> userLabels = (List<ParameterMap>) map.get("userLabels");
 		ParameterMap page = (ParameterMap) map.get("page");
 		ParameterMap notice = new ParameterMap();
-		notice.put("noticeNum", "1");
 		view.addObject("user", user);
 		view.addObject("articles", articleList);
 		view.addObject("userLabels", userLabels);

@@ -24,6 +24,8 @@ import com.lrs.util.MyLogger;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
 
+import net.sf.json.JSONArray;
+
 @Service
 public class PublicService implements IPublicService {
 
@@ -305,5 +307,28 @@ public class PublicService implements IPublicService {
 		}
 		return map;
 	}
-	
+	@Override
+	public Map<String, Object> test(ParameterMap pm) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			System.out.println("pm="+pm);
+			JSONArray picArray = JSONArray.fromObject(pm.getString("data"));
+			System.out.println("arr.size="+picArray.size());
+			for (Object object : picArray) {
+				System.out.println("object="+object.toString().length());
+				
+			}
+			
+			
+			map.put("status", "success");
+			map.put("msg", "ok");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			log.error("点赞异常:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "留言失败");
+		}
+		return map;
+	}
 }

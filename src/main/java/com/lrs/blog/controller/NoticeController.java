@@ -21,46 +21,28 @@ public class NoticeController extends BaseController{
 	private INoticeService noticeService;
 	
 	/**
-	 * 获取关注消息列表
+	 * 获取消息列表
 	 * @return
 	 */
-	@RequestMapping(value="/getConcernList",method=RequestMethod.GET)
+	@RequestMapping(value="/getNoticeList",method=RequestMethod.GET)
 	@ResponseBody
-	public Object getConcernList(){
-		printLogger(log, "关注消息列表");
+	public Object getNoticeList(){
+		printLogger(log, "消息列表");
 		ParameterMap pm = this.getParameterMap();
-		pm.put("notice_type", "concern");
 		Map<String,Object> map = noticeService.getNoticeListByType(pm);
 		return MyUtil.returnObject(pm, map);
 	}
 	
-	
 	/**
-	 * 获取点赞消息列表
+	 * 获取评论列表
 	 * @return
 	 */
-	@RequestMapping(value="/getPraiseList",method=RequestMethod.GET)
+	@RequestMapping(value="/getCommentList",method=RequestMethod.GET)
 	@ResponseBody
-	public Object getPraiseList(){
-		printLogger(log, "点赞消息列表");
+	public Object getCommentList(){
+		printLogger(log, "评论消息列表");
 		ParameterMap pm = this.getParameterMap();
-		pm.put("notice_type", "praise");
-		Map<String,Object> map = noticeService.getNoticeListByType(pm);
-		return MyUtil.returnObject(pm, map);
-	}
-	
-	
-	/**
-	 * 获取信件消息列表
-	 * @return
-	 */
-	@RequestMapping(value="/getLetterList",method=RequestMethod.GET)
-	@ResponseBody
-	public Object getLetterList(){
-		printLogger(log, "信件消息列表");
-		ParameterMap pm = this.getParameterMap();
-		pm.put("notice_type", "letter");
-		Map<String,Object> map = noticeService.getNoticeListByType(pm);
+		Map<String,Object> map = noticeService.getCommentNoticeList(pm);
 		return MyUtil.returnObject(pm, map);
 	}
 	
@@ -79,7 +61,7 @@ public class NoticeController extends BaseController{
 	
 	
 	/**
-	 * 获取信件详情
+	 * 回复信件
 	 * @return
 	 */
 	@RequestMapping(value="/replyLetter",method=RequestMethod.POST)

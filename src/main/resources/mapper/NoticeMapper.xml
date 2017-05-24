@@ -10,8 +10,9 @@
 			a.is_read,
 			a.create_time,
 			a.from_user_id,
+			a.text,
 			b.`name`,
-			<if test="pm.notice_type == 'praise'">
+			<if test="pm.notice_type == 'praise' or pm.notice_type == 'system'">
 			c.title,
 			</if>
 			b.img
@@ -21,7 +22,7 @@
 			blog_user b
 		ON
 			a.from_user_id=b.user_id
-			<if test="pm.notice_type == 'praise'">
+			<if test="pm.notice_type == 'praise' or pm.notice_type == 'system'">
 				left join
 					blog_article c
 				on
@@ -34,6 +35,37 @@
 			</if>
 		ORDER BY
 			is_read ASC
+	</select>
+	
+	
+	<!-- 获取消息列表 -->
+	<select id="getSystemlistPage" parameterType="page" resultType="pm">
+		SELECT
+			a.notice_id,
+			a.user_id,
+			a.from_user_id,
+			a.table_id,
+			a.create_time,
+			b.`name`,
+			b.img,
+			c.`name` as from_name,
+			c.img as from_img,
+			d.content,
+			d.comment_id,
+			ifnull(d.parent_id,"0") as parent_id,
+			e.title
+		from 
+			blog_notice a,blog_user b,blog_user c,blog_comment d,blog_article e
+		WHERE
+			a.notice_type='system'
+		AND
+			a.user_id=b.user_id
+		AND
+			a.from_user_id=c.user_id
+		AND
+			a.text=d.comment_id
+		AND
+			a.table_id=e.article_id
 	</select>
 	
 	<select id="getLetterDetailList" parameterType="pm" resultType="pm">
@@ -55,6 +87,27 @@
 		WHERE
 			(parent_id=#{table_id} OR letter_id=#{table_id}) AND (a.user_id=#{user_id} OR a.from_user_id=#{user_id})
 	</select>
+	
+	<select id="getNoticeNum" parameterType="pm" resultType="pm">
+		SELECT 
+			count(*) as totalNum,
+			sum(case when a.notice_type='praise' THEN 1 else 0 end) as praiseNum,
+			sum(case when a.notice_type='concern' THEN 1 else 0 end) as concernNum,
+			sum(case when a.notice_type='letter' THEN 1 else 0 end) as letterNum,
+			sum(case when a.notice_type='system' THEN 1 else 0 end) as systemNum,
+			sum(case when a.notice_type='comment' THEN 1 else 0 end) as commentNum
+		FROM
+			blog_notice a
+		where
+			a.is_read=0 and a.user_id=#{user_id}
+	</select>
+	
+	<update id="updateNoticeStatus" parameterType="pm">
+		update blog_notice
+			set is_read=1
+		where
+			notice_type=#{notice_type}
+	</update>
 	
 	<insert id="saveLetter" parameterType="pm">
 		insert into blog_letter(

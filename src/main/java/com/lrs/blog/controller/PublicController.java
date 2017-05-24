@@ -77,4 +77,20 @@ public class PublicController extends BaseController{
 		Map<String, Object> map = publicService.leaveword(pm);
 		return MyUtil.returnObject(pm, map);
 	}
+	
+	
+	/**
+	 * 留言
+	 * @return
+	 */
+	@RequestMapping(value="/test",method=RequestMethod.POST)
+	@ResponseBody
+	public Object testFromData(){
+		log.info("test");
+		ParameterMap pm = this.getParameterMap();
+		String ip = this.getRemortIP();
+		pm.put("ip", ip);
+		Map<String, Object> map = publicService.test(pm);
+		return MyUtil.returnObject(pm, map);
+	}
 }

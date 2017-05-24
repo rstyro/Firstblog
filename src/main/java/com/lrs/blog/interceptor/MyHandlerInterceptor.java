@@ -1,8 +1,11 @@
 ﻿package com.lrs.blog.interceptor;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.lrs.blog.dao.NoticeDao;
 import com.lrs.blog.entity.User;
 import com.lrs.blog.service.IPublicService;
 import com.lrs.util.Const;
@@ -24,6 +28,9 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 	
 	@Autowired
 	private IPublicService publicService;
+	
+	@Autowired
+	private NoticeDao noticeDao;
 	
 	private MyLogger log = MyLogger.getLogger(this.getClass());
 
@@ -98,7 +105,39 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
+		try {
+			Session session = SecurityUtils.getSubject().getSession();
+			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+			if(user != null){
+				ParameterMap pm = new ParameterMap();
+				pm.put("user_id", user.getUser_id());
+				ParameterMap notice = noticeDao.getNoticeNum(new ParameterMap());
+				System.out.println("notice="+notice);
+				if(notice != null && notice.size() > 0){
+					filterNum(notice, "totalNum");
+					filterNum(notice, "praiseNum");
+					filterNum(notice, "concernNum");
+					filterNum(notice, "letterNum");
+					filterNum(notice, "systemNum");
+					filterNum(notice, "commentNum");
+					if(modelAndView != null){
+						modelAndView.addObject("notice", notice);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		super.postHandle(request, response, handler, modelAndView);
+	}
+	
+	public void filterNum(ParameterMap pm,String key){
+		Object obj = pm.get(key);
+		if(obj == null || StringUtils.isBlank(obj.toString()))return;
+		long value = Integer.parseInt(obj.toString());
+		if(value <= 0){
+			pm.put(key, "");
+		}
 	}
 
 	@Override

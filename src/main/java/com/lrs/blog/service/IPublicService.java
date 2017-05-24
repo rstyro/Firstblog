@@ -43,4 +43,5 @@ public interface IPublicService {
 	 */
 	public Map<String, Object> getComment(ParameterMap pm);
 	
+	public Map<String, Object> test(ParameterMap pm);
 }

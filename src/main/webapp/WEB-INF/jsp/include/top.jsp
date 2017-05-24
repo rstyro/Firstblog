@@ -70,7 +70,7 @@ body {
 					if(!"".equals(username)){
 					%>
 					<li><a href="<%=root%>/toNotice"><span
-							class="glyphicon glyphicon-bell"></span> 消息<i class="badge">${notice.noticeNum }</i></a></li>
+							class="glyphicon glyphicon-bell"></span> 消息<i class="badge">${notice.totalNum }</i></a></li>
 					<%
 						}
 					%>

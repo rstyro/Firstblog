@@ -77,9 +77,9 @@ public class NoticeService implements INoticeService{
 			pm.put("user_id", userId);
 			Page page = new Page();
 			page.setCurrentPage(pageNo);
-			page.setShowCount(10);
+			page.setShowCount(5);
 			page.setPm(pm);
-			List<ParameterMap> notices = noticeDao.getSystemlistPage(page);
+			List<ParameterMap> notices = noticeDao.getCommentlistPage(page);
 			noticeDao.updateNoticeStatus(pm);
 			ParameterMap pmpage = new ParameterMap(page);
 			map.put("data", notices);
@@ -128,6 +128,32 @@ public class NoticeService implements INoticeService{
 			pm.put("user_id", userId);
 			pm.put("create_time", DateUtil.getTime());
 			noticeDao.saveLetter(pm);
+			map.put("status", "success");
+			map.put("msg", "ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("notice get error", e);
+			map.put("status", "failed");
+			map.put("msg", "获取消息错误");
+		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> delNotice(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			Session session = subject.getSession();
+			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+			String userId = user.getUser_id();
+			pm.put("user_id", userId);
+			if(StringUtils.isBlank(pm.getString("notice_id"))){
+				map.put("msg", "你是假冒的");
+				map.put("status", "failed");
+				return map;
+			}
+			noticeDao.delNotice(pm);
 			map.put("status", "success");
 			map.put("msg", "ok");
 		} catch (Exception e) {

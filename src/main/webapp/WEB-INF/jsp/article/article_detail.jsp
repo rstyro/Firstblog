@@ -9,6 +9,56 @@
 	href="<%=request.getContextPath()%>/static/images/favicon.ico">
 <link href="<%=request.getContextPath()%>/static/css/article_detail.css"
 	rel="stylesheet">
+<style>
+	.comment-li{
+		padding: 1em;
+		border-bottom: 1px dashed #fff;
+	}
+	.comment-li img{
+		height:5em;
+	}
+	.comment-li a img{
+		border-radius: 50%;
+	}
+	.comment-li .media-body p{
+		padding-top: 1em;
+	}
+	.comment-li .media-body p span{
+		padding: 1em;
+	}
+	.comment-li p i{
+		cursor: pointer;
+	}
+	.comment-li .icomment{
+		cursor: pointer;
+	}
+	.comment-li .media-body .media{
+		border-left: 3px solid #ccc;
+		padding-left: 1em;
+	}
+	.comment-li .media-body .idelc{
+		display: none;
+	}
+	.comment-li .media-body .media div{
+		border-bottom: 1px dashed #ccc;
+	}
+	.comment-li .media-body .media div p{
+		padding: 0;
+	}
+	.comment-li .media-body .media div p a{
+		text-decoration: none;
+		padding-right: 0.1em;
+	}
+	.comment-li .media-body .media div p a.pull-right{
+		padding-right: 1em;
+	}
+	.comment-li .media-body .media div p a.delc{
+		display: none;
+	}
+	.comment-li .media-body .media div p span{
+		padding-left: 0;
+	}
+</style>
 </head>
 <body>
 	<%@include file="../include/top.jsp"%>
@@ -179,7 +229,7 @@
 			var str ="<li class='media comment-li'>"+"<a class='pull-left' href='#''>"
 					+"<img class='media-object' src='<%=root%>"+"/../"+obj.img+"' alt='用户头像'></a>"
 					+"<div class='media-body'>"+"<h4 class='media-heading'>"+obj.name+"</h4>"
-					+"<h5>"+this.floorNum+" 楼  "+obj.create_time+"</h5><p>"+obj.content+"</p>"
+					+"<h5>"+this.floorNum+" 楼  "+obj.create_time+"</h5>"+obj.content
 					+"<p><span><i class='glyphicon glyphicon-thumbs-up ipraise'></i><font> "+obj.praise_num+"</font>人赞</span><span><i class='glyphicon glyphicon-comment icomment'></i> 回复</span></p>"
 					+"</div></li>";
 			element.prepend(str);
@@ -209,18 +259,30 @@
 						+"<img class='media-object' src='<%=root%>"+"/../"+obj.img+"' alt='用户头像'></a>"
 						+"<div class='media-body'>"+"<h4 class='media-heading'>"+obj.name+"</h4>"
 						+"<h5>"+this.floorNum+" 楼  "+obj.create_time+"</h5>"+obj.content
-						+"<p><span><i class='glyphicon glyphicon-thumbs-up ipraise'></i><font> "+obj.praise_num+"</font>人赞</span><span class='icomment'><i class='glyphicon glyphicon-comment'></i> 回复</span></p>";
+						+"<p><span><i class='glyphicon glyphicon-thumbs-up ipraise'></i><font> "+obj.praise_num+"</font>人赞</span><span class='icomment'><i class='glyphicon glyphicon-comment'></i> 回复</span>";
+						if(<%=user_id%> == obj.user_id){
+							str=str+"<a href='#' class='pull-right idelc'> 删除</a>";
+						}
+						str=str+"</p>";
 						//回复体
 						if(typeof(obj.replybody) != "undefined"){
+							var replystr="<div class='media'>";
+							var rpybody="";
 							for(var j=0;j<obj.replybody.length;j++){
 								var reply = obj.replybody[j];
-								var replystr = "<div class='media'>"+"<a class='pull-left' href='#''>"
-								+"<img class='media-object' src='<%=root%>"+"/../"+obj.img+"' alt='用户头像'></a>"
-								+"<div class='media-body'>"+"<h4 class='media-heading'>"+reply.name+"</h4>"
-								+"<h5>"+reply.create_time+"</h5>"+reply.content
-								+"</div></div>";
-								str = str+replystr;
+								var replyli="<div class='rpy-li'><p><a href='<%=root%>/user/"+reply.user_id+"/1'>"+reply.name+"</a>：";
+								if(reply.reply_user_id != obj.user_id){
+									replyli += "<a href='<%=root%>/user/"+reply.reply_user_id+"/1'>@"+reply.reply_user_name+" </a>";
+								}
+								replyli = replyli + reply.content +"</p><p><span>"+reply.create_time+"</span><a href='#' class='pull-right' class='replyreply'><i class='glyphicon glyphicon-comment'></i> 回复</a>";
+								if(<%=user_id%> == reply.user_id){
+									replyli=replyli+"<a href='#' class='pull-right delc'> 删除</a>";
+								}
+								replyli=replyli+"</p></div>";
+								rpybody =rpybody+replyli;
 							}
+							replystr =replystr+rpybody+"</div>";
+							str = str+replystr;
 						}
 						str = str+"</div></li>";
 						this.floorNum++;
@@ -255,14 +317,25 @@
 				
 					});
 				
+				$("#comment-body").children().children().children("p").mouseenter(function(){
+					$(this).find(".idelc").show();
+				}).mouseleave(function(){
+					$(this).find(".idelc").hide();
+				});
+				$("#comment-body").children().children().children().children("div.rpy-li").mouseenter(function(){
+					$(this).find(".delc").show();
+				}).mouseleave(function(){
+					$(this).find(".delc").hide();
+				});
+				
 				$("#comment-body").find(".icomment").click(function(){
 					var parentId = $(this).parent().parent().parent().attr("id");
 					var replyUserId = $(this).parent().parent().parent().attr("user_id");
 					var replyBody = $(this).parent().parent();
 					if($(".replytext > textarea").length == 0){
-						$(".replytext").empty();
-						$(this).parent().parent().append("<div class='replytext media'><textarea cols='200' rows='3' autofocus='autofocus' style='resize:none;'></textarea><span class='btn btn-info' id='replyfloor'>回复</span></div>").find("#replyfloor").click(function(){
-								var content = $(this).prev().val();
+						$(".replytext").remove();
+						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' autofocus='autofocus' style='resize:none;'></textarea><br><span class='btn btn-info' id='replyfloor'>回复</span></div>").find("#replyfloor").click(function(){
+								var content = $(this).prev().prev().val();
 								$.ajax({
 									type:"POST",
 							        url:"<%=root%>/public/comment",
@@ -272,7 +345,7 @@
 							        success: function(data){
 							       	 if("success" == data.status)  {
 							       		addReplycomment(data.data,replyBody);
-							       		$(".replytext").empty();
+							       		$(".replytext").remove();
 							       	 }else if("auth" == data.status){
 							       		window.location.href="<%=root%>/toLogin";
 							       	 }else{
@@ -282,7 +355,7 @@
 								})
 							});
 						}else{
-							$(".replytext").empty();
+							$(".replytext").remove();
 						}
 				});
 			}

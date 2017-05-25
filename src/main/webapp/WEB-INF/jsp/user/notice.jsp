@@ -23,7 +23,13 @@
 	height: 20px;
 	border-top: 1px solid #ccc;
 }
-
+#commentList .row p img{
+	width: 5em;
+	border-radius: 0px;
+}
+#commentList .row p.pull-right a{
+	padding-right:1em; 
+}
 #letterDetailList {
 	position: relative;
 }
@@ -278,18 +284,87 @@
 			function addCommentData(data){
 				$("#commentList").empty();
 				var str = "";
-				for(var i=0;i<data.length;i++){
-					var obj = data[i];
-					str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
-						+"<img src='<%=root%>/../"+obj.from_img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
-						+obj.from_name+"</a> 在文章<a href='<%=root%>/article/"+obj.table_id+"'>《"+obj.title+"》</a>评论了你</p>"
-						+"<p><a href='<%=root%>/user/"+obj.user_id+"/1'>@"+obj.name+"</a><span> "+obj.content+"</span></p>"
-						+"<p class='pull-right'><a href='javascript:void();' onclick=newComment("+obj.parent_id+","+obj.comment_id+")>回复</a></p>"
-						+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+				if(data.length > 0){
+					for(var i=0;i<data.length;i++){
+						var obj = data[i];
+						str += "<div class='row' id='"+obj.parent_id+"'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+							+"<img src='<%=root%>/../"+obj.from_img+"'></a></div><div class='col-sm-10 col-md-10' id='"+obj.table_id+"' uid='"+obj.from_user_id+"'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+							+obj.from_name+"</a> 在文章<a href='<%=root%>/article/"+obj.table_id+"'>《"+obj.title+"》</a>评论了你</p>"
+							+"<p><a href='<%=root%>/user/"+obj.user_id+"/1'>@"+obj.name+"</a><span> "+obj.content+"</span></p>"
+							+"<p class='pull-right'><a href='javascript:void(0);' class='delNotice' id='"+obj.notice_id+"' >删除</a>"
+							+"<a href='javascript:void(0);' class='newComment' id='"+obj.comment_id+"' >回复</a></p>"
+							+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+					}
+					$("#commentList").prepend(str).find("a.newComment").click(function(){
+						var parentEl = $(this).parent().parent();
+						var parentId = parentEl.parent().attr("id");
+						var commentId = $(this).attr("id");
+						var tableId = parentEl.attr("id");
+						var userId = parentEl.attr("uid");
+						if(parentId == 0){
+							parentId=commentId;
+						}
+						if($(".newcommentbody > textarea").length == 0){
+							var newbody = "<div class='newcommentbody'><textarea cols='80' rows='3' autofocus='autofocus' style='resize:none;'>"
+											+"</textarea><br><span class='btn btn-info' id='replyfloor'>发送</span></div>";
+							parentEl.append(newbody).find("#replyfloor").click(function(){
+								var content = $(this).prev().prev().val();
+								$.ajax({
+									type:"POST",
+							        url:"<%=root%>/public/comment",
+							        data:{table_id:tableId,reply_user_id:userId,content:content,parent_id:parentId,time:new Date().getTime()},
+							        dataType:"json",
+							        cache:false,
+							        success: function(data){
+							       	 if("success" == data.status)  {
+							       		alert("回复成功");
+							       		$(".newcommentbody").remove();
+							       	 }else if("auth" == data.status){
+							       		window.location.href="<%=root%>/toLogin";
+							       	 }else{
+							       		 alert(data.msg);
+							       	 }
+							        }
+								})
+							});
+						}else{
+							$(".newcommentbody").remove();
+						}
+					});
+					
+					$("#commentList").find("a.delNotice").click(function(){
+						var noticeId = $(this).attr("id");
+						var parentEl = $(this).parent().parent().parent();
+						if(confirm("您确定删除？")){
+							$.ajax({
+								type:"POST",
+						        url:"<%=root%>/notice/delNotice",
+						        data:{notice_id:noticeId,time:new Date().getTime()},
+						        dataType:"json",
+						        cache:false,
+						        success: function(data){
+						       	 if("success" == data.status)  {
+						       		parentEl.next().remove();
+						       		parentEl.remove();
+						       	 }else if("auth" == data.status){
+						       		window.location.href="<%=root%>/toLogin";
+						       	 }else{
+						       		 alert(data.msg);
+						       	 }
+						        }
+							})
+						}
+					});
+					
+					
+				}else{
+					$("#commentList").prepend("<p>暂无消息</p>");
 				}
-				$("#commentList").prepend(str);
 			}
 			function newComment(parentId,tableId){
+				$(this).click(function(){
+					alert($(this).text());
+				});
 				alert(parentId);
 				alert(tableId);
 			}
@@ -349,13 +424,17 @@
 			function addConcernData(data){
 				$("#concernList").empty();
 				var str = "";
-				for(var i=0;i<data.length;i++){
-					var obj = data[i];
-					str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
-						+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 关注了你</p>"
-						+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+				if(data.length > 0){
+					for(var i=0;i<data.length;i++){
+						var obj = data[i];
+						str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+							+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 关注了你</p>"
+							+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+					}
+					$("#concernList").prepend(str);
+				}else{
+					$("#concernList").prepend("<p>暂无消息</p>");
 				}
-				$("#concernList").prepend(str);
 			}
 			
 			//添加点赞列表
@@ -411,14 +490,17 @@
 			function addpraiseData(data){
 				$("#praiseList").empty();
 				var str = "";
-				for(var i=0;i<data.length;i++){
-					var obj = data[i];
-					str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
-						+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 赞了您的文章<a href='<%=root%>/article/"+obj.table_id+"'>《"+obj.title+"》</a></p>"
-						+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+				if(data.length > 0){
+					for(var i=0;i<data.length;i++){
+						var obj = data[i];
+						str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+							+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 赞了您的文章<a href='<%=root%>/article/"+obj.table_id+"'>《"+obj.title+"》</a></p>"
+							+"<p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+					}
+					$("#praiseList").prepend(str);
+				}else{
+					$("#praiseList").prepend("<p>暂无消息</p>");
 				}
-				
-				$("#praiseList").prepend(str);
 			}
 			
 			//添加系统数据列表
@@ -474,13 +556,16 @@
 			function addsystemData(data){
 				$("#systemList").empty();
 				var str = "";
-				for(var i=0;i<data.length;i++){
-					var obj = data[i];
-					str += "<div class='row'><div>"+obj.text+"</div>"
-						+"<p>"+obj.create_time+"</p></div><div class='notice-border'></div>";
+				if(data.length > 0){
+					for(var i=0;i<data.length;i++){
+						var obj = data[i];
+						str += "<div class='row'><div>"+obj.text+"</div>"
+							+"<p>"+obj.create_time+"</p></div><div class='notice-border'></div>";
+					}
+					$("#systemList").prepend(str);
+				}else{
+					$("#systemList").prepend("<p>暂无消息</p>");
 				}
-				
-				$("#systemList").prepend(str);
 			}
 			
 			
@@ -537,13 +622,17 @@
 			function addLetterData(data){
 				$("#letterList").empty();
 				var str = "";
-				for(var i=0;i<data.length;i++){
-					var obj = data[i];
-					str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
-						+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 给你写了信</p>"
-						+"<p class='pull-right'><a href='javascript:void(0);' onclick='lookletterDetail("+obj.table_id+")'>查看详情</a></p><p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+				if(data.length > 0){
+					for(var i=0;i<data.length;i++){
+						var obj = data[i];
+						str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
+							+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 给你写了信</p>"
+							+"<p class='pull-right'><a href='javascript:void(0);' onclick='lookletterDetail("+obj.table_id+")'>查看详情</a></p><p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+					}
+					$("#letterList").prepend(str);
+				}else{
+					$("#letterList").prepend("<p>暂无消息</p>");
 				}
-				$("#letterList").prepend(str);
 			}
 			
 			function lookletterDetail(tableId){

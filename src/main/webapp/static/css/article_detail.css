@@ -74,29 +74,3 @@
 	background-color: red;
 	color: #fff;
 }
-.comment-li{
-	padding: 1em;
-	border-bottom: 1px dashed #fff;
-}
-.comment-li img{
-	height:5em;
-}
-.comment-li a img{
-	border-radius: 50%;
-}
-.comment-li .media-body p{
-	padding-top: 1em;
-}
-.comment-li .media-body p span{
-	padding: 1em;
-}
-.comment-li .comment-head{
-	float: right;
-	text-align: right;
-}
-.comment-li p i{
-	cursor: pointer;
-}
-.comment-li .icomment{
-	cursor: pointer;
-}

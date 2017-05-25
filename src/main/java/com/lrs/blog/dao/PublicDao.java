@@ -86,4 +86,11 @@ public interface PublicDao {
 	 */
 	public List<ParameterMap> getCommentlist(ParameterMap pm);
 	
+	/**
+	 * 文章的作者iD
+	 * @param pm
+	 * @return
+	 */
+	public ParameterMap getArticleAutherId(ParameterMap pm);
+	
 }

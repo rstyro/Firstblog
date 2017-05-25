@@ -121,17 +121,33 @@
 			a.create_time,
 			a.praise_num,
 			b.`name`,
-			b.img
+			b.img,
+			c.name as reply_user_name
 		from 
 			blog_comment a 
 		LEFT JOIN
 			blog_user b
 		ON
 			a.user_id = b.user_id
+		left join
+			blog_user c
+		on
+			a.reply_user_id=c.user_id
 		WHERE
 			table_id=#{table_id} and (a.parent_id is not null or a.parent_id != '')
 		order by
 			a.praise_num desc,a.create_time asc
+	</select>
+	
+	<!-- 获取文章作者ID -->
+	<select id="getArticleAutherId" parameterType="pm" resultType="pm">
+		SELECT
+			a.article_id,
+			a.user_id
+		from 
+			blog_article a
+		where
+			a.article_id=#{table_id} and isdel=0
 	</select>
 	
 	

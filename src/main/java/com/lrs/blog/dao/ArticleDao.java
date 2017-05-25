@@ -35,6 +35,7 @@ public interface ArticleDao {
 	 */
 	public ParameterMap getArticleDetail(ParameterMap pm);
 	
+	
 	/**
 	 * 保存文章
 	 * @param pm

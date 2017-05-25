@@ -9,7 +9,7 @@ public interface NoticeDao {
 	
 	public List<ParameterMap> getNoticelistPage(Page page);
 	
-	public List<ParameterMap> getSystemlistPage(Page page);
+	public List<ParameterMap> getCommentlistPage(Page page);
 	
 	/**
 	 * 获取消息个数
@@ -31,6 +31,12 @@ public interface NoticeDao {
 	 * @return
 	 */
 	public int saveLetter(ParameterMap pm);
+	/**
+	 * 保存消息
+	 * @param pm
+	 * @return
+	 */
+	public int saveNotice(ParameterMap pm);
 	
 	/**
 	 * 更新状态
@@ -38,4 +44,11 @@ public interface NoticeDao {
 	 * @return
 	 */
 	public int updateNoticeStatus(ParameterMap pm);
+	
+	/**
+	 * 删除消息
+	 * @param pm
+	 * @return
+	 */
+	public int delNotice(ParameterMap pm);
 }

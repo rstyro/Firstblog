@@ -19,4 +19,7 @@ public interface INoticeService {
 	public Map<String,Object> getLetterDetail(ParameterMap pm);
 	
 	public Map<String,Object> replyLetter(ParameterMap pm);
+	
+	
+	public Map<String,Object> delNotice(ParameterMap pm);
 }

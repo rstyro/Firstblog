@@ -5,7 +5,7 @@
 	String root = request.getContextPath();
 	String username = "";
 	String name = "";
-	String user_id = "";
+	String user_id = "0";
 	try{
 		User user = (User)session.getAttribute(Const.BLOG_USER_SESSION);
 		username = user.getUsername();

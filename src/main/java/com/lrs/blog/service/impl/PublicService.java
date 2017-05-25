@@ -12,12 +12,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lrs.blog.dao.NoticeDao;
 import com.lrs.blog.dao.PublicDao;
+import com.lrs.blog.entity.NoticeType;
 import com.lrs.blog.entity.User;
 import com.lrs.blog.service.IPublicService;
 import com.lrs.plugin.Page;
 import com.lrs.thread.EmailThread;
-import com.lrs.thread.LeaveThread;
 import com.lrs.util.Const;
 import com.lrs.util.DateUtil;
 import com.lrs.util.MyLogger;
@@ -31,6 +32,9 @@ public class PublicService implements IPublicService {
 
 	@Autowired
 	private PublicDao publicDao;
+	
+	@Autowired
+	private NoticeDao noticeDao;
 	
 	private MyLogger log = MyLogger.getLogger(this.getClass());
 	
@@ -78,6 +82,14 @@ public class PublicService implements IPublicService {
 					return map;
 				}
 				publicDao.saveComment(pm);
+				//保存评论消息
+				String reply_user_id = pm.getString("reply_user_id");
+				if(!reply_user_id.equals(user.getUser_id())){
+					pm.put("from_user_id", reply_user_id);
+					pm.put("notice_type", NoticeType.comment);
+					noticeDao.saveNotice(pm);
+				}
+				
 			}else{
 				try {
 					int index = (int) session.getAttribute(Const.BLOG_COMMENT_INDEX+tableId);
@@ -213,17 +225,32 @@ public class PublicService implements IPublicService {
 					return map;
 				}
 				ParameterMap repeatPraise = publicDao.repeatPraise(pm);
+				pm.put("notice_type", NoticeType.praise);
 				if(repeatPraise != null && repeatPraise.size() > 0){
 					pm.put("praise_type", "sub");
 					System.out.println("pm="+pm);
 					publicDao.updatePraiseNum(pm);
 					publicDao.delPraise(pm);
+					
+					//删除点赞消息
+					if("article".equalsIgnoreCase(tableType)){
+						noticeDao.delNotice(pm);
+					}
 				}else{
 					pm.put("praise_type", "add");
 					System.out.println("pm="+pm);
 					int issuccess =  publicDao.updatePraiseNum(pm);
 					if(issuccess > 0){//有修改记录，就保存点赞记录
 						publicDao.savePraise(pm);
+						
+						//添加点赞消息
+						if("article".equalsIgnoreCase(tableType)){
+							//获取文章用户的Id
+							ParameterMap auth = publicDao.getArticleAutherId(pm);
+							pm.put("from_user_id", auth.getString("user_id"));
+							pm.put("create_time", DateUtil.getTime());
+							noticeDao.saveNotice(pm);
+						}
 					}
 				}
 			}else{

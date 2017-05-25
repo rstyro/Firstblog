@@ -74,4 +74,19 @@ public class NoticeController extends BaseController{
 	}
 	
 	
+	/**
+	 * 删除消息
+	 * @return
+	 */
+	@RequestMapping(value="/delNotice",method=RequestMethod.POST)
+	@ResponseBody
+	public Object delNotice(){
+		printLogger(log, "删除消息");
+		ParameterMap pm = this.getParameterMap();
+		Map<String,Object> map = noticeService.delNotice(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	
+	
 }

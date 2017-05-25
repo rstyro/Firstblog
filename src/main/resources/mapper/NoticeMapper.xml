@@ -34,12 +34,12 @@
 				and a.notice_type=#{pm.notice_type}
 			</if>
 		ORDER BY
-			is_read ASC
+			a.is_read ASC,a.create_time desc
 	</select>
 	
 	
 	<!-- 获取消息列表 -->
-	<select id="getSystemlistPage" parameterType="page" resultType="pm">
+	<select id="getCommentlistPage" parameterType="page" resultType="pm">
 		SELECT
 			a.notice_id,
 			a.user_id,
@@ -57,7 +57,7 @@
 		from 
 			blog_notice a,blog_user b,blog_user c,blog_comment d,blog_article e
 		WHERE
-			a.notice_type='system'
+			a.notice_type='comment'
 		AND
 			a.user_id=b.user_id
 		AND
@@ -66,6 +66,10 @@
 			a.text=d.comment_id
 		AND
 			a.table_id=e.article_id
+		and
+			a.user_id=#{pm.user_id}
+		order by
+			a.is_read ASC,a.create_time desc
 	</select>
 	
 	<select id="getLetterDetailList" parameterType="pm" resultType="pm">
@@ -108,6 +112,48 @@
 		where
 			notice_type=#{notice_type}
 	</update>
+	
+	<delete id="delNotice" parameterType="pm">
+		delete from blog_notice
+			where
+				1=1
+				<if test="table_id != null and table_id != ''">
+					and
+				 		notice_type=#{notice_type} 
+					and 
+						from_user_id=#{user_id}
+					and
+						table_id=#{table_id}
+				</if>
+				<if test="notice_id != null and notice_id != ''">
+					and
+						notice_id=#{notice_id}
+					and
+						user_id=#{user_id}
+				</if>
+	</delete>
+	
+	<insert id="saveNotice" parameterType="pm">
+		insert into blog_notice(
+			user_id,
+			from_user_id,
+			<if test="comment_id != null and comment_id != ''">
+			text,
+			</if>
+			notice_type,
+			table_id,
+			create_time
+		) values (
+			#{from_user_id},
+			#{user_id},
+			<if test="comment_id != null and comment_id != ''">
+			#{comment_id},
+			</if>
+			#{notice_type},
+			#{table_id},
+			#{create_time}
+		)
+	</insert>
 	
 	<insert id="saveLetter" parameterType="pm">
 		insert into blog_letter(

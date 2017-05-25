@@ -1,7 +1,5 @@
 ﻿package com.lrs.blog.interceptor;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -111,8 +109,8 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 			if(user != null){
 				ParameterMap pm = new ParameterMap();
 				pm.put("user_id", user.getUser_id());
-				ParameterMap notice = noticeDao.getNoticeNum(new ParameterMap());
-				System.out.println("notice="+notice);
+				ParameterMap notice = noticeDao.getNoticeNum(pm);
+				System.out.println("notice="+notice+",userid="+user.getUser_id());
 				if(notice != null && notice.size() > 0){
 					filterNum(notice, "totalNum");
 					filterNum(notice, "praiseNum");
@@ -122,6 +120,8 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 					filterNum(notice, "commentNum");
 					if(modelAndView != null){
 						modelAndView.addObject("notice", notice);
+					}else{
+						System.out.println("modelandview is null");
 					}
 				}
 			}

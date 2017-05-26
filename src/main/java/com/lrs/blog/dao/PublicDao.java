@@ -51,6 +51,13 @@ public interface PublicDao {
 	public int delPraise(ParameterMap pm);
 	
 	/**
+	 * 删除评论
+	 * @param pm
+	 * @return
+	 */
+	public int delComment(ParameterMap pm);
+	
+	/**
 	 * 更改点赞数
 	 * @param pm
 	 * @return
@@ -71,6 +78,13 @@ public interface PublicDao {
 	 * @return
 	 */
 	public ParameterMap repeatPraise(ParameterMap pm);
+	
+	/**
+	 * 检测是否是楼层评论
+	 * @param pm
+	 * @return
+	 */
+	public ParameterMap checkCommentId(ParameterMap pm);
 	
 	/**
 	 * 获取楼主的评论

@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.aspectj.weaver.patterns.IfPointcut.IfFalsePointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +74,7 @@ public class PublicService implements IPublicService {
 			User user = null;
 			if(subject.isAuthenticated()){
 				user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+				System.out.println("user="+user);
 				if(user != null){
 					pm.put("user_id", user.getUser_id());
 				}else{
@@ -196,6 +198,57 @@ public class PublicService implements IPublicService {
 			log.error("获取评论异常:"+e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "获取评论失败");
+		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> delComment(ParameterMap pm) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			String commendId = pm.getString("comment_id");
+			if(StringUtils.isBlank(commendId)){
+				map.put("msg", "你请求的是一个错误的接口");
+				map.put("status", "failed");
+				return map;
+			}
+			if(subject.isAuthenticated()){
+				Session session = subject.getSession();
+				User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+				if(user != null){
+					pm.put("user_id", user.getUser_id());
+				}else{
+					map.put("status", "auth");
+					map.put("msg", "auth failed");
+					return map;
+				}
+				ParameterMap isFloorC = publicDao.checkCommentId(pm);
+				System.out.println("isFloorC="+isFloorC);
+				if(isFloorC != null && isFloorC.size() > 0){
+					String parentId = isFloorC.getString("parent_id");
+					//是楼层评论，删除所有子评论
+					if(StringUtils.isBlank(parentId)){
+						pm.put("parent_id", commendId);
+					}else{
+						pm.put("parent_id", "");
+					}
+					System.out.println("111pm="+pm);
+					int iss = publicDao.delComment(pm);
+					System.out.println("iss="+iss);
+				}
+				map.put("status", "success");
+				map.put("msg", "ok");
+			}else{
+				map.put("msg", "你请求的是一个错误的接口");
+				map.put("status", "failed");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			log.error("点赞异常:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "点赞失败");
 		}
 		return map;
 	}

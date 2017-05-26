@@ -64,6 +64,21 @@ public class PublicController extends BaseController{
 	}
 	
 	/**
+	 * 删除评论
+	 * @return
+	 */
+	@RequestMapping(value="/delComment",method=RequestMethod.GET)
+	@ResponseBody
+	public Object delComment(){
+		log.info("删除评论");
+		ParameterMap pm = this.getParameterMap();
+		String ip = this.getRemortIP();
+		pm.put("ip", ip);
+		Map<String, Object> map = publicService.delComment(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	/**
 	 * 留言
 	 * @return
 	 */

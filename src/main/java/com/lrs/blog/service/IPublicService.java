@@ -43,5 +43,12 @@ public interface IPublicService {
 	 */
 	public Map<String, Object> getComment(ParameterMap pm);
 	
+	/**
+	 * 删除评论
+	 * @param pm
+	 * @return
+	 */
+	public Map<String, Object> delComment(ParameterMap pm);
+	
 	public Map<String, Object> test(ParameterMap pm);
 }

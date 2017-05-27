@@ -204,7 +204,6 @@ body {
 		
 		function sendLetter(uid,uname,content){
 			alert("uid="+uid+",uname="+uname+",content="+content);
-			
 		}
 		
 		function logout(){

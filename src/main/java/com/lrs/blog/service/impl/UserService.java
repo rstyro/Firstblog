@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import com.lrs.blog.dao.ArticleDao;
 import com.lrs.blog.dao.LabelDao;
+import com.lrs.blog.dao.PublicDao;
 import com.lrs.blog.dao.UserDao;
 import com.lrs.blog.entity.Lock;
 import com.lrs.blog.entity.User;
@@ -48,6 +49,9 @@ public class UserService implements IUserService{
 	
 	@Autowired
 	private LabelDao labelDao;
+	
+	@Autowired
+	private PublicDao publicDao;
 	
 	@Autowired
 	private ICacheService cacheService;
@@ -78,8 +82,8 @@ public class UserService implements IUserService{
 			map.put("page", pmpage);
 			
 			//用户信息
-			ParameterMap user = userDao.getUserInfo(pm);
-			map.put("user", user);
+			ParameterMap userInfo = userDao.getUserInfo(pm);
+			map.put("userInfo", userInfo);
 			//用户标签
 			List<ParameterMap> userLabels = null;
 			if("1".equals(pm.getString("user_id"))){
@@ -95,6 +99,34 @@ public class UserService implements IUserService{
 		return map;
 	}
 	
+	@Override
+	public Map<String, Object> getUserBasicInfo(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			//用户信息
+			ParameterMap userInfo = userDao.getUserInfo(pm);
+			map.put("userInfo", userInfo);
+			//用户标签
+			List<ParameterMap> userLabels = null;
+			if("1".equals(pm.getString("user_id"))){
+				userLabels=cacheService.getCacheBloggerLabel("1");
+			}else{
+				userLabels = labelDao.getUserLabel(pm);
+			}
+			map.put("userLabels", userLabels);
+			
+		} catch (Exception e) {
+			log.info(e.getMessage(), e);
+		}
+		return map;
+	}
+	
+	@Override
+	public ParameterMap repeatConcern(ParameterMap pm) {
+		// TODO Auto-generated method stub
+		return publicDao.repeatConcern(pm);
+	}
+	
 	
 	
 	@Override
@@ -108,6 +140,7 @@ public class UserService implements IUserService{
 			if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
 				Subject subject = SecurityUtils.getSubject();
 				Session session = subject.getSession();
+				session.setTimeout(1000*60*30);
 				pm.put("username", username);
 				// 密码加密
 				String passwd = new SimpleHash("SHA-1", password,Const.SALT).toString(); 

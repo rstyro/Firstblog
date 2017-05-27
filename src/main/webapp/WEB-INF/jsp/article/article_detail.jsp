@@ -291,7 +291,7 @@
 				var str = "";
 				for(var i = 0;i< data.length;i++){
 					var obj = data[i];
-					str = str+ "<li class='media comment-li' id='"+obj.comment_id+"' user_id='"+obj.user_id+"'>"+"<a class='pull-left' href='#''>"
+					str = str+ "<li class='media comment-li' id='"+obj.comment_id+"' user_id='"+obj.user_id+"'>"+"<a class='pull-left' href='<%=root%>/user/"+obj.user_id+"/1''>"
 						+"<img class='media-object' src='<%=root%>"+"/../"+obj.img+"' alt='用户头像'></a>"
 						+"<div class='media-body'>"+"<h4 class='media-heading'>"+obj.name+"</h4>"
 						+"<h5>"+this.floorNum+" 楼  "+obj.create_time+"</h5><div class='pcont'>"+obj.content

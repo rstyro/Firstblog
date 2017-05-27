@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lrs.blog.controller.base.BaseController;
+import com.lrs.blog.entity.User;
 import com.lrs.blog.service.IUserService;
+import com.lrs.util.Const;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
 
@@ -30,8 +34,8 @@ public class UserController extends BaseController{
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/{user_id}/{pageNo}",method=RequestMethod.GET)
-	public ModelAndView toUser(@PathVariable(value="user_id") String userId,@PathVariable(value="pageNo") String pageNo){
+	@RequestMapping(value="/{userId}/{pageNo}",method=RequestMethod.GET)
+	public ModelAndView toUser(@PathVariable(value="userId") String userId,@PathVariable(value="pageNo") String pageNo){
 		System.out.println("comment in...");
 		ModelAndView view = this.getModelAndView();
 		ParameterMap pm = this.getParameterMap();
@@ -44,17 +48,37 @@ public class UserController extends BaseController{
 		if(!StringUtils.isNumeric(pageNo)){
 			return this.get404ModelAndView();
 		}
+		
 		Map<String,Object> map = userService.getUserInfo(pm);
-		ParameterMap user = (ParameterMap) map.get("user");
+		ParameterMap userInfo = (ParameterMap) map.get("userInfo");
 		List<ParameterMap> articleList = (List<ParameterMap>) map.get("articleList");
 		List<ParameterMap> userLabels = (List<ParameterMap>) map.get("userLabels");
+		ParameterMap concern = null;
+		Subject subject = SecurityUtils.getSubject();
+		User u = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+		if(u != null){
+			String meUserId = u.getUser_id();
+			if(subject.isAuthenticated()){
+				pm.put("user_id", meUserId);
+				pm.put("beconcern_user_id", userId);
+				concern = userService.repeatConcern(pm);
+				if(concern != null && concern.size() > 0){
+					concern.put("concern_flag", "1");
+				}
+			}
+		}
+		if(concern == null){
+			concern=new ParameterMap();
+			concern.put("concern_flag", "0");
+		}
+		System.out.println("concern="+concern);
+		view.addObject("concern",concern);
+		
 		ParameterMap page = (ParameterMap) map.get("page");
-		ParameterMap notice = new ParameterMap();
-		view.addObject("user", user);
+		view.addObject("userInfo", userInfo);
 		view.addObject("articles", articleList);
 		view.addObject("userLabels", userLabels);
 		view.addObject("page", page);
-		view.addObject("notice",notice);
 		view.setViewName("user/user");
 		return view;
 	}

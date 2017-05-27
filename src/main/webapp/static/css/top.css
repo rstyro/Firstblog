@@ -43,7 +43,7 @@ a {
 	border-radius: 50%;
 }
 
-.blog-info-head a {
+.blog-info-head a.btn {
 	margin: 0.5em 1.1em;
 }
 
@@ -159,6 +159,10 @@ a.index-user{
 
 .blog-primary {
 	color: #337ab7;
+}
+.btn-default-concern{
+	background-color: #ccc;
+	color: #fff;
 }
 
 .toTop{

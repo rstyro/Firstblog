@@ -59,7 +59,7 @@
 	<!-- 获取用户信息 -->
 	<select id="getUserInfo" parameterType="pm" resultType="pm">
 		SELECT
-			a.user_id,
+			cast(a.user_id as char) as user_id,
 			a.username,
 			a.password,
 			a.`name`,

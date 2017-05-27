@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lrs.blog.dao.PublicDao" >
+	<!-- 新增关注-->
+	<insert id="saveConcern" parameterType="pm">
+		insert into blog_concern(
+			user_id,
+			beconcern_user_id
+		) values(
+			#{user_id},
+			#{beconcern_user_id}
+		)
+	</insert>
+	
 	<!-- 新增浏览记录-->
 	<insert id="saveBrowse" parameterType="pm">
 		insert into blog_browse(
@@ -79,9 +90,14 @@
 		)
 	</insert>
 	
-	
+	<!-- 是否重复点赞 -->
 	<select id="repeatPraise" parameterType="pm" resultType="pm">
 		select praise_id from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</select>
+	
+	<!-- 是否重复关注 -->
+	<select id="repeatConcern" parameterType="pm" resultType="pm">
+		select concern_id from blog_concern where beconcern_user_id=#{beconcern_user_id} and user_id=#{user_id}
 	</select>
 	
 	<!-- 获取楼主评论 -->
@@ -175,6 +191,11 @@
 	<!-- 删除点赞记录 -->
 	<delete id="delPraise" parameterType="pm">
 		delete from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</delete>
+	
+	<!-- 取消关注 -->
+	<delete id="delConcern" parameterType="pm">
+		delete from blog_concern where beconcern_user_id=#{beconcern_user_id} and user_id=#{user_id}
 	</delete>
 	
 	<!-- 删除评论记录 -->

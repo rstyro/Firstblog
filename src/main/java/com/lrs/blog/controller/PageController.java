@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,11 +21,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.druid.util.StringUtils;
 import com.lrs.blog.controller.base.BaseController;
+import com.lrs.blog.entity.User;
 import com.lrs.blog.service.IArticleService;
 import com.lrs.blog.service.ICacheService;
 import com.lrs.blog.service.ILabelService;
+import com.lrs.blog.service.IUserService;
 import com.lrs.plugin.Page;
 import com.lrs.util.CodeUtil;
+import com.lrs.util.Const;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
 
@@ -42,10 +49,14 @@ public class PageController extends BaseController{
 	@Autowired
 	private ICacheService cacheService;
 	
+	@Autowired
+	private IUserService userService;
+	
 	/**
 	 * 去首页
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/toIndex/{pageNo}",method=RequestMethod.GET)
 	public ModelAndView toIndex(@PathVariable String pageNo){
 		ModelAndView view = this.getModelAndView();
@@ -56,6 +67,7 @@ public class PageController extends BaseController{
 		List<ParameterMap> articleRecomend = null;
 		List<ParameterMap> linkList=null;
 		List<ParameterMap> userLabels=null;
+		ParameterMap userInfo=null;
 		Page page = new Page();
 		if(StringUtils.isNumber(pageNo)){
 			page.setCurrentPage(Integer.parseInt(pageNo));
@@ -103,14 +115,47 @@ public class PageController extends BaseController{
 				articleList = MyUtil.getRusultList(articleList, page);
 				log.info("首页的文章是缓存获取的");
 			}
-			//博主标签
+			pm.put("user_id", "1");
+			Map<String,Object> userMap  = userService.getUserBasicInfo(pm);
+			//博主信息
 			try {
-				userLabels = (List<ParameterMap>) cacheService.getCacheBloggerLabel("1");
+				
+				userInfo =  (ParameterMap) userMap.get("userInfo");
+			} catch (Exception e) {
+				userInfo= new ParameterMap();
+				e.printStackTrace();
+				log.error("获取用户信息失败", e);
+			}
+			
+			//博主信息
+			try {
+				userLabels = (List<ParameterMap>) userMap.get("userLabels");
 			} catch (Exception e) {
 				e.printStackTrace();
 				userLabels = new ArrayList<ParameterMap>();
 			}
 			
+			//
+			ParameterMap concern = null;
+			Subject subject = SecurityUtils.getSubject();
+			User u = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+			if(u != null){
+				String userId = u.getUser_id();
+				if(subject.isAuthenticated() && !"1".equals(userId)){
+					pm.put("user_id", u.getUser_id());
+					pm.put("beconcern_user_id", "1");
+					concern = userService.repeatConcern(pm);
+					if(concern != null && concern.size() > 0){
+						concern.put("concern_flag", "1");
+					}
+				}
+			}
+			if(concern == null){
+				concern=new ParameterMap();
+				concern.put("concern_flag", "0");
+			}
+			System.out.println("concern="+concern);
+			view.addObject("concern",concern);
 			pm.put("type", "home");
 			ParameterMap jumbotron = articleService.getJumbotron(pm);
 			ParameterMap pmpage = new ParameterMap(page);
@@ -121,6 +166,7 @@ public class PageController extends BaseController{
 			view.addObject("article_recommend", articleRecomend);
 			view.addObject("linkList", linkList);
 			view.addObject("jumbotron", jumbotron);
+			view.addObject("userInfo", userInfo);
 			view.addObject("userLabels", userLabels);
 			System.out.println("pmpage="+pmpage);
 			System.out.println(",page="+page);
@@ -222,6 +268,28 @@ public class PageController extends BaseController{
 		String ip = this.getRemortIP();
 		log.info("有人访问留言页面，ip="+ip);
 		view.setViewName("leaveword");
+		return view;
+	}
+	
+	/**
+	 * 私信
+	 * @return
+	 */
+	@RequestMapping(value="/toLetter",method=RequestMethod.GET)
+	public ModelAndView toLetter(){
+		ModelAndView view = this.getModelAndView();
+		String ip = this.getRemortIP();
+		log.info("有人访问写信页面，ip="+ip);
+		Subject subject = SecurityUtils.getSubject();
+		Session session = subject.getSession();
+		session.setAttribute(Const.BLOG_LAST_URL, "/toLetter");
+		if(subject.isAuthenticated()){
+			
+			view.setViewName("leaveword");
+		}else{
+			view.setViewName("account/login");
+		}
+		
 		return view;
 	}
 	

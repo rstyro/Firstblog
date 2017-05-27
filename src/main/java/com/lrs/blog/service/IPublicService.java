@@ -22,6 +22,13 @@ public interface IPublicService {
 	public Map<String,Object> savePraise(ParameterMap pm);
 	
 	/**
+	 * 关注
+	 * @param pm
+	 * @return
+	 */
+	public Map<String,Object> concern(ParameterMap pm);
+	
+	/**
 	 * 留言
 	 * @param pm
 	 * @return
@@ -35,6 +42,13 @@ public interface IPublicService {
 	 * @return
 	 */
 	public Map<String,Object> comment(ParameterMap pm);
+	
+	/**
+	 * 私信
+	 * @param pm
+	 * @return
+	 */
+	public Map<String,Object> letter(ParameterMap pm);
 	
 	/**
 	 * 获取评论

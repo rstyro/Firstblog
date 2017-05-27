@@ -14,6 +14,13 @@ public interface PublicDao {
 	public int saveBrowse(ParameterMap pm);
 	
 	/**
+	 * 关注
+	 * @param pm
+	 * @return
+	 */
+	public int saveConcern(ParameterMap pm);
+	
+	/**
 	 * 更改浏览数
 	 * @param pm
 	 * @return
@@ -58,6 +65,13 @@ public interface PublicDao {
 	public int delComment(ParameterMap pm);
 	
 	/**
+	 * 取消关注
+	 * @param pm
+	 * @return
+	 */
+	public int delConcern(ParameterMap pm);
+	
+	/**
 	 * 更改点赞数
 	 * @param pm
 	 * @return
@@ -78,6 +92,13 @@ public interface PublicDao {
 	 * @return
 	 */
 	public ParameterMap repeatPraise(ParameterMap pm);
+	
+	/**
+	 * 是否重复关注
+	 * @param pm
+	 * @return
+	 */
+	public ParameterMap repeatConcern(ParameterMap pm);
 	
 	/**
 	 * 检测是否是楼层评论

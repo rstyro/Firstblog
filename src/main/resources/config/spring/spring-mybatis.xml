@@ -141,7 +141,7 @@
     
     <!-- shiro -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
-	    <property name="realm" ref="myRealm"/>  
+	    <property name="realm" ref="myRealm"/>
 	</bean>
 	
 	<bean id="myRealm" class="com.lrs.blog.interceptor.MyShiroRealm"/>  
@@ -161,6 +161,5 @@
 	              -->
 	        </value>  
 	    </property>
-	</bean>  
-    
+	</bean> 
 </beans>

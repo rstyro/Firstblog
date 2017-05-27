@@ -21,6 +21,20 @@ public class PublicController extends BaseController{
 	private IPublicService publicService;
 	
 	/**
+	 * 关注
+	 * @return
+	 */
+	@RequestMapping(value="/concern",method=RequestMethod.POST)
+	@ResponseBody
+	public Object concern(){
+		log.info("点赞");
+		ParameterMap pm = this.getParameterMap();
+		Map<String, Object> map = publicService.concern(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	
+	/**
 	 * 点赞
 	 * @return
 	 */
@@ -45,6 +59,22 @@ public class PublicController extends BaseController{
 		String ip = this.getRemortIP();
 		pm.put("ip", ip);
 		Map<String, Object> map = publicService.comment(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	
+	/**
+	 * 私信
+	 * @return
+	 */
+	@RequestMapping(value="/letter",method=RequestMethod.POST)
+	@ResponseBody
+	public Object letter(){
+		log.info("私信");
+		ParameterMap pm = this.getParameterMap();
+		String ip = this.getRemortIP();
+		pm.put("ip", ip);
+		Map<String, Object> map = publicService.letter(pm);
 		return MyUtil.returnObject(pm, map);
 	}
 	
@@ -95,7 +125,7 @@ public class PublicController extends BaseController{
 	
 	
 	/**
-	 * 留言
+	 * test
 	 * @return
 	 */
 	@RequestMapping(value="/test",method=RequestMethod.POST)

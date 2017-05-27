@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.aspectj.weaver.patterns.IfPointcut.IfFalsePointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +53,53 @@ public class PublicService implements IPublicService {
 			return 0;
 		}
 		return 1;
+	}
+	
+	@Override
+	public Map<String, Object> concern(ParameterMap pm) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			String beConcernUserId = pm.getString("beconcern_user_id");
+			if(StringUtils.isBlank(beConcernUserId)){
+				map.put("msg", "你请求的是一个错误的接口");
+				map.put("status", "failed");
+				return map;
+			}
+			Subject subject = SecurityUtils.getSubject();
+			Session session = subject.getSession();
+			pm.put("create_time", DateUtil.getTime());
+			User user = null;
+			session.setAttribute(Const.BLOG_LAST_URL, "/user/"+beConcernUserId+"/1");
+			if(subject.isAuthenticated()){
+				user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+				System.out.println("user="+user);
+				if(user != null){
+					pm.put("user_id", user.getUser_id());
+				}else{
+					map.put("status", "auth");
+					map.put("msg", "auth failed");
+					return map;
+				}
+				ParameterMap repeatConcern = publicDao.repeatConcern(pm);
+				if(repeatConcern != null && repeatConcern.size() > 0){
+					publicDao.delConcern(pm);
+					map.put("msg", "取消关注成功");
+				}else{
+					publicDao.saveConcern(pm);
+					map.put("msg", "关注成功");
+				}
+				map.put("status", "success");
+			}else{
+				map.put("status", "auth");
+				map.put("msg", "auth failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("关注异常:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "关注失败");
+		}
+		return map;
 	}
 	
 	@Override
@@ -130,6 +176,43 @@ public class PublicService implements IPublicService {
 			log.error("评论异常:"+e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "评论失败");
+		}
+		return map;
+	}
+	
+	
+	@Override
+	public Map<String, Object> letter(ParameterMap pm) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			String writeToUserId = pm.getString("wrt_user_id");
+			String content = pm.getString("content");
+			if(StringUtils.isBlank(content) || StringUtils.isBlank(writeToUserId)){
+				map.put("msg", "你请求的是一个错误的接口");
+				map.put("status", "failed");
+				return map;
+			}
+			Subject subject = SecurityUtils.getSubject();
+			if(subject.isAuthenticated()){
+				Session session = subject.getSession();
+				User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+				if(user != null){
+					pm.put("user_id", user.getUser_id());
+				}else{
+					session.setAttribute(Const.BLOG_LAST_URL, "/article/"+pm.getString("table_id"));
+					map.put("status", "auth");
+					map.put("msg", "auth failed");
+					return map;
+				}
+			}else{
+				map.put("status", "auth");
+				map.put("msg", "auth failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("写信异常:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "写信失败");
 		}
 		return map;
 	}

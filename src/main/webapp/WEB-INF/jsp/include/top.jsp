@@ -136,6 +136,26 @@ body {
 		</div>
 	</div>
 	
+	<div class="modal fade" id="letterModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="modelHead"></h4>
+				</div>
+				<div class="modal-body">
+					<textarea rows="5" cols="50" id="letter-content"></textarea><br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-info sendLetter" >发送</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -150,6 +170,8 @@ body {
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
+		var uid="";
+		var uname="";
 		$(function(){
 			$("[data-toggle='tooltip']").tooltip();
 			
@@ -157,11 +179,34 @@ body {
 	                $(this).click(function() {
 	                    location.href = "<%=root%>/article/month/"+ $(this).attr('id') + "/1";
 								})
-				})
-				$("#blog_search").click(function(){
-					$("#searchform").submit();
-				});
+			})
+			$("#blog_search").click(function(){
+				$("#searchform").submit();
+			});
+			 
+			$(".btn-concern").click(function(){
+				var uid = $(this).attr("uid");
+				var El = $(this);
+				concern(uid,El);
+			});
+			$(".btn-letter").click(function(){
+				uid = $(this).attr("uid");
+				uname = $(this).attr("uname");
+				$("#modelHead").html("给用户 <strong>"+uname+"</strong> 写信");
+				$("#letterModal").modal('show');
+			});
+			$(".sendLetter").click(function(){
+				var content = $("#letter-content").val();
+				sendLetter(uid,uname,content);
+				$("#letterModal").modal('hide');
+			});
 		})
+		
+		function sendLetter(uid,uname,content){
+			alert("uid="+uid+",uname="+uname+",content="+content);
+			
+		}
+		
 		function logout(){
 			$.ajax({
 				type:"GET",
@@ -172,6 +217,33 @@ body {
 		        success: function(data){
 		       	 if("success" == data.status){
 		       		location.reload();
+		       	 }else{
+		       		 $("#msg").html(data.msg);
+		       	 }
+		        }
+			})
+		}
+		function concern(userId,El){
+			$.ajax({
+				type:"POST",
+		        url:"<%=root%>/public/concern",
+		        data:{beconcern_user_id:userId,time:new Date().getTime()},
+		        dataType:"json",
+		        cache:false,
+		        success: function(data){
+		        	console.log(data);
+		       	 if("success" == data.status){
+		       		if(El.hasClass("btn-default-concern")){
+		       			El.html("<span class='glyphicon glyphicon-plus'></span><span> 关注</span>");
+		       			El.removeClass("btn-default-concern");
+		       			El.addClass("btn-info");
+					}else{
+						El.html("<span>已关注</span>");
+						El.addClass("btn-default-concern");
+						El.removeClass("btn-info");
+					}
+		       	 }else if("auth" == data.status){
+		       		window.location.href="<%=root%>/toLogin";
 		       	 }else{
 		       		 $("#msg").html(data.msg);
 		       	 }

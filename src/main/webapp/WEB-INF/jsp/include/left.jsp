@@ -10,22 +10,32 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-4 blog-info-head">
-					<img src="<%=request.getContextPath()%>/static/images/favicon.ico">
-					<a href="#" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="内测中，该功能有待开发"> <span
-						class="glyphicon glyphicon-plus"></span><span> 关注</span></a> <a
-						href="#" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="内测中，该功能有待开发"> <span
+					<a href="<%=request.getContextPath()%>/user/${userInfo.user_id }/1"><img src="<%=request.getContextPath()%>/static/images/favicon.ico"></a>
+					<c:if test="${concern.concern_flag == '1' }">
+						<a href="javascript:void(0)" uid="${userInfo.user_id }" 
+						 class="btn btn-default-concern btn-concern">
+							<span>已关注</span>
+						</a>
+					</c:if>
+					<c:if test="${concern.concern_flag == '0' }">
+						<a href="javascript:void(0)" uid="${userInfo.user_id }" 
+						 class="btn btn-info btn-concern">
+							<span class="glyphicon glyphicon-plus"></span><span> 关注</span>
+						</a>
+					</c:if>
+					<a href="javascript:void(0)" uid="${userInfo.user_id }" uname="${userInfo.name }" class="btn btn-success btn-letter" > <span
 						class="glyphicon glyphicon-envelope"></span><span> 私信</span></a>
 				</div>
 				<div class="col-md-8">
-					<a href="<%=request.getContextPath()%>/user/1/1" class="index-user"><h4>
+					<a href="<%=request.getContextPath()%>/user/${userInfo.user_id }/1" class="index-user"><h4>
 						<i class="glyphicon glyphicon-fire red"></i> <font
-							style="font-weight: bold;">这个冬天不太冷</font>
+							style="font-weight: bold;">${userInfo.name }</font>
 					</h4></a>
 					<p>
-						<i class="glyphicon glyphicon-info-sign green"></i> 无寻处，惟有少年心
+						<i class="glyphicon glyphicon-info-sign green"></i> ${userInfo.sign }
 					</p>
 					<p>
-						<i class="glyphicon glyphicon-map-marker green"></i> 深圳
+						<i class="glyphicon glyphicon-map-marker green"></i> ${userInfo.locate }
 					</p>
 					<div class="row">
 						<div class="col-sm-1 col-md-2">

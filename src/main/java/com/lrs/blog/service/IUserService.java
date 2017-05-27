@@ -14,6 +14,13 @@ public interface IUserService {
 	public Map<String,Object> getUserInfo(ParameterMap pm);
 	
 	/**
+	 * 获取用户基本信息
+	 * @param pm
+	 * @return
+	 */
+	public Map<String,Object> getUserBasicInfo(ParameterMap pm);
+	
+	/**
 	 * 登陆
 	 * @param pm
 	 * @return
@@ -58,4 +65,11 @@ public interface IUserService {
 	 * @return
 	 */
 	public Map<String,Object> logout(ParameterMap pm);
+	
+	/**
+	 * 是否关注了
+	 * @param pm
+	 * @return
+	 */
+	public ParameterMap repeatConcern(ParameterMap pm);
 }

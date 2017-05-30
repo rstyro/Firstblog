@@ -189,4 +189,36 @@ public class UserController extends BaseController{
 		Map<String, Object> map = userService.logout(pm);
 		return MyUtil.returnObject(pm, map);
 	}
+	
+	/**
+	 * qq第三方回调
+	 * @return
+	 */
+	@RequestMapping(value="/qqredirect",method=RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView redirect() {
+		ModelAndView view = this.getModelAndView();
+		ParameterMap pm = this.getParameterMap();
+		System.out.println("pm="+pm);
+		Map<String, Object> map = userService.qqredirect(pm);
+		view.setViewName("redirect");
+		return view;
+	}
+	/**
+	 * 微博第三方回调
+	 * @return
+	 */
+	@RequestMapping(value="/weiboredirect",method=RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView weiboredirect() {
+		ModelAndView view = this.getModelAndView();
+		ParameterMap pm = this.getParameterMap();
+		pm.put("ip", this.getRemortIP());
+		System.out.println("pm="+pm);
+		Map<String, Object> map = userService.weiboredirect(pm);
+		view.setViewName("redirect");
+		return view;
+	}
+	
+	
 }

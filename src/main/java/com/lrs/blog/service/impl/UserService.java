@@ -19,6 +19,7 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +35,11 @@ import com.lrs.plugin.Page;
 import com.lrs.thread.EmailThread;
 import com.lrs.util.Const;
 import com.lrs.util.DateUtil;
+import com.lrs.util.HttpUtils;
 import com.lrs.util.MyLogger;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
+import com.lrs.util.UploadUtil;
 
 @Service
 public class UserService implements IUserService{
@@ -413,5 +416,205 @@ public class UserService implements IUserService{
 		}
 		return map;
 	}
+	
+	@Override
+	public Map<String, Object> qqredirect(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		String code = pm.getString("code");
+		String state = pm.getString("state");
+		String tokenUrl=MyUtil.getPptMap().getProperty("qq_token_url");
+		String openUrl=MyUtil.getPptMap().getProperty("qq_open_url");
+		String userUrl=MyUtil.getPptMap().getProperty("qq_user_url");
+		String grant_type = "authorization_code";
+		String client_id = MyUtil.getPptMap().getProperty("qq_app_key");
+		String client_secret = MyUtil.getPptMap().getProperty("qq_app_secret");
+		String redirect_uri = MyUtil.getPptMap().getProperty("qq_redirect_url");
+		ParameterMap param = new ParameterMap();
+		param.put("code", code);
+		param.put("state", state);
+		param.put("grant_type", grant_type);
+		param.put("client_id", client_id);
+		param.put("client_secret", client_secret);
+		param.put("redirect_uri", redirect_uri);
+		try {
+			//获取access_token
+			System.out.println("param="+param);
+			String result = HttpUtils.getInstance().sendGetMethod(tokenUrl, param, "UTF-8");
+			System.out.println("result="+result);
+			ParameterMap acToken = MyUtil.getMapByUrlString(result);
+			String access_token = acToken.getString("access_token");
+			String expires_in = acToken.getString("expires_in");
+			String refresh_token = acToken.getString("refresh_token");
+			//权限自动续期
+//			pm.put("grant_type", "refresh_token");
+//			pm.put("client_id", client_id);
+//			pm.put("client_secret", client_secret);
+//			pm.put("refresh_token", refresh_token);
+//			HttpUtils.getInstance().sendGetMethod(tokenUrl, pm, "UTF-8");
+			
+			//获取open_id
+			param.put("access_token", access_token);
+			String openString = HttpUtils.getInstance().sendGetMethod(openUrl, param, "UTF-8");
+			System.out.println("openString="+openString);
+			openString = openString.replaceAll("callback", "");
+			openString = openString.replaceAll("[(]", "");
+			openString = openString.replaceAll("[)]", "");
+			System.out.println("openString="+openString);
+			JSONObject open = new JSONObject(openString);
+			String openId = open.getString("openid");
+			//获取用户信息
+			/*
+			 * 	?access_token=YOUR_ACCESS_TOKEN
+	&oauth_consumer_key=YOUR_APP_ID
+	&openid=YOUR_OPENID
+			 * */
+			param.put("access_token", access_token);
+			param.put("oauth_consumer_key", client_id);
+			param.put("openid", openId);
+			String userString = HttpUtils.getInstance().sendGetMethod(userUrl, param, "UTF-8");
+			System.out.println("userString="+userString);
+			JSONObject user = new JSONObject(userString);
+			System.out.println("user="+user);
+		} catch (Exception e) {
+			log.error("error:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "回调错误");
+		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> weiboredirect(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			String code = pm.getString("code");
+			String tokenUrl=MyUtil.getPptMap().getProperty("weibo_token_url");
+			String grant_type = "authorization_code";
+			String client_id = MyUtil.getPptMap().getProperty("weibo_app_key");
+			String client_secret = MyUtil.getPptMap().getProperty("weibo_app_secret");
+			String redirect_uri = MyUtil.getPptMap().getProperty("weibo_redirect_url");
+			String registerType="weibo";
+			ParameterMap param = new ParameterMap();
+			param.put("ip", pm.getString("ip"));
+			param.put("code", code);
+			param.put("grant_type", grant_type);
+			param.put("client_id", client_id);
+			param.put("client_secret", client_secret);
+			param.put("redirect_uri", redirect_uri);
+			//验证accesToken
+			boolean flag = accessToken(tokenUrl,param,registerType,"UTF-8");
+			if(!flag){
+				//获取用户信息，并新增用户
+				param.put("uid", param.getString("third_uuid"));
+				saveNewUser(param);
+			}
+			map.put("msg", "ok");
+			map.put("status", "success");
+		} catch (Exception e) {
+			log.error("error:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "回调错误");
+		}
+		return map;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void saveNewUser(ParameterMap param) throws Exception {
+		String userUrl=MyUtil.getPptMap().getProperty("weibo_user_url");
+		System.out.println("param="+param);
+		String userString = HttpUtils.getInstance().sendGetMethod(userUrl, param, "UTF-8");
+		System.out.println("userString="+userString);
+		JSONObject user = new JSONObject(userString);
+		String sex = user.getString("gender");
+		if("m".equals(sex)){
+			sex = "boy";
+		}else{
+			sex="girl";
+		}
+		ParameterMap userpm = new ParameterMap();
+		userpm.put("username", "blog_"+MyUtil.random(8));
+		userpm.put("password", "password_"+MyUtil.random(8));
+		userpm.put("name", user.getString("screen_name"));
+		userpm.put("third_uuid", user.getString("idstr"));
+		userpm.put("register_type", "weibo");
+		userpm.put("sex", sex);
+		userpm.put("locate", user.getString("location"));
+		userpm.put("sign", user.getString("description"));
+		userpm.put("ip", param.getString("ip"));
+		userpm.put("status", "unlock");
+		userpm.put("create_time", DateUtil.getTime());
+		String path = Const.USER_IMG_PATH+MyUtil.random(8)+".png";
+		String imgUrl = user.getString("profile_image_url");
+		try {
+			UploadUtil.saveImgByUrl(imgUrl, Const.ROOT_PATH+"../"+path);
+		} catch (Exception e) {
+			path=Const.BLOG_USER_DEFAULT_PATH+MyUtil.getRandomNum(1, 10)+".png";
+			log.error("errpt="+e.getMessage(), e);
+		}
+		userpm.put("img", path);
+		userDao.saveUser(userpm);
+		addUserShiro(userpm);
+	}
 
+	/**
+	 * 验证token,判断是否存在此用户
+	 * @param tokenUrl
+	 * @param param
+	 * @param uid
+	 * @param access_token
+	 * @param registerType
+	 * @param encode
+	 * @return
+	 */
+	private boolean accessToken(String tokenUrl, ParameterMap param,String registerType, String encode) {
+		String result = HttpUtils.getInstance().sendPostMethod(tokenUrl, param, encode);
+		System.out.println("result="+result);
+		JSONObject acToken = new JSONObject(result);
+		//Integer expires_in = (Integer) acToken.get("expires_in");	//生命周期
+		String access_token = acToken.getString("access_token");
+		String uid = acToken.getString("uid");
+		param.put("access_token", access_token);
+		param.put("register_type", registerType);
+		param.put("third_uuid", uid);
+		ParameterMap userInfo =userDao.getUserInfo(param);
+		if(userInfo != null && userInfo.size() > 0){
+			addUserShiro(userInfo);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 把用户信息添加到shiro中
+	 * @param userInfo
+	 */
+	private void addUserShiro(ParameterMap pmUser) {
+		Subject subject = SecurityUtils.getSubject();
+		Session session = subject.getSession();
+		session.setTimeout(1000*60*30);
+		User user = new User();
+		user.setIp(pmUser.getString("ip"));
+		user.setUser_id(pmUser.getString("user_id"));
+		user.setUsername(pmUser.getString("username"));
+		user.setEmail(pmUser.getString("email"));
+		user.setImg(pmUser.getString("img"));
+		user.setLocate(pmUser.getString("locate"));
+		user.setName(pmUser.getString("name"));
+		user.setSex(pmUser.getString("sex"));
+		user.setSign(pmUser.getString("sign"));
+		user.setStatus(pmUser.getString("status"));
+		user.setThird_uuid(pmUser.getString("third_uuid"));
+		user.setRegister_type(pmUser.getString("register_type"));
+		session.setAttribute(Const.BLOG_USER_SESSION, user);
+		UsernamePasswordToken token = new UsernamePasswordToken(pmUser.getString("username"), pmUser.getString("password"));  
+		token.setRememberMe(true); 
+		subject.login(token);
+	}
+
+	@Override
+	public Map<String, Object> weixinredirect(ParameterMap pm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

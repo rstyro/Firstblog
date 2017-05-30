@@ -80,9 +80,9 @@ String root = request.getContextPath();
 					<a href="<%=root%>/toResetPsw">找回密码</a><a href="<%=root%>/toRegister">注册</a>
 				</div>
 				<div class="login-right">
-					<a href="javascript:void();" onclick='toQQLogin()'><img src="<%=root %>/static/images/qq.png"></a>
+					<a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=1105267694&redirect_uri=http://www.localhost/blog/user/qqredirect&state=lrs_blog" ><img src="<%=root %>/static/images/qq.png"></a>
 					<a href="javascript:void();" onclick='toWXLogin()'><img src="<%=root %>/static/images/weixin.png"></a>
-					<a href="javascript:void();" onclick='toWBLogin()'><img src="<%=root %>/static/images/weibo.png"></a>
+					<a href="https://api.weibo.com/oauth2/authorize?client_id=884248037&response_type=code&redirect_uri=http://www.localhost/blog/user/weiboredirect" ><img src="<%=root %>/static/images/weibo.png"></a>
 				</div>
 			</div>
 		</form>
@@ -117,6 +117,29 @@ String root = request.getContextPath();
 		
 	})
 	
+	function toQQLogin(){
+	var url="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=1105267694&redirect_uri=http://localhost/blog&state=blog";
+	var response_type="code";
+	var client_id="1105267694";
+	var redirect_uri="http://localhost/blog";
+	var state="blog";
+	$.ajax({
+		type:"GET",
+        url:url,
+        data:{response_type:response_type,client_id:client_id,redirect_uri:redirect_uri,state:state,time:new Date().getTime()},
+        dataType:"json",
+        cache:false,
+        success: function(data){
+        	console.log(data);
+        }
+	})
+}
+function toWXLogin(){
+	alert("待开发");
+}
+function toWBLogin(){
+	alert("待开发");
+}
 	
 	</script>
 </body>

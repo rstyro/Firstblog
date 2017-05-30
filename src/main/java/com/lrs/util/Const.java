@@ -5,6 +5,10 @@ public class Const {
 	public static final String PAGE	= "config/PAGE.txt";								//分页条数配置路径
 	public static final String INTERCEPTOR_PATH = ".*/((article)|(page)).*";			//匹配该值的访问路径拦截（正则）
 	
+	//路径
+	public static final String ROOT_PATH = System.getProperty("blog.root");				//tomcat根目录
+	public static final String USER_IMG_PATH = "upload/user/"+DateUtil.getDays()+"/";				//tomcat根目录
+	
 	//用户默认头像
 	public static final String BLOG_USER_DEFAULT_PATH = "upload/user/default";			//默认头像路径
 	
@@ -51,6 +55,5 @@ public class Const {
 	
 	//热门搜索缓存的id 
 	public static final String HOT_ARTICLE_ID_LIST="HOT_ARTICLE_ID_LIST";					//归档下的文字列表
-	
 	
 }

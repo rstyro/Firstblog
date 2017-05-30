@@ -96,13 +96,5 @@ function checkEmail(email){
 			return false;
 		}
 	}
-function toQQLogin(){
-	alert("待开发");
-}
-function toWXLogin(){
-	alert("待开发");
-}
-function toWBLogin(){
-	alert("待开发");
-}
+
 

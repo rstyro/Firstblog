@@ -61,6 +61,10 @@ public class HttpUtils {
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				result = EntityUtils.toString(httpResponse.getEntity(),
 						encoding);
+			}else{
+				System.out.println("else");
+				System.out.println(EntityUtils.toString(httpResponse.getEntity(),
+						encoding));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,6 +127,9 @@ public class HttpUtils {
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				result = EntityUtils.toString(httpResponse.getEntity(),
 						encoding);
+			}else{
+				System.out.println("else="+EntityUtils.toString(httpResponse.getEntity(),
+						encoding));
 			}
 		
 		return result;

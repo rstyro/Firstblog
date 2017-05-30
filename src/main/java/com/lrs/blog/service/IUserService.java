@@ -67,6 +67,17 @@ public interface IUserService {
 	public Map<String,Object> logout(ParameterMap pm);
 	
 	/**
+	 * 回调
+	 * @param pm
+	 * @return
+	 */
+	public Map<String,Object> qqredirect(ParameterMap pm);
+	
+	public Map<String,Object> weiboredirect(ParameterMap pm);
+	
+	public Map<String,Object> weixinredirect(ParameterMap pm);
+	
+	/**
 	 * 是否关注了
 	 * @param pm
 	 * @return

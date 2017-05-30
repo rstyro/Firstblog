@@ -1,30 +1,16 @@
 package com.lrs.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
-import javax.servlet.http.HttpSession;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 public class UploadUtil {
 
-	@SuppressWarnings("unused")
-	private static final String UPLOAD_FOLDER_ROOT = "upload";
-	 
-	public static final String USERTYPE_USER = "user";
-
-	public static final String USERTYPE_ADMIN = "admin";
-
-	public static final String FILETYPE_IMG = "image";
-	
-	public static final String FILETYPE_VIDEO = "video";
-	
-	public static final String FILETYPE_FILE = "file";
-
-	private static String SEPARATOR;
-	
-	private static final String SEPARATOR_HTTP = "/";
-	
 	/**
 	 * 创建文件，如果文件夹不存在将被创建
 	 * @param destFileName 文件路径
@@ -46,32 +32,43 @@ public class UploadUtil {
     }
 	
 	/**
-	 * 删除文件
-	 * @param httpUrl 数据库存的文件地址
+	 * 保存图片通过url
+	 * @param urlString
+	 * @param filename
+	 * @throws Exception
 	 */
-	public static boolean deleteFile(HttpSession session, String httpUrl){
-		if(httpUrl == null || "".equals(httpUrl)) return false;
-		String filePath = session.getServletContext().getRealPath("") + httpUrl.replace(SEPARATOR_HTTP, SEPARATOR);
-	    File file = new File(filePath);
-	    if(!file.exists()){
-	    	return false;
-	    }else{
-	        if (!file.isFile()){
-	        	return false;
-	        }
-	        file.delete();
+	public static void saveImgByUrl(String urlString, String filename) throws Exception {
+	    createFile(filename);
+		// 构造URL
+	    URL url = new URL(urlString);
+	    // 打开连接
+	    URLConnection con = url.openConnection();
+	    // 输入流
+	    InputStream is = con.getInputStream();
+	    // 1K的数据缓冲
+	    byte[] bs = new byte[1024];
+	    // 读取到的数据长度
+	    int len;
+	    // 输出的文件流
+	    OutputStream os = new FileOutputStream(filename);
+	    // 开始读取
+	    while ((len = is.read(bs)) != -1) {
+	      os.write(bs, 0, len);
 	    }
-		return true;
+	    // 完毕，关闭所有链接
+	    os.close();
+	    is.close();
 	}
-	
-	public static String getFileType(String contentType){
-		String type = contentType.substring(0, contentType.lastIndexOf("/"));
-		if("image".equals(type)){
-			return FILETYPE_IMG;
-		}else if("video".equals(type)){
-			return FILETYPE_VIDEO;
+		
+	public static void main(String[] args) {
+		try {
+			long bet2 = System.currentTimeMillis();
+			saveImgByUrl("http://lrshuai.top/upload/user/default.png", "d://ddd/aaa/"+MyUtil.random(8)+".jpg");
+			System.out.println("end="+(System.currentTimeMillis()-bet2)+" ms");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return FILETYPE_FILE;
 	}
 	
 }

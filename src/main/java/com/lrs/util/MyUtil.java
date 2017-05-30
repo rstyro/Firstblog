@@ -160,6 +160,22 @@ public class MyUtil {
 		return  list.subList(fromIndex, toIndex);
 	}
 	
+	/**
+	 * url参数变成map返回
+	 * @param url
+	 * @return
+	 */
+	public static ParameterMap getMapByUrlString(String url){
+		if(url == null || "".equals(url))return new ParameterMap();
+		ParameterMap result = new ParameterMap();
+		String[] arr = url.split("&");
+		for(int i = 0;i<arr.length;i++){
+			String[] obj = arr[i].split("=");
+			result.put(obj[0], obj[1]);
+		}
+		return result;
+	}
+	
 	
 	/**
 	 * 随机生成六位数验证码 
@@ -169,6 +185,34 @@ public class MyUtil {
 		 Random r = new Random();
 		 return r.nextInt(900000)+100000;//(Math.random()*(999999-100000)+100000)
 	}
+	
+	/**
+	 * 返回随机数
+	 * @param n 个数
+	 * @return
+	 */
+	public static String random(int n) {
+        if (n < 1 || n > 10) {
+            throw new IllegalArgumentException("cannot random " + n + " bit number");
+        }
+        Random ran = new Random();
+        if (n == 1) {
+            return String.valueOf(ran.nextInt(10));
+        }
+        int bitField = 0;
+        char[] chs = new char[n];
+        for (int i = 0; i < n; i++) {
+            while(true) {
+                int k = ran.nextInt(10);
+                if( (bitField & (1 << k)) == 0) {
+                    bitField |= 1 << k;
+                    chs[i] = (char)(k + '0');
+                    break;
+                }
+            }
+        }
+        return new String(chs);
+    }
 	
 	/**
 	 * 指定范围的随机数

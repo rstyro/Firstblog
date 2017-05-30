@@ -8,7 +8,9 @@
 			username,
 			name,
 			password,
+			<if test="email != null and email != ''">
 			email,
+			</if>
 			img,
 			<if test="sex != null and sex != ''">
 				sex,
@@ -25,6 +27,9 @@
 			<if test="third_uuid != null and third_uuid != ''">
 				third_uuid,
 			</if>
+			<if test="status != null and status != ''">
+				status,
+			</if>
 			last_login,
 			create_time,
 			ip
@@ -32,7 +37,9 @@
 			#{username},
 			#{name},
 			#{password},
+			<if test="email != null and email != ''">
 			#{email},
+			</if>
 			#{img},
 			<if test="sex != null and sex != ''">
 				#{sex},
@@ -48,6 +55,9 @@
 			</if>
 			<if test="third_uuid != null and third_uuid != ''">
 				#{third_uuid},
+			</if>
+			<if test="status != null and status != ''">
+				#{status},
 			</if>
 			#{create_time},
 			#{create_time},
@@ -90,6 +100,9 @@
 		</if>
 		<if test="third_uuid != null and third_uuid != ''">
 		and a.third_uuid = #{third_uuid}
+		</if>
+		<if test="register_type != null and register_type != ''">
+		and a.register_type = #{register_type}
 		</if>
 	</select>
 	

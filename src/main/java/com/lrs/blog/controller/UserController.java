@@ -66,6 +66,7 @@ public class UserController extends BaseController{
 					concern.put("concern_flag", "1");
 				}
 			}
+			this.getRequest().setAttribute("user_id", meUserId);
 		}
 		if(concern == null){
 			concern=new ParameterMap();
@@ -73,7 +74,6 @@ public class UserController extends BaseController{
 		}
 		System.out.println("concern="+concern);
 		view.addObject("concern",concern);
-		
 		ParameterMap page = (ParameterMap) map.get("page");
 		view.addObject("userInfo", userInfo);
 		view.addObject("articles", articleList);
@@ -200,7 +200,7 @@ public class UserController extends BaseController{
 		ModelAndView view = this.getModelAndView();
 		ParameterMap pm = this.getParameterMap();
 		System.out.println("pm="+pm);
-		Map<String, Object> map = userService.qqredirect(pm);
+		userService.qqredirect(pm);
 		view.setViewName("redirect");
 		return view;
 	}
@@ -215,9 +215,35 @@ public class UserController extends BaseController{
 		ParameterMap pm = this.getParameterMap();
 		pm.put("ip", this.getRemortIP());
 		System.out.println("pm="+pm);
-		Map<String, Object> map = userService.weiboredirect(pm);
+		userService.weiboredirect(pm);
 		view.setViewName("redirect");
 		return view;
+	}
+	
+	/**
+	 * 更改用户信息
+	 * @return
+	 */
+	@RequestMapping(value="/update",method=RequestMethod.POST)
+	@ResponseBody
+	public Object upadate() {
+		ParameterMap pm = this.getParameterMap();
+		pm.put("ip", this.getRemortIP());
+		Map<String, Object> map = userService.updateUserInfo(pm);
+		return MyUtil.returnObject(pm, map);
+	}
+	
+	/**
+	 * 上传用户头像
+	 * @return
+	 */
+	@RequestMapping(value="/uploadImg",method=RequestMethod.POST)
+	@ResponseBody
+	public Object uploadImg() {
+		ParameterMap pm = this.getParameterMap();
+		pm.put("ip", this.getRemortIP());
+		Map<String, Object> map = userService.uploadUserImg(pm);
+		return MyUtil.returnObject(pm, map);
 	}
 	
 	

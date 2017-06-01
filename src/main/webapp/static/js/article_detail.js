@@ -14,3 +14,4 @@ var ue = UE.getEditor('article_comment', {
 			// editor准备好之后才可以使用
 			ue.setContent("来吐槽几句...");
 		});
+			

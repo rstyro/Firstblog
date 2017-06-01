@@ -10,7 +10,7 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-4 blog-info-head">
-					<a href="<%=request.getContextPath()%>/user/${userInfo.user_id }/1"><img src="<%=request.getContextPath()%>/static/images/favicon.ico"></a>
+					<a href="<%=request.getContextPath()%>/user/${userInfo.user_id }/1"><img src="${userInfo.img }"></a>
 					<c:if test="${concern.concern_flag == '1' }">
 						<a href="javascript:void(0)" uid="${userInfo.user_id }" 
 						 class="btn btn-default-concern btn-concern">

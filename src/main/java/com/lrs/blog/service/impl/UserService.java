@@ -16,6 +16,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -617,4 +618,77 @@ public class UserService implements IUserService{
 		return null;
 	}
 	
+	/**
+	 * 更改用户信息
+	 * @param pm
+	 * @return
+	 */
+	public Map<String, Object> updateUserInfo(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			System.out.println("pm="+pm);
+			Subject subject = SecurityUtils.getSubject();
+			if(subject.isAuthenticated()){
+				Session session = subject.getSession();
+				User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+				if(user != null){
+					String userId = user.getUser_id();
+					pm.put("user_id", userId);
+					userDao.updateUserInfo(pm);
+				}else{
+					map.put("msg", "请重新登陆");
+					map.put("status", "auth");
+				}
+			}else{
+				map.put("msg", "你请求的是冒牌接口");
+				map.put("status", "failed");
+				return map;
+			}
+			map.put("msg", "ok");
+			map.put("status", "success");
+		} catch (Exception e) {
+			log.error("error:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "回调错误");
+		}
+		return map;
+	}
+	
+	
+	@Override
+	public Map<String, Object> uploadUserImg(ParameterMap pm) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			System.out.println("pm="+pm);
+			Subject subject = SecurityUtils.getSubject();
+			if(subject.isAuthenticated()){
+				Session session = subject.getSession();
+				User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
+				if(user != null){
+					String userId = user.getUser_id();
+					pm.put("user_id", userId);
+					String base64Code = pm.getString("base64code");
+					byte[] bytes = Base64.decode(base64Code);
+					
+					
+					
+					userDao.updateUserInfo(pm);
+				}else{
+					map.put("msg", "请重新登陆");
+					map.put("status", "auth");
+				}
+			}else{
+				map.put("msg", "你请求的是冒牌接口");
+				map.put("status", "failed");
+				return map;
+			}
+			map.put("msg", "ok");
+			map.put("status", "success");
+		} catch (Exception e) {
+			log.error("error:"+e.getMessage(), e);
+			map.put("status", "failed");
+			map.put("msg", "回调错误");
+		}
+		return map;
+	}
 }

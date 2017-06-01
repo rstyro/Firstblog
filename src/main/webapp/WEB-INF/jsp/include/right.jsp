@@ -12,7 +12,7 @@
 				<div class="blog-article">
 					<div class="author">
 						<a href="<%=right_root%>/user/${article.user_id}/1" target="_blank"><img
-							src="/${article.img}"> <span
+							src="${article.img}"> <span
 							style="font-size: 1.3em; padding-top: 10px;">${article.name}</span></a>
 					</div>
 					<div class="title">
@@ -65,7 +65,7 @@
 				<div class="blog-article blog-article-top">
 					<div class="author">
 						<a href="<%=right_root%>/user/${article.user_id}/1"><img
-							src="/${article.img}"> <span
+							src="${article.img}"> <span
 							style="font-size: 1.3em; padding-top: 10px;">${article.name}</span></a>
 					</div>
 					<div class="title">

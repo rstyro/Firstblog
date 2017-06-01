@@ -77,6 +77,12 @@ public interface IUserService {
 	
 	public Map<String,Object> weixinredirect(ParameterMap pm);
 	
+	
+	public Map<String,Object> updateUserInfo(ParameterMap pm);
+	
+	
+	public Map<String,Object> uploadUserImg(ParameterMap pm);
+	
 	/**
 	 * 是否关注了
 	 * @param pm

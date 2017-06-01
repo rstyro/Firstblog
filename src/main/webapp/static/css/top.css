@@ -49,14 +49,16 @@ a {
 
 .blog-footer {
 	width: 100%;
-	background-color: #eee;
+	background-color: #1f1b1b;
 	margin-top: 100px;
 }
 
 .blog-footer p {
+	height: 50px;
+	line-height:50px;
 	text-align: center;
 	font-size: 1.3em;
-	color: #1f2021;
+	color: #8b9094;
 	margin: 0px;
 }
 

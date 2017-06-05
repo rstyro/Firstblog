@@ -15,45 +15,47 @@ import com.lrs.util.ParameterMap;
 
 @Controller
 @RequestMapping("/public")
-public class PublicController extends BaseController{
-	
+public class PublicController extends BaseController {
+
 	@Autowired
 	private IPublicService publicService;
-	
+
 	/**
 	 * 关注
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/concern",method=RequestMethod.POST)
+	@RequestMapping(value = "/concern", method = RequestMethod.POST)
 	@ResponseBody
-	public Object concern(){
+	public Object concern() {
 		log.info("点赞");
 		ParameterMap pm = this.getParameterMap();
 		Map<String, Object> map = publicService.concern(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
-	
+
 	/**
 	 * 点赞
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/praise",method=RequestMethod.POST)
+	@RequestMapping(value = "/praise", method = RequestMethod.POST)
 	@ResponseBody
-	public Object praise(){
+	public Object praise() {
 		log.info("点赞");
 		ParameterMap pm = this.getParameterMap();
 		Map<String, Object> map = publicService.savePraise(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
+
 	/**
 	 * 评论
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/comment",method=RequestMethod.POST)
+	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	@ResponseBody
-	public Object comment(){
+	public Object comment() {
 		log.info("评论");
 		ParameterMap pm = this.getParameterMap();
 		String ip = this.getRemortIP();
@@ -61,15 +63,15 @@ public class PublicController extends BaseController{
 		Map<String, Object> map = publicService.comment(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
-	
+
 	/**
 	 * 私信
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/letter",method=RequestMethod.POST)
+	@RequestMapping(value = "/letter", method = RequestMethod.POST)
 	@ResponseBody
-	public Object letter(){
+	public Object letter() {
 		log.info("私信");
 		ParameterMap pm = this.getParameterMap();
 		String ip = this.getRemortIP();
@@ -77,14 +79,15 @@ public class PublicController extends BaseController{
 		Map<String, Object> map = publicService.letter(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
+
 	/**
 	 * 获取评论
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/getComment",method=RequestMethod.GET)
+	@RequestMapping(value = "/getComment", method = RequestMethod.GET)
 	@ResponseBody
-	public Object getComment(){
+	public Object getComment() {
 		log.info("获取评论");
 		ParameterMap pm = this.getParameterMap();
 		String ip = this.getRemortIP();
@@ -92,14 +95,15 @@ public class PublicController extends BaseController{
 		Map<String, Object> map = publicService.getComment(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
+
 	/**
 	 * 删除评论
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/delComment",method=RequestMethod.GET)
+	@RequestMapping(value = "/delComment", method = RequestMethod.GET)
 	@ResponseBody
-	public Object delComment(){
+	public Object delComment() {
 		log.info("删除评论");
 		ParameterMap pm = this.getParameterMap();
 		String ip = this.getRemortIP();
@@ -107,14 +111,15 @@ public class PublicController extends BaseController{
 		Map<String, Object> map = publicService.delComment(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
+
 	/**
 	 * 留言
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/leaveword",method=RequestMethod.POST)
+	@RequestMapping(value = "/leaveword", method = RequestMethod.POST)
 	@ResponseBody
-	public Object leaveword(){
+	public Object leaveword() {
 		log.info("留言");
 		ParameterMap pm = this.getParameterMap();
 		String ip = this.getRemortIP();
@@ -122,15 +127,15 @@ public class PublicController extends BaseController{
 		Map<String, Object> map = publicService.leaveword(pm);
 		return MyUtil.returnObject(pm, map);
 	}
-	
-	
+
 	/**
 	 * test
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/test",method=RequestMethod.POST)
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
 	@ResponseBody
-	public Object testFromData(){
+	public Object testFromData() {
 		log.info("test");
 		ParameterMap pm = this.getParameterMap();
 		String ip = this.getRemortIP();

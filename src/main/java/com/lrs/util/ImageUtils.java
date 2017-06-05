@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -13,14 +14,22 @@ import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.ImageIcon;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -76,15 +85,18 @@ public class ImageUtils {
 			e.printStackTrace();
 		}
 	}
+
 	/**
-	 * 图片水印，保留原图生成新的图片水印 
+	 * 图片水印，保留原图生成新的图片水印
+	 * 
 	 * @param pressImg
 	 * @param targetImg
 	 * @param newPath
 	 * @param drection
 	 * @param alpha
 	 */
-	public final static void pressImage(String pressImg, String targetImg,String newPath, float drection, float alpha) {
+	public final static void pressImage(String pressImg, String targetImg, String newPath, float drection,
+			float alpha) {
 		try {
 			OutputStream os = null;
 			// 目标文件
@@ -162,8 +174,8 @@ public class ImageUtils {
 			} else if (drection == 0.5) {
 				g.drawString(pressText, wideth / 2, height / 2);
 			} else {
-				//(中文)和 (文字的大小)是1:1的关系，字符是2:1的关系
-				g.drawString(pressText, wideth - (getTextLength(pressText)*fontSize)-fontSize, height - fontSize);
+				// (中文)和 (文字的大小)是1:1的关系，字符是2:1的关系
+				g.drawString(pressText, wideth - (getTextLength(pressText) * fontSize) - fontSize, height - fontSize);
 			}
 			g.dispose();
 			FileOutputStream out = new FileOutputStream(targetImg);
@@ -222,26 +234,26 @@ public class ImageUtils {
 				// 水印图片的宽高
 				int width1 = img.getWidth(null);
 				int height1 = img.getHeight(null);
-				
 
 				// 透明度
 				if (alpha == null || alpha.equals("")) {
 					alpha = "1";
 				}
 				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, Float.parseFloat(alpha)));
-				
-				int x = -width/2;
-				int y = -height/2;
-				while(x < width*2){
-					y = -height/2;
-					while(y<height*1.5){
+
+				int x = -width / 2;
+				int y = -height / 2;
+				while (x < width * 2) {
+					y = -height / 2;
+					while (y < height * 1.5) {
 						g.drawImage(img, x, y, null);
-						y +=height1 + 300;
+						y += height1 + 300;
 					}
-					x += width1+300;
+					x += width1 + 300;
 				}
 				// 表示水印图片的位置
-//				g.drawImage(img, (width - width1) / 2, (height - height1) / 2, width1, height1, null);
+				// g.drawImage(img, (width - width1) / 2, (height - height1) /
+				// 2, width1, height1, null);
 
 				g.dispose();
 
@@ -262,87 +274,253 @@ public class ImageUtils {
 			}
 		}
 	}
+
 	/**
 	 * 获取文本长度
+	 * 
 	 * @param text
 	 * @return
 	 */
-	public static int getTextLength(String text){
+	public static int getTextLength(String text) {
 		int length = text.length();
-		for(int i=0;i<text.length();i++){
+		for (int i = 0; i < text.length(); i++) {
 			String s = String.valueOf(text.charAt(i));
-			if(s.getBytes().length > 1){
+			if (s.getBytes().length > 1) {
 				length++;
 			}
 		}
-		length = length%2 == 0?length/2:length/2+1;//是以中文的长度为标准获取
+		length = length % 2 == 0 ? length / 2 : length / 2 + 1;// 是以中文的长度为标准获取
 		return length;
 	}
-	
-	  /** 
-     * 从HTML源码中提取图片路径，最后以一个 String 类型的 List 返回，如果不包含任何图片，则返回一个 size=0　的List 
-     * 需要注意的是，此方法只会提取以下格式的图片：.jpg|.bmp|.eps|.gif|.mif|.miff|.png|.tif|.tiff|.svg|.wmf|.jpe|.jpeg|.dib|.ico|.tga|.cut|.pic 
-     * @param htmlCode HTML源码 
-     * @return <img>标签 src 属性指向的图片地址的List集合 
-     * @author Carl He 
-     */  
-    public static List<String> getImageSrc(String htmlCode) {  
-        List<String> imageSrcList = new ArrayList<String>();  
-        Pattern p = Pattern.compile("<img\\b[^>]*\\bsrc\\b\\s*=\\s*('|\")?([^'\"\n\r\f>]+(\\.jpg|\\.bmp|\\.eps|\\.gif|\\.mif|\\.miff|\\.png|\\.tif|\\.tiff|\\.svg|\\.wmf|\\.jpe|\\.jpeg|\\.dib|\\.ico|\\.tga|\\.cut|\\.pic)\\b)[^>]*>", Pattern.CASE_INSENSITIVE);  
-        Matcher m = p.matcher(htmlCode);  
-        String quote = null;  
-        String src = null;  
-        while (m.find()) {  
-            quote = m.group(1);  
-            src = (quote == null || quote.trim().length() == 0) ? m.group(2).split("\\s+")[0] : m.group(2);  
-            imageSrcList.add(src);  
-        }  
-        return imageSrcList;  
-    } 
-    
-    /**
-     * 图像切割(按指定起点坐标和宽高切割)
-     * @param srcImageFile 源图像地址
-     * @param result 切片后的图像地址
-     * @param x 目标切片起点坐标X
-     * @param y 目标切片起点坐标Y
-     * @param width 目标切片宽度
-     * @param height 目标切片高度
-     */
-    public final static void cut(String srcImageFile, String result,
-            int x, int y, int width, int height) {
-        try {
-            // 读取源图像
-            BufferedImage bi = ImageIO.read(new File(srcImageFile));
-            int srcWidth = bi.getHeight(); // 源图宽度
-            int srcHeight = bi.getWidth(); // 源图高度
-            if (srcWidth > 0 && srcHeight > 0) {
-                Image image = bi.getScaledInstance(srcWidth, srcHeight,
-                        Image.SCALE_DEFAULT);
-                // 四个参数分别为图像起点坐标和宽高
-                // 即: CropImageFilter(int x,int y,int width,int height)
-                ImageFilter cropFilter = new CropImageFilter(x, y, width, height);
-                Image img = Toolkit.getDefaultToolkit().createImage(
-                        new FilteredImageSource(image.getSource(),
-                                cropFilter));
-                BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-                Graphics g = tag.getGraphics();
-                g.drawImage(img, 0, 0, width, height, null); // 绘制切割后的图
-                g.dispose();
-                // 输出为文件
-                ImageIO.write(tag, "png", new File(result));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-	
 
-	public static void main(String[] args) {
-//		pressImage("E:\\watermark.png", "E:\\test1.jpg", 1f, 0.5f);
-		pressImage("E:\\watermark.png", "E:\\test.jpg","E:\\test1.jpg", 1f, 0.5f);
-//		pressText("www.tyro.com", "E:\\test1.jpg", "隶书", 36, Color.white, 36, 0.5f, 0.5f);
-		rotateImage("E:\\test.jpg", "E:\\test2.jpg", "E:\\watermark.png", 30,"0.5");
+	/**
+	 * 从HTML源码中提取图片路径，最后以一个 String 类型的 List 返回，如果不包含任何图片，则返回一个 size=0 的List
+	 * 需要注意的是，此方法只会提取以下格式的图片：.jpg|.bmp|.eps|.gif|.mif|.miff|.png|.tif|.tiff|.svg|.wmf|.jpe|.jpeg|.dib|.ico|.tga|.cut|.pic
+	 * 
+	 * @param htmlCode
+	 *            HTML源码
+	 * @return <img>标签 src 属性指向的图片地址的List集合
+	 * @author Carl He
+	 */
+	public static List<String> getImageSrc(String htmlCode) {
+		List<String> imageSrcList = new ArrayList<String>();
+		Pattern p = Pattern.compile(
+				"<img\\b[^>]*\\bsrc\\b\\s*=\\s*('|\")?([^'\"\n\r\f>]+(\\.jpg|\\.bmp|\\.eps|\\.gif|\\.mif|\\.miff|\\.png|\\.tif|\\.tiff|\\.svg|\\.wmf|\\.jpe|\\.jpeg|\\.dib|\\.ico|\\.tga|\\.cut|\\.pic)\\b)[^>]*>",
+				Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(htmlCode);
+		String quote = null;
+		String src = null;
+		while (m.find()) {
+			quote = m.group(1);
+			src = (quote == null || quote.trim().length() == 0) ? m.group(2).split("\\s+")[0] : m.group(2);
+			imageSrcList.add(src);
+		}
+		return imageSrcList;
+	}
+
+	/**
+	 * 图像切割(按指定起点坐标和宽高切割)
+	 * 
+	 * @param srcImageFile
+	 *            源图像地址
+	 * @param result
+	 *            切片后的图像地址
+	 * @param x
+	 *            目标切片起点坐标X
+	 * @param y
+	 *            目标切片起点坐标Y
+	 * @param width
+	 *            目标切片宽度
+	 * @param height
+	 *            目标切片高度
+	 */
+	public final static void cut(String srcImageFile, String result, int x, int y, int width, int height) {
+		try {
+			// 读取源图像
+			BufferedImage bi = ImageIO.read(new File(srcImageFile));
+			int srcWidth = bi.getHeight(); // 源图宽度
+			int srcHeight = bi.getWidth(); // 源图高度
+			if (srcWidth > 0 && srcHeight > 0) {
+				Image image = bi.getScaledInstance(srcWidth, srcHeight, Image.SCALE_DEFAULT);
+				// 四个参数分别为图像起点坐标和宽高
+				// 即: CropImageFilter(int x,int y,int width,int height)
+				ImageFilter cropFilter = new CropImageFilter(x, y, width, height);
+				Image img = Toolkit.getDefaultToolkit()
+						.createImage(new FilteredImageSource(image.getSource(), cropFilter));
+				BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				Graphics g = tag.getGraphics();
+				g.drawImage(img, 0, 0, width, height, null); // 绘制切割后的图
+				g.dispose();
+				// 输出为文件
+				ImageIO.write(tag, "png", new File(result));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public final static void cut(InputStream in, String result, int x, int y, int width, int height) {
+		try {
+			// 读取源图像
+			BufferedImage bi = ImageIO.read(in);
+			int srcWidth = bi.getHeight(); // 源图宽度
+			int srcHeight = bi.getWidth(); // 源图高度
+			if (srcWidth > 0 && srcHeight > 0) {
+				Image image = bi.getScaledInstance(srcWidth, srcHeight, Image.SCALE_DEFAULT);
+				// 四个参数分别为图像起点坐标和宽高
+				// 即: CropImageFilter(int x,int y,int width,int height)
+				ImageFilter cropFilter = new CropImageFilter(x, y, width, height);
+				Image img = Toolkit.getDefaultToolkit()
+						.createImage(new FilteredImageSource(image.getSource(), cropFilter));
+				BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				Graphics g = tag.getGraphics();
+				g.drawImage(img, 0, 0, width, height, null); // 绘制切割后的图
+				g.dispose();
+				// 输出为文件
+				ImageIO.write(tag, "png", new File(result));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 图片裁切
+	 * 
+	 * @param x1
+	 *            选择区域左上角的x坐标
+	 * @param y1
+	 *            选择区域左上角的y坐标
+	 * @param width
+	 *            选择区域的宽度
+	 * @param height
+	 *            选择区域的高度
+	 * @param sourcePath
+	 *            源图片路径
+	 * @param descpath
+	 *            裁切后图片的保存路径
+	 */
+	public static void cut(int x1, int y1, int width, int height, String sourcePath, String descpath) {
+		FileInputStream is = null;
+		ImageInputStream iis = null;
+		try {
+			is = new FileInputStream(sourcePath);
+			String fileSuffix = sourcePath.substring(sourcePath.lastIndexOf(".") + 1);
+			Iterator<ImageReader> it = ImageIO.getImageReadersByFormatName(fileSuffix);
+			ImageReader reader = it.next();
+			iis = ImageIO.createImageInputStream(is);
+			reader.setInput(iis, true);
+			ImageReadParam param = reader.getDefaultReadParam();
+			Rectangle rect = new Rectangle(x1, y1, width, height);
+			param.setSourceRegion(rect);
+			BufferedImage bi = reader.read(0, param);
+			ImageIO.write(bi, fileSuffix, new File(descpath));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				is = null;
+			}
+			if (iis != null) {
+				try {
+					iis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				iis = null;
+			}
+		}
+	}
+
+	public static void crop(InputStream input, OutputStream output, int x, int y, int w, int h, boolean isPNG)
+			throws Exception {
+		try {
+			BufferedImage srcImg = ImageIO.read(input);
+			int tmpWidth = srcImg.getWidth();
+			int tmpHeight = srcImg.getHeight();
+			int xx = Math.min(tmpWidth - 1, x);
+			int yy = Math.min(tmpHeight - 1, y);
+
+			int ww = w;
+			if (xx + w > tmpWidth) {
+				ww = Math.max(1, tmpWidth - xx);
+			}
+			int hh = h;
+			if (yy + h > tmpHeight) {
+				hh = Math.max(1, tmpHeight - yy);
+			}
+
+			BufferedImage dest = srcImg.getSubimage(xx, yy, ww, hh);
+
+			BufferedImage tag = new BufferedImage(w, h,
+					isPNG ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+
+			tag.getGraphics().drawImage(dest, 0, 0, null);
+			ImageIO.write(tag, isPNG ? "png" : "jpg", output);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e);
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+			if (output != null) {
+				output.close();
+			}
+		}
+	}
+
+	public static void crop(InputStream input, String result, int x, int y, int w, int h, boolean isPNG)
+			throws Exception {
+		try {
+			BufferedImage srcImg = ImageIO.read(input);
+			int tmpWidth = srcImg.getWidth();
+			int tmpHeight = srcImg.getHeight();
+			int xx = Math.min(tmpWidth - 1, x);
+			int yy = Math.min(tmpHeight - 1, y);
+
+			int ww = w;
+			if (xx + w > tmpWidth) {
+				ww = Math.max(1, tmpWidth - xx);
+			}
+			int hh = h;
+			if (yy + h > tmpHeight) {
+				hh = Math.max(1, tmpHeight - yy);
+			}
+
+			BufferedImage dest = srcImg.getSubimage(xx, yy, ww, hh);
+
+			BufferedImage tag = new BufferedImage(w, h,
+					isPNG ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+
+			tag.getGraphics().drawImage(dest, 0, 0, null);
+			ImageIO.write(tag, isPNG ? "png" : "jpg", new FileOutputStream(new File(result)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e);
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
+	}
+
+	public static void main(String[] args) throws FileNotFoundException, Exception {
+		// pressImage("E:\\watermark.png", "E:\\test1.jpg", 1f, 0.5f);
+		// pressImage("E:\\watermark.png", "E:\\test.jpg", "E:\\test1.jpg", 1f,
+		// 0.5f);
+		// pressText("www.tyro.com", "E:\\test1.jpg", "隶书", 36, Color.white, 36,
+		// 0.5f, 0.5f);
+		// rotateImage("E:\\test.jpg", "E:\\test2.jpg", "E:\\watermark.png", 30,
+		// "0.5");
 		System.out.print("添加成功");
+		// cut(148, 14, 251, 200, "E:\\lrs_img\\timg1.jpg",
+		// "E:\\lrs_img\\timg11.png");
+		crop(new FileInputStream("E:\\lrs_img\\timg1.jpg"), "E:\\lrs_img\\timg121.png", 148, 14, 251, 251, true);
 	}
 }

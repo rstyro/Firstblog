@@ -17,31 +17,31 @@ public class AdminService implements IAdminService {
 
 	@Autowired
 	private AdminDao adminDao;
-	
+
 	@Override
 	public List<ParameterMap> getMenuList(ParameterMap pm) {
 		List<ParameterMap> firstMenuList = adminDao.getFirstMenuList(pm);
 		List<ParameterMap> secondMenuList = adminDao.getSecondMenuList(pm);
-		Map<String,List<ParameterMap>> tmp = new HashMap<>();
-		//整理二级菜单
-		for(ParameterMap second:secondMenuList){
-			if(tmp.containsKey(second.getString("parent_id"))){
+		Map<String, List<ParameterMap>> tmp = new HashMap<>();
+		// 整理二级菜单
+		for (ParameterMap second : secondMenuList) {
+			if (tmp.containsKey(second.getString("parent_id"))) {
 				tmp.get(second.getString("parent_id")).add(second);
-			}else{
+			} else {
 				List<ParameterMap> list = new ArrayList<>();
 				list.add(second);
 				tmp.put(second.getString("parent_id"), list);
 			}
 		}
-		//给一级菜单加二级菜单
-		for(ParameterMap ptm:firstMenuList){
-			if(tmp.containsKey(ptm.getString("menu_id"))){
+		// 给一级菜单加二级菜单
+		for (ParameterMap ptm : firstMenuList) {
+			if (tmp.containsKey(ptm.getString("menu_id"))) {
 				ptm.put("second_menu", tmp.get(ptm.getString("menu_id")));
-			}else{
+			} else {
 				ptm.put("second_menu", new ArrayList<>());
 			}
 		}
-		
+
 		return firstMenuList;
 	}
 

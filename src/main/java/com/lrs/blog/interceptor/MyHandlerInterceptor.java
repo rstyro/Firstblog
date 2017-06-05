@@ -22,20 +22,19 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 	private String saveBrowseUrl;
 	private String needLoginUrl;// 需要登陆才能访问的url,才springmvc的配置文件中配置
 	private String resourceUrl;
-	
-	
+
 	@Autowired
 	private IPublicService publicService;
-	
+
 	@Autowired
 	private NoticeDao noticeDao;
-	
+
 	private MyLogger log = MyLogger.getLogger(this.getClass());
 
 	public void setSaveBrowseUrl(String saveBrowseUrl) {
 		this.saveBrowseUrl = saveBrowseUrl;
 	}
-	
+
 	public void setNeedLoginUrl(String needLoginUrl) {
 		this.needLoginUrl = needLoginUrl;
 	}
@@ -43,7 +42,7 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 	public void setResourceUrl(String resourceUrl) {
 		this.resourceUrl = resourceUrl;
 	}
-	
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -63,31 +62,32 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 					return false;
 				}
 			}
-			//浏览拦截
+			// 浏览拦截
 			if (path.matches(saveBrowseUrl)) {
 				ParameterMap pm = new ParameterMap();
 				Subject subject = SecurityUtils.getSubject();
-				if(subject.isAuthenticated()){
+				if (subject.isAuthenticated()) {
 					Session session = subject.getSession();
 					User sessionUser = (User) session.getAttribute(Const.BLOG_USER_SESSION);
-					if(sessionUser != null) {
+					if (sessionUser != null) {
 						pm.put("user_id", sessionUser.getUser_id());
 					} else {
 						pm.put("user_id", null);
 					}
 				}
-				String articleId = path.substring(path.lastIndexOf("/")+1, path.length());
+				String articleId = path.substring(path.lastIndexOf("/") + 1, path.length());
 				log.info("浏览拦截");
-				int id= 0;
+				int id = 0;
 				try {
 					id = Integer.parseInt(articleId);
 				} catch (Exception e) {
 					e.printStackTrace();
-					request.getRequestDispatcher(request.getContextPath()+"/WEB-INF/jsp/error/404.jsp").forward(request, response);
+					request.getRequestDispatcher(request.getContextPath() + "/WEB-INF/jsp/error/404.jsp")
+							.forward(request, response);
 					return false;
 				}
 				pm.put("table_id", id);
-				//保存浏览记录
+				// 保存浏览记录
 				try {
 					publicService.saveBrowse(pm);
 				} catch (Exception e) {
@@ -106,21 +106,21 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 		try {
 			Session session = SecurityUtils.getSubject().getSession();
 			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
-			if(user != null){
+			if (user != null) {
 				ParameterMap pm = new ParameterMap();
 				pm.put("user_id", user.getUser_id());
 				ParameterMap notice = noticeDao.getNoticeNum(pm);
-				System.out.println("notice="+notice+",userid="+user.getUser_id());
-				if(notice != null && notice.size() > 0){
+				System.out.println("notice=" + notice + ",userid=" + user.getUser_id());
+				if (notice != null && notice.size() > 0) {
 					filterNum(notice, "totalNum");
 					filterNum(notice, "praiseNum");
 					filterNum(notice, "concernNum");
 					filterNum(notice, "letterNum");
 					filterNum(notice, "systemNum");
 					filterNum(notice, "commentNum");
-					if(modelAndView != null){
+					if (modelAndView != null) {
 						modelAndView.addObject("notice", notice);
-					}else{
+					} else {
 						System.out.println("modelandview is null");
 					}
 				}
@@ -130,12 +130,13 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 		}
 		super.postHandle(request, response, handler, modelAndView);
 	}
-	
-	public void filterNum(ParameterMap pm,String key){
+
+	public void filterNum(ParameterMap pm, String key) {
 		Object obj = pm.get(key);
-		if(obj == null || StringUtils.isBlank(obj.toString()))return;
+		if (obj == null || StringUtils.isBlank(obj.toString()))
+			return;
 		long value = Integer.parseInt(obj.toString());
-		if(value <= 0){
+		if (value <= 0) {
 			pm.put(key, "");
 		}
 	}

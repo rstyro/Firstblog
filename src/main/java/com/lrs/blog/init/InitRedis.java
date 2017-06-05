@@ -11,16 +11,18 @@ import com.lrs.util.ParameterMap;
 
 /**
  * 所有缓存初始化都放在这里
+ * 
  * @author tyro
  *
  */
 @Component
 public class InitRedis {
-	
+
 	private MyLogger log = MyLogger.getLogger(this.getClass());
-	
+
 	@Autowired
 	private ICacheService cacheService;
+
 	/**
 	 * 初始化方法
 	 */

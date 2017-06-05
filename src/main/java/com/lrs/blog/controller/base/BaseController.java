@@ -27,46 +27,51 @@ public class BaseController {
 				.getRequest();
 		return request;
 	}
-	
+
 	/**
 	 * 获取response
+	 * 
 	 * @return
 	 */
 	public HttpServletResponse getResponse() {
-		HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getResponse();
 		return response;
 	}
-	
+
 	/**
 	 * 获取session
+	 * 
 	 * @return
 	 */
-	public HttpSession getSession(){
+	public HttpSession getSession() {
 		HttpSession session = this.getRequest().getSession();
 		return session;
 	}
-	
+
 	/**
 	 * 获取ServletContext
+	 * 
 	 * @return
 	 */
 	public ServletContext getServletContent() {
-//		ServletContext application= request.getServletContext();
-		
-		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();    
-        ServletContext servletContext = webApplicationContext.getServletContext();
+		// ServletContext application= request.getServletContext();
+
+		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+		ServletContext servletContext = webApplicationContext.getServletContext();
 		return servletContext;
 	}
-	
+
 	/**
 	 * 获取ModelAndView
+	 * 
 	 * @return
 	 */
-	public ModelAndView getModelAndView(){
+	public ModelAndView getModelAndView() {
 		return new ModelAndView();
 	}
-	
-	public ModelAndView get404ModelAndView(){
+
+	public ModelAndView get404ModelAndView() {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("404");
 		return view;
@@ -96,19 +101,19 @@ public class BaseController {
 		}
 		return ip;
 	}
-	
+
 	/**
 	 * 获取port
 	 * 
 	 * @return
 	 */
-	public int getPort(){
+	public int getPort() {
 		return this.getRequest().getServerPort();
 	}
-	
-	
+
 	/**
 	 * 获取ip
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -126,8 +131,8 @@ public class BaseController {
 		}
 		return ip;
 	}
-	
-	public static void printLogger(MyLogger logger,String message){
+
+	public static void printLogger(MyLogger logger, String message) {
 		logger.info(message);
 	}
 }

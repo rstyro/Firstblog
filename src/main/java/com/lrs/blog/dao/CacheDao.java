@@ -8,15 +8,17 @@ public interface CacheDao {
 
 	/**
 	 * 音乐列表
+	 * 
 	 * @param pm
 	 * @return
 	 */
-	public List<ParameterMap> findMusiclist (ParameterMap pm);
-	
+	public List<ParameterMap> findMusiclist(ParameterMap pm);
+
 	/**
 	 * 友情链接
+	 * 
 	 * @param pm
 	 * @return
 	 */
-	public List<ParameterMap> friendlinkList (ParameterMap pm);
+	public List<ParameterMap> friendlinkList(ParameterMap pm);
 }

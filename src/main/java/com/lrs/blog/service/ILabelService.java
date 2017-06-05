@@ -7,13 +7,14 @@ import com.lrs.util.ParameterMap;
 public interface ILabelService {
 	/**
 	 * 获取文章的所有标签
+	 * 
 	 * @return
 	 */
-	public List<ParameterMap> getArticleLabels (ParameterMap pm) throws Exception;
-	
-	
+	public List<ParameterMap> getArticleLabels(ParameterMap pm) throws Exception;
+
 	/**
 	 * 删除文章标签
+	 * 
 	 * @param pm
 	 * @return
 	 * @throws Exception

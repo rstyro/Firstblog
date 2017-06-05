@@ -21,36 +21,37 @@ public class ArticleService implements IArticleService {
 
 	@Autowired
 	private ArticleDao articleDao;
-	
+
 	@Autowired
 	private LabelDao labelDao;
-	
+
 	private ListTranscoder<String> listTranscoder = new ListTranscoder<>();
-	
+
 	@Autowired
 	private RedisClientTemplate redis;
-	
+
 	@Override
 	public List<ParameterMap> getArticleMonthNum(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub
 		return articleDao.getArticleMonthNum(pm);
 	}
-	
+
 	@Override
 	public List<ParameterMap> getArticlelistPage(Page page) throws Exception {
 		// TODO Auto-generated method stub
 		List<ParameterMap> articleList = articleDao.getArticlelistPage(page);
-		if(StringUtils.isNotBlank(page.getPm().getString("keyword"))){
-			if(articleList.size() > 0){
-				List<String> cacheArticleIds= listTranscoder.deserialize(redis.get(Const.HOT_ARTICLE_ID_LIST.getBytes()));
-				if(cacheArticleIds == null){
+		if (StringUtils.isNotBlank(page.getPm().getString("keyword"))) {
+			if (articleList.size() > 0) {
+				List<String> cacheArticleIds = listTranscoder
+						.deserialize(redis.get(Const.HOT_ARTICLE_ID_LIST.getBytes()));
+				if (cacheArticleIds == null) {
 					cacheArticleIds = new ArrayList<>();
 				}
-				for(ParameterMap spm:articleList){
+				for (ParameterMap spm : articleList) {
 					cacheArticleIds.add(spm.getString("article_id"));
 				}
 				byte[] bys = listTranscoder.serialize(cacheArticleIds);
-				if(bys != null && bys.length > 3){
+				if (bys != null && bys.length > 3) {
 					redis.set(Const.HOT_ARTICLE_ID_LIST.getBytes(), bys);
 				}
 			}
@@ -64,17 +65,17 @@ public class ArticleService implements IArticleService {
 		}
 		return articleList;
 	}
-	
+
 	@Override
 	public ParameterMap getJumbotron(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub
 		return articleDao.getJumbotron(pm);
 	}
-	
+
 	@Override
 	public ParameterMap getArticleDetail(ParameterMap pm) throws Exception {
 		ParameterMap article = articleDao.getArticleDetail(pm);
-		if(article == null || article.size() < 1){
+		if (article == null || article.size() < 1) {
 			return null;
 		}
 		// 给文章添加标签
@@ -84,7 +85,7 @@ public class ArticleService implements IArticleService {
 		}
 		return articleDao.getArticleDetail(pm);
 	}
-	
+
 	@Override
 	public int saveArticle(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub
@@ -112,7 +113,7 @@ public class ArticleService implements IArticleService {
 		}
 		return 1;
 	}
-	
+
 	@Override
 	public int updateArticle(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub
@@ -143,8 +144,8 @@ public class ArticleService implements IArticleService {
 	@Override
 	public List<ParameterMap> getLabelArticleListPage(ParameterMap pm) throws Exception {
 		List<ParameterMap> list = articleDao.getArticleIdsByLabelId(pm);
-		if(list.size() > 0){
-			List<ParameterMap> articleList=articleDao.getLabelArticleList(list);
+		if (list.size() > 0) {
+			List<ParameterMap> articleList = articleDao.getLabelArticleList(list);
 			for (ParameterMap ptm : articleList) {
 				// 给文章添加标签
 				List<ParameterMap> articleLabel = labelDao.getArticleLabelById(ptm);
@@ -153,17 +154,17 @@ public class ArticleService implements IArticleService {
 				}
 			}
 			return articleList;
-		}else{
+		} else {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	@Override
 	public List<ParameterMap> getRecommendArticle(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub
 		return articleDao.getRecommendArticle(pm);
 	}
-	
+
 	@Override
 	public List<ParameterMap> gethotArticle(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub

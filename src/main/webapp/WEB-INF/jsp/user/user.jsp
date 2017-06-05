@@ -255,6 +255,12 @@
 				</div>
 				<div class="modal-body">
 					<div class="cropBg"><img src="" id="uCropImg"></div>
+					<div class="docs-preview clearfix">
+					  <div class="img-preview preview-lg"></div>
+					  <div class="img-preview preview-md"></div>
+					  <div class="img-preview preview-sm"></div>
+					  <div class="img-preview preview-xs"></div>
+					</div>
 				</div>
 				<div class="modal-footer" style="margin: 0px auto; width: 25%;">
 					<button type="button" class="btn btn-info" id="uploadimgsure" >上传</button>
@@ -351,21 +357,22 @@ $(function(){
       }
 });
 
-	function uploadImg(data){
-		var x=data.x;
-	    var y=data.y;
-	    var width=data.width;
-	    var height=data.height;
-	    var rotate=data.rotate;
-	    $ajax({
+	function uploadImg(obj){
+		var x=obj.x;
+	    var y=obj.y;
+	    var width=obj.width;
+	    var height=obj.height;
+	    var rotate=obj.rotate;
+	    $.ajax({
 	    	type:"POST",
 	    	url:root+"/user/uploadImg",
 	    	data:{x:x,y:y,width:width,height:height,rotate:rotate,base64code:base64Code,time:new Date().getTime()},
 	    	dataType:"json",
 	    	cache:false,
 	    	success:function(data){
+	    		console.log(data);
 	    		$("#uploadModal").modal("hide");
-	    		$(".uimg").attr(data.url);
+	    		$(".uimg").attr("src",data.data);
 	    		uploadI=0;
 	    	}
 	    });
@@ -390,6 +397,7 @@ $(function(){
 		})
 
 	}
+	
 	var $image = $('#uCropImg');
 	/* 初始化配置 */
 	$image.cropper({
@@ -403,7 +411,8 @@ $(function(){
 	        dashed:false,
 	        dragCrop:false,
 	        autoCropArea:0.9,
-	        aspectRatio: 1 / 1
+	        aspectRatio: 1 / 1,
+	        preview: '.img-preview',
 	});
 	var uploadI=0;
 	var base64Code;

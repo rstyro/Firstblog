@@ -18,12 +18,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 public class HttpUtils {
-	
+
 	private static HttpUtils instance;
 	private static HttpClient httpClient;
 
-	public synchronized static HttpUtils getInstance(){
-		if( instance == null ){
+	public synchronized static HttpUtils getInstance() {
+		if (instance == null) {
 			instance = new HttpUtils();
 			httpClient = HttpClients.createDefault();
 		}
@@ -38,8 +38,7 @@ public class HttpUtils {
 	 * @param encode
 	 * @return
 	 */
-	public String sendPostMethod(String path,
-			Map<String, Object> params, String encoding) {
+	public String sendPostMethod(String path, Map<String, Object> params, String encoding) {
 		HttpPost httpPost = new HttpPost(path);
 		String result = "";
 		List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
@@ -48,30 +47,26 @@ public class HttpUtils {
 				for (Map.Entry<String, Object> entry : params.entrySet()) {
 					String name = entry.getKey();
 					String value = entry.getValue().toString();
-					BasicNameValuePair valuePair = new BasicNameValuePair(name,
-							value);
+					BasicNameValuePair valuePair = new BasicNameValuePair(name, value);
 					parameters.add(valuePair);
 				}
 			}
 			// 纯文本表单，不包含文件
-			UrlEncodedFormEntity encodedFormEntity = new UrlEncodedFormEntity(
-					parameters, encoding);
+			UrlEncodedFormEntity encodedFormEntity = new UrlEncodedFormEntity(parameters, encoding);
 			httpPost.setEntity(encodedFormEntity);
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				result = EntityUtils.toString(httpResponse.getEntity(),
-						encoding);
-			}else{
+				result = EntityUtils.toString(httpResponse.getEntity(), encoding);
+			} else {
 				System.out.println("else");
-				System.out.println(EntityUtils.toString(httpResponse.getEntity(),
-						encoding));
+				System.out.println(EntityUtils.toString(httpResponse.getEntity(), encoding));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param path
@@ -80,63 +75,59 @@ public class HttpUtils {
 	 * @param encode
 	 * @return
 	 */
-	public static String sendGetMethod2(String path,
-			Map<String, Object> params, String encoding)throws Exception {
+	public static String sendGetMethod2(String path, Map<String, Object> params, String encoding) throws Exception {
 		String result = "";
 		String parameters = "";
-		
-			if (params != null && !params.isEmpty()) {
-				for (Map.Entry<String, Object> entry : params.entrySet()) {
-					String name = entry.getKey();
-					String value = entry.getValue().toString();
-					parameters = parameters + name + "=" + value + "&";
-				}
-				parameters = parameters.substring(0, parameters.length() - 1);
+
+		if (params != null && !params.isEmpty()) {
+			for (Map.Entry<String, Object> entry : params.entrySet()) {
+				String name = entry.getKey();
+				String value = entry.getValue().toString();
+				parameters = parameters + name + "=" + value + "&";
 			}
-			HttpGet httpGet = new HttpGet(path + "?" + parameters);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				result = EntityUtils.toString(httpResponse.getEntity(),
-						encoding);
-			}
-		
+			parameters = parameters.substring(0, parameters.length() - 1);
+		}
+		HttpGet httpGet = new HttpGet(path + "?" + parameters);
+		HttpResponse httpResponse = httpClient.execute(httpGet);
+		if (httpResponse.getStatusLine().getStatusCode() == 200) {
+			result = EntityUtils.toString(httpResponse.getEntity(), encoding);
+		}
+
 		return result;
 	}
-	
-	public void sendGetMethod(String path)throws Exception {
+
+	public void sendGetMethod(String path) throws Exception {
 		HttpGet httpGet = new HttpGet(path);
 		httpClient.execute(httpGet);
 	}
-	
-	public String sendGetMethod(String path,
-			Map<String, Object> params, String encoding)throws Exception {
+
+	public String sendGetMethod(String path, Map<String, Object> params, String encoding) throws Exception {
 		String result = "";
 		String parameters = "";
-		
-			if (params != null && !params.isEmpty()) {
-				for (Map.Entry<String, Object> entry : params.entrySet()) {
-					String name = entry.getKey();
-					String value = entry.getValue().toString();
-					parameters = parameters + name + "=" + value + "&";
-				}
-				parameters = parameters.substring(0, parameters.length() - 1);
+
+		if (params != null && !params.isEmpty()) {
+			for (Map.Entry<String, Object> entry : params.entrySet()) {
+				String name = entry.getKey();
+				String value = entry.getValue().toString();
+				parameters = parameters + name + "=" + value + "&";
 			}
-			
-			HttpGet httpGet = new HttpGet(path + "?" + parameters);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				result = EntityUtils.toString(httpResponse.getEntity(),
-						encoding);
-			}else{
-				System.out.println("else="+EntityUtils.toString(httpResponse.getEntity(),
-						encoding));
-			}
-		
+			parameters = parameters.substring(0, parameters.length() - 1);
+		}
+
+		HttpGet httpGet = new HttpGet(path + "?" + parameters);
+		HttpResponse httpResponse = httpClient.execute(httpGet);
+		if (httpResponse.getStatusLine().getStatusCode() == 200) {
+			result = EntityUtils.toString(httpResponse.getEntity(), encoding);
+		} else {
+			System.out.println("else=" + EntityUtils.toString(httpResponse.getEntity(), encoding));
+		}
+
 		return result;
 	}
-	
+
 	/**
 	 * get
+	 * 
 	 * @param url
 	 * @return
 	 * @throws Exception
@@ -150,17 +141,17 @@ public class HttpUtils {
 			CloseableHttpResponse response = httpClient.execute(httpGet);
 			try {
 				HttpEntity entity = response.getEntity();
-				if(entity != null){
-					result = EntityUtils.toString(entity,"UTF-8");
+				if (entity != null) {
+					result = EntityUtils.toString(entity, "UTF-8");
 				}
-			}catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			}finally{
+			} finally {
 				response.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				httpClient.close();
 			} catch (IOException e) {

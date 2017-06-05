@@ -6,9 +6,9 @@ import com.lrs.util.MyLogger;
 public class LeaveThread implements Runnable {
 	private String message;
 	private boolean isend = false;
-	int index=0;
+	int index = 0;
 	private MyLogger log = MyLogger.getLogger(this.getClass());
-	
+
 	public String getMessage() {
 		return message;
 	}
@@ -16,7 +16,6 @@ public class LeaveThread implements Runnable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
 
 	public boolean isIsend() {
 		return isend;
@@ -35,27 +34,26 @@ public class LeaveThread implements Runnable {
 	}
 
 	public LeaveThread(String message) {
-		this.message=message;
+		this.message = message;
 	}
-	
+
 	@Override
 	public void run() {
-		if(!isIsend()){
+		if (!isIsend()) {
 			try {
 				MailTool mailTool = new MailTool();
 				mailTool.sendMailToMe(getMessage());
 				this.setIsend(true);
 				log.info("send mail is success");
 			} catch (Exception e) {
-				log.error("send mail err:"+e.getMessage(), e);
+				log.error("send mail err:" + e.getMessage(), e);
 				index++;
 				setIndex(index);
-				if(getIndex() > 10){
+				if (getIndex() > 10) {
 					this.setIsend(true);
 				}
 			}
 		}
 	}
-
 
 }

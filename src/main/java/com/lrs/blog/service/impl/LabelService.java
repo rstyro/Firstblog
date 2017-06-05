@@ -12,12 +12,12 @@ public class LabelService implements ILabelService {
 
 	@Autowired
 	private LabelDao labelDao;
-	
+
 	@Override
-	public List<ParameterMap> getArticleLabels (ParameterMap pm) throws Exception{
+	public List<ParameterMap> getArticleLabels(ParameterMap pm) throws Exception {
 		return labelDao.getArticleLabels(pm);
 	}
-	
+
 	@Override
 	public int delArticleLabel(ParameterMap pm) throws Exception {
 		// TODO Auto-generated method stub

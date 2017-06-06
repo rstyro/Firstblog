@@ -44,7 +44,6 @@ import com.lrs.util.MyLogger;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
 import com.lrs.util.UploadUtil;
-import com.sun.tools.corba.se.idl.PragmaEntry;
 
 @Service
 public class UserService implements IUserService {

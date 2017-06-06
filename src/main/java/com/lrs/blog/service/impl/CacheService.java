@@ -443,7 +443,7 @@ public class CacheService implements ICacheService {
 		byte[] bys = redis.get(Const.USER_LABEL_ALL.getBytes());
 		if (bys != null && bys.length > 3)
 			return listTranscoder.deserialize(bys);
-		return null;
+		return labelDao.getLabelsByType(pm);
 	}
 
 }

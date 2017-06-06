@@ -13,7 +13,7 @@ public interface CacheDao {
 	 * @return
 	 */
 	public List<ParameterMap> findMusiclist(ParameterMap pm);
-
+	
 	/**
 	 * 友情链接
 	 * 

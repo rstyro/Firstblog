@@ -76,6 +76,13 @@ public interface ICacheService {
 	 * @return
 	 */
 	public int cacheBloggerLabel(ParameterMap pm);
+	
+	/**
+	 * 缓存用户标签
+	 * @param pm
+	 * @return
+	 */
+	public int cacheUserLabel(ParameterMap pm);
 
 	/**
 	 * 获取博主标签
@@ -148,4 +155,12 @@ public interface ICacheService {
 	 * @throws Exception
 	 */
 	public List<ParameterMap> getCacheLinks(ParameterMap pm) throws Exception;
+	
+	/**
+	 * 获取用户标签缓存
+	 * @param pm
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ParameterMap> getCacheUserLabel(ParameterMap pm) throws Exception;
 }

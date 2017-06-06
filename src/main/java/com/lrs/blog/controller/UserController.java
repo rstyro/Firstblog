@@ -1,5 +1,6 @@
 package com.lrs.blog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.lrs.blog.controller.base.BaseController;
 import com.lrs.blog.entity.User;
+import com.lrs.blog.service.ICacheService;
 import com.lrs.blog.service.IUserService;
 import com.lrs.util.Const;
 import com.lrs.util.MyUtil;
@@ -28,6 +30,9 @@ public class UserController extends BaseController {
 	@Autowired
 	private IUserService userService;
 
+	@Autowired
+	private ICacheService cacheService;
+	
 	/**
 	 * 去用户的页面
 	 * 
@@ -45,16 +50,15 @@ public class UserController extends BaseController {
 		pm.put("page_no", pageNo);
 		if (StringUtils.isBlank(pageNo)) {
 			pm.put("page_no", "1");
-
 		}
 		if (!StringUtils.isNumeric(pageNo)) {
 			return this.get404ModelAndView();
 		}
-
 		Map<String, Object> map = userService.getUserInfo(pm);
 		ParameterMap userInfo = (ParameterMap) map.get("userInfo");
 		List<ParameterMap> articleList = (List<ParameterMap>) map.get("articleList");
 		List<ParameterMap> userLabels = (List<ParameterMap>) map.get("userLabels");
+		List<ParameterMap> labels=null;
 		ParameterMap concern = null;
 		Subject subject = SecurityUtils.getSubject();
 		User u = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
@@ -74,12 +78,19 @@ public class UserController extends BaseController {
 			concern = new ParameterMap();
 			concern.put("concern_flag", "0");
 		}
+		try {
+			labels = cacheService.getCacheUserLabel(pm);
+		} catch (Exception e) {
+			e.printStackTrace();
+			labels = new ArrayList<>();
+		} 
 		System.out.println("concern=" + concern);
 		view.addObject("concern", concern);
 		ParameterMap page = (ParameterMap) map.get("page");
 		view.addObject("userInfo", userInfo);
 		view.addObject("articles", articleList);
 		view.addObject("userLabels", userLabels);
+		view.addObject("labels", labels);
 		view.addObject("page", page);
 		view.setViewName("user/user");
 		return view;
@@ -201,6 +212,7 @@ public class UserController extends BaseController {
 	public ModelAndView redirect() {
 		ModelAndView view = this.getModelAndView();
 		ParameterMap pm = this.getParameterMap();
+		pm.put("ip", this.getRemortIP());
 		System.out.println("pm=" + pm);
 		userService.qqredirect(pm);
 		view.setViewName("redirect");

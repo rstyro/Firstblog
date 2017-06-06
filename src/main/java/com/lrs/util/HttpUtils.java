@@ -113,8 +113,9 @@ public class HttpUtils {
 			}
 			parameters = parameters.substring(0, parameters.length() - 1);
 		}
-
-		HttpGet httpGet = new HttpGet(path + "?" + parameters);
+		String resultUrl = path+"?"+parameters;
+		System.out.println("resultUrl="+resultUrl);
+		HttpGet httpGet = new HttpGet(resultUrl);
 		HttpResponse httpResponse = httpClient.execute(httpGet);
 		if (httpResponse.getStatusLine().getStatusCode() == 200) {
 			result = EntityUtils.toString(httpResponse.getEntity(), encoding);
@@ -122,6 +123,19 @@ public class HttpUtils {
 			System.out.println("else=" + EntityUtils.toString(httpResponse.getEntity(), encoding));
 		}
 
+		return result;
+	}
+	
+	public String sendGetMethod(String path, String encoding) throws Exception {
+		String result = "";
+		HttpGet httpGet = new HttpGet(path);
+		HttpResponse httpResponse = httpClient.execute(httpGet);
+		if (httpResponse.getStatusLine().getStatusCode() == 200) {
+			result = EntityUtils.toString(httpResponse.getEntity(), encoding);
+		} else {
+			System.out.println("else=" + EntityUtils.toString(httpResponse.getEntity(), encoding));
+		}
+		
 		return result;
 	}
 

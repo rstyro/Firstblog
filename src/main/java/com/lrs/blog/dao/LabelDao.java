@@ -12,6 +12,14 @@ public interface LabelDao {
 	 * @return
 	 */
 	public List<ParameterMap> getArticleLabels(ParameterMap pm);
+	
+	
+	/**
+	 * 获取标签通过label_type
+	 * @param pm
+	 * @return
+	 */
+	public List<ParameterMap> getLabelsByType(ParameterMap pm);
 
 	/**
 	 * 获取单个文章的标签
@@ -28,6 +36,13 @@ public interface LabelDao {
 	 * @return
 	 */
 	public int batchSaveArticleLabel(List<ParameterMap> list);
+	
+	/**
+	 * 批量插入数据
+	 * @param list
+	 * @return
+	 */
+	public int batchSaveUserLabel(List<ParameterMap> list);
 
 	/**
 	 * 删除标签
@@ -36,6 +51,13 @@ public interface LabelDao {
 	 * @return
 	 */
 	public int delArticleLabel(ParameterMap pm);
+	
+	/**
+	 * 删除用户标签
+	 * @param pm
+	 * @return
+	 */
+	public int delUserLabel(ParameterMap pm);
 
 	/**
 	 * 获取用户标签

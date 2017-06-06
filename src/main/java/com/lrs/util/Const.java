@@ -59,6 +59,7 @@ public class Const {
 
 	// 博主标签
 	public static final String BLOG_USER_LABEL_ = "BLOG_USER_LABEL_"; // 博主标签
+	public static final String USER_LABEL_ALL = "USER_LABEL_ALL"; // 所有标签
 
 	// 热门搜索缓存的id
 	public static final String HOT_ARTICLE_ID_LIST = "HOT_ARTICLE_ID_LIST"; // 归档下的文字列表

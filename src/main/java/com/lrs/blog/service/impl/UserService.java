@@ -2,6 +2,7 @@ package com.lrs.blog.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ import com.lrs.util.MyLogger;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
 import com.lrs.util.UploadUtil;
+import com.sun.tools.corba.se.idl.PragmaEntry;
 
 @Service
 public class UserService implements IUserService {
@@ -420,7 +422,6 @@ public class UserService implements IUserService {
 		Map<String, Object> map = new HashMap<>();
 		String code = pm.getString("code");
 		String state = pm.getString("state");
-		String tokenUrl = MyUtil.getPptMap().getProperty("qq_token_url");
 		String openUrl = MyUtil.getPptMap().getProperty("qq_open_url");
 		String userUrl = MyUtil.getPptMap().getProperty("qq_user_url");
 		String grant_type = "authorization_code";
@@ -437,7 +438,9 @@ public class UserService implements IUserService {
 		try {
 			// 获取access_token
 			System.out.println("param=" + param);
-			String result = HttpUtils.getInstance().sendGetMethod(tokenUrl, param, "UTF-8");
+			String url = "https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id="+client_id
+					+"&client_secret="+client_secret+"&code="+code+"&state="+state+"&redirect_uri="+redirect_uri;
+			String result = HttpUtils.getInstance().sendGetMethod(url, "UTF-8");
 			System.out.println("result=" + result);
 			ParameterMap acToken = MyUtil.getMapByUrlString(result);
 			String access_token = acToken.getString("access_token");
@@ -461,23 +464,65 @@ public class UserService implements IUserService {
 			JSONObject open = new JSONObject(openString);
 			String openId = open.getString("openid");
 			// 获取用户信息
-			/*
-			 * ?access_token=YOUR_ACCESS_TOKEN &oauth_consumer_key=YOUR_APP_ID
-			 * &openid=YOUR_OPENID
-			 */
-			param.put("access_token", access_token);
-			param.put("oauth_consumer_key", client_id);
-			param.put("openid", openId);
-			String userString = HttpUtils.getInstance().sendGetMethod(userUrl, param, "UTF-8");
-			System.out.println("userString=" + userString);
-			JSONObject user = new JSONObject(userString);
-			System.out.println("user=" + user);
+			param.put("register_type", "qq");
+			param.put("third_uuid", openId);
+			if(!checkIsExist(param)){
+				param.put("access_token", access_token);
+				param.put("oauth_consumer_key", client_id);
+				param.put("openid", openId);
+				String userString = HttpUtils.getInstance().sendGetMethod(userUrl, param, "UTF-8");
+				System.out.println("userString=" + userString);
+				JSONObject user = new JSONObject(userString);
+				System.out.println("user=" + user);
+				saveQQUser(user,pm.getString("ip"),openId);
+			}
+			map.put("msg", "ok");
+			map.put("status", "success");
 		} catch (Exception e) {
 			log.error("error:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "回调错误");
 		}
 		return map;
+	}
+
+	private void saveQQUser(JSONObject user,String ip,String openId) {
+		ParameterMap userpm = new ParameterMap();
+		String sex = user.getString("gender");
+		if("女".equalsIgnoreCase(sex)){
+			sex="girl";
+		}else{
+			sex="boy";
+		}
+		String userPath = user.getString("figureurl_qq_2");//100x100 图片
+		if(StringUtils.isBlank(userPath)){
+			userPath=user.getString("figureurl_qq_1");
+		}
+		try {
+			userpm.put("username", "blog_" + MyUtil.random(8));
+			userpm.put("password", "password_" + MyUtil.random(8));
+			userpm.put("name", user.getString("nickname"));
+			userpm.put("third_uuid", openId);
+			userpm.put("register_type", "qq");
+			userpm.put("sex", sex);
+			userpm.put("locate", user.getString("city"));
+			userpm.put("sign", "人懒连个性签名都没有!");
+			userpm.put("ip", ip);
+			userpm.put("status", "unlock");
+			userpm.put("create_time", DateUtil.getTime());
+			String path = Const.USER_IMG_PATH + MyUtil.random(8) + ".png";
+			try {
+				UploadUtil.saveImgByUrl(userPath, Const.ROOT_PATH + "../" + path);
+			} catch (Exception e) {
+				path = Const.BLOG_USER_DEFAULT_PATH + MyUtil.getRandomNum(1, 10) + ".png";
+				log.error("errpt=" + e.getMessage(), e);
+			}
+			userpm.put("img", path);
+			userDao.saveUser(userpm);
+			addUserShiro(userpm);
+		} catch (Exception e) {
+			log.error("error", e);
+		}
 	}
 
 	@Override
@@ -574,7 +619,16 @@ public class UserService implements IUserService {
 		param.put("access_token", access_token);
 		param.put("register_type", registerType);
 		param.put("third_uuid", uid);
-		ParameterMap userInfo = userDao.getUserInfo(param);
+		return checkIsExist(param);
+	}
+	
+	/**
+	 * 检测是否存在了
+	 * @param pm
+	 * @return
+	 */
+	private boolean checkIsExist(ParameterMap pm){
+		ParameterMap userInfo = userDao.getUserInfo(pm);
 		if (userInfo != null && userInfo.size() > 0) {
 			addUserShiro(userInfo);
 			return true;
@@ -635,6 +689,24 @@ public class UserService implements IUserService {
 					String userId = user.getUser_id();
 					pm.put("user_id", userId);
 					userDao.updateUserInfo(pm);
+					String labels = pm.getString("labels");
+					if(StringUtils.isNotBlank(labels)){
+						String[] ids = labels.split(",");
+						if (ids.length > 0) {
+							labelDao.delUserLabel(pm);
+							List<ParameterMap> userlabelList = new ArrayList<>();
+							for (int i = 0; i < ids.length; i++) {
+								String labelId = ids[i];
+								ParameterMap parameData = new ParameterMap();
+								parameData.put("user_id", userId);
+								parameData.put("label_id", labelId);
+								userlabelList.add(parameData);
+							}
+							if (userlabelList.size() > 0) {
+								labelDao.batchSaveUserLabel(userlabelList);
+							}
+						}
+					}
 				} else {
 					map.put("msg", "请重新登陆");
 					map.put("status", "auth");

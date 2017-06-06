@@ -417,5 +417,33 @@ public class CacheService implements ICacheService {
 			return listTranscoder.deserialize(bys);
 		return null;
 	}
+	
+	@Override
+	public int cacheUserLabel(ParameterMap pm) {
+		try {
+			pm.put("label_type", "author");
+			List<ParameterMap> list = labelDao.getLabelsByType(pm);
+			if (list != null && list.size() > 0) {
+				byte[] bys = listTranscoder.serialize(list);
+				redis.set(Const.USER_LABEL_ALL.getBytes(), bys);
+			} else {
+				redis.set(Const.USER_LABEL_ALL.getBytes(), listTranscoder.serialize(new ArrayList<>()));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.getMessage();
+			log.info("用户标签缓存失败:" + e.getMessage(), e);
+			return 0;
+		}
+		return 1;
+	}
+	
+	@Override
+	public List<ParameterMap> getCacheUserLabel(ParameterMap pm) throws Exception {
+		byte[] bys = redis.get(Const.USER_LABEL_ALL.getBytes());
+		if (bys != null && bys.length > 3)
+			return listTranscoder.deserialize(bys);
+		return null;
+	}
 
 }

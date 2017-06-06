@@ -97,6 +97,7 @@ body {
 							data-toggle="dropdown" href="#"><%=name %> <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="<%=root%>/article/add/go">发布文章</a></li>
+								<li><a href="<%=root%>/user/<%=user_id %>/1">个人信息</a></li>
 								<li class="divider"></li>
 								<li id="logout"><a href="JavaScript:void(0);" onclick="logout()">退出</a></li>
 							</ul>

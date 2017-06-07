@@ -90,6 +90,8 @@
 			a.from_user_id=b.user_id
 		WHERE
 			(parent_id=#{table_id} OR letter_id=#{table_id}) AND (a.user_id=#{user_id} OR a.from_user_id=#{user_id})
+		order by
+			a.create_time asc
 	</select>
 	
 	<select id="getNoticeNum" parameterType="pm" resultType="pm">
@@ -155,15 +157,19 @@
 		)
 	</insert>
 	
-	<insert id="saveLetter" parameterType="pm">
+	<insert id="saveLetter" parameterType="pm" useGeneratedKeys="true" keyProperty="letter_id">
 		insert into blog_letter(
+		<if test="parent_id != null and parent_id != ''">
 			parent_id,
+		</if>
 			user_id,
 			from_user_id,
 			content,
 			create_time
 		) values (
+			<if test="parent_id != null and parent_id != ''">
 			#{parent_id},
+			</if>
 			#{from_user_id},
 			#{user_id},
 			#{content},

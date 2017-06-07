@@ -626,8 +626,8 @@
 					for(var i=0;i<data.length;i++){
 						var obj = data[i];
 						str += "<div class='row'><div class='col-sm-1 col-md-1'><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"
-							+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p><a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 给你写了信</p>"
-							+"<p class='pull-right'><a href='javascript:void(0);' onclick='lookletterDetail("+obj.table_id+")'>查看详情</a></p><p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
+							+"<img src='<%=root%>/../"+obj.img+"'></a></div><div class='col-sm-10 col-md-10'><p>与 <a href='<%=root%>/user/"+obj.from_user_id+"/1'>"+obj.name+"</a> 的信件交流</p>"
+							+"<p class='pull-right'><a href='javascript:void(0);' onclick=\"lookletterDetail('"+obj.table_id+"','"+obj.name+"');\">查看详情</a></p><p>"+obj.create_time+"</p></div></div><div class='notice-border'></div>";
 					}
 					$("#letterList").prepend(str);
 				}else{
@@ -635,9 +635,10 @@
 				}
 			}
 			
-			function lookletterDetail(tableId){
+			function lookletterDetail(tableId,name){
 				$("#letterList").hide();
 				$("#letterPage").hide();
+				fromUsername=name;
 				if($("#let"+tableId).children().length == 0){
 					$.ajax({
 						type:"GET",
@@ -660,22 +661,28 @@
 				$("#letterDetailList").show();
 			}
 			var lastDetailId="";
-			var fromUserId="";
+			var fromUserId="<%=user_id%>";
 			var userId = "";
 			var userimg="";
+			var fromUsername="";
 			function addLetterDetail(data,tableId) {
 				$("#let"+lastDetailId).remove();
-	       		console.log("之前-lastDetailId="+lastDetailId);
 	       		lastDetailId=tableId;
-	       		console.log("之后-lastDetailId="+lastDetailId);
-	       		
 				var str = "<div id='let"+tableId+"'><ul class='media-list'>";
 				for(var i=0;i<data.length;i++){
 					var obj = data[i];
+					console.log("======");
+					console.log(obj);
 					if(i==0){
-						fromUserId = obj.from_user_id;
-						userId = obj.user_id;
-						$("#fromUsername").text(obj.name);
+						if(fromUserId == obj.from_user_id){
+							fromUserId=obj.user_id;
+							userId = obj.from_user_id;
+							$("#fromUsername").text(fromUsername);
+						}else{
+							fromUserId = obj.from_user_id;
+							userId = obj.user_id;
+							$("#fromUsername").text(obj.name);
+						}
 					}
 					var sli="";
 					if(fromUserId == obj.from_user_id){
@@ -725,6 +732,9 @@
 			        success: function(data){
 			       	console.log(data);
 			       	 if("success" == data.status){
+			       		 if(userimg == ""){
+			       			userimg="<%=userImg%>";
+			       		 }
 							$("textarea[name='reply']").val('');
 							var sli = "<li class='media'><a class='pull-right' href='<%=root%>/user/"+userId+"/1'>"
 							+"<img class='media-object' src='<%=root%>/../"+userimg+"' alt='用户头像'></a>"

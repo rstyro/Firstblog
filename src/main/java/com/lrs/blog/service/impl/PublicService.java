@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.search.DateTerm;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -197,12 +199,26 @@ public class PublicService implements IPublicService {
 				User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
 				if (user != null) {
 					pm.put("user_id", user.getUser_id());
+					pm.put("from_user_id", writeToUserId);
+					pm.put("create_time", DateUtil.getTime());
+					noticeDao.saveLetter(pm);
+					String letterId = pm.getString("letter_id");
+					pm.put("table_id", letterId);
+					pm.put("notice_type", "letter");
+					noticeDao.saveNotice(pm);
+					pm.put("from_user_id", user.getUser_id());
+					pm.put("user_id", writeToUserId);
+					noticeDao.saveNotice(pm);
+					
 				} else {
 					session.setAttribute(Const.BLOG_LAST_URL, "/article/" + pm.getString("table_id"));
 					map.put("status", "auth");
 					map.put("msg", "auth failed");
 					return map;
 				}
+				
+				map.put("msg", "私信成功");
+				map.put("status", "success");
 			} else {
 				map.put("status", "auth");
 				map.put("msg", "auth failed");

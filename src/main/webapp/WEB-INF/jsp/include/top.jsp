@@ -2,9 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@include file="Const.jsp"%>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta name="renderer" content="webkit"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta property="wb:webmaster" content="7383e34a05d5ab94" />
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=root%>/static/images/favicon.ico">
@@ -26,17 +26,20 @@ body {
 	background-image: url("<%=root%>/static/images/bg.jpg");
 }
 
-.jumbotron{
+.jumbotron {
 	background-color: #E2E2E2;
-	background-image:url("<%=root%>/static/images/bg.jpg");
+	background-image: url("<%=root%>/static/images/bg.jpg");
 }
+
 .jumbotron p, h2 {
 	text-align: center;
 }
-.navbar-toggle{
+
+.navbar-toggle {
 	background-color: #403c3c;
 }
-.navbar-toggle .icon-bar{
+
+.navbar-toggle .icon-bar {
 	background-color: #fff;
 }
 </style>
@@ -50,12 +53,11 @@ body {
 				<button type="button" class="navbar-left navbar-toggle collapsed "
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
 					aria-controls="navbar">
-					<span class="sr-only">Blog</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+					<span class="sr-only">Blog</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="javascript:void();" data-toggle="tooltip" data-placement="bottom" title="这是logo">Blog</a>
+				<a class="navbar-brand" href="javascript:void();"
+					data-toggle="tooltip" data-placement="bottom" title="这是logo">Blog</a>
 			</div>
 
 			<div id="navbar" class="collapse navbar-collapse">
@@ -66,8 +68,8 @@ body {
 							class="glyphicon glyphicon-headphones"></span> 音乐</a></li>
 					<li><a href="<%=root%>/toLeaveWord"><span
 							class="glyphicon glyphicon-comment"></span> 留言</a></li>
-					<% 
-					if(!"".equals(username)){
+					<%
+						if (!"".equals(username)) {
 					%>
 					<li><a href="<%=root%>/toNotice"><span
 							class="glyphicon glyphicon-bell"></span> 消息<i class="badge">${notice.totalNum }</i></a></li>
@@ -80,37 +82,47 @@ body {
 			</div>
 			<div class="btn-group  pull-right">
 				<div class="h_search">
-					<form class="bs-example bs-example-form" action="<%=root%>/toSearch/1" method="get" id="searchform" role="search">
+					<form class="bs-example bs-example-form"
+						action="<%=root%>/toSearch/1" method="get" id="searchform"
+						role="search">
 						<div class="input-group">
 							<span class="input-group-addon" id="blog_search"><a
-								class="glyphicon glyphicon-search"  href="javascript:void();"></a></span> <input
-								type="text" name="keyword" id="search_key" class="form-control" placeholder="客官，没合适的，来这里搜搜">
+								class="glyphicon glyphicon-search" href="javascript:void();"></a></span>
+							<input type="text" name="keyword" id="search_key"
+								class="form-control" placeholder="客官，没合适的，来这里搜搜">
 						</div>
 					</form>
 				</div>
 				<div style="float: right">
 					<ul class="nav nav-tabs topul">
 						<%
-							if(!"".equals(username)){
+							if (!"".equals(username)) {
 						%>
 						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="dropdown" href="#"><%=name %> <span class="caret"></span></a>
+							data-toggle="dropdown" href="#"><%=name%> <span
+								class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="<%=root%>/article/add/go">发布文章</a></li>
-								<li><a href="<%=root%>/user/<%=user_id %>/1">个人信息</a></li>
+								<li><a href="<%=root%>/user/<%=user_id%>/1">个人信息</a></li>
 								<li class="divider"></li>
-								<li id="logout"><a href="JavaScript:void(0);" onclick="logout()">退出</a></li>
-							</ul>
-						</li>
-						<%}else{ %>
+								<li id="logout"><a href="JavaScript:void(0);"
+									onclick="logout()">退出</a></li>
+							</ul></li>
+						<%
+							} else {
+						%>
 						<li><a class="login btn btn-normal btn-primary navbar-btn"
 							href="<%=root%>/toLogin" data-toggle="tooltip"
-							data-placement="bottom" title="目前只提供登录功能，暂未开放注册功能" target="_blank">登录</a></li>
+							data-placement="bottom" title="目前只提供登录功能，暂未开放注册功能"
+							target="_blank">登录</a></li>
 						<li><a
 							class="register btn btn-normal btn-success  navbar-btn"
 							href="<%=root%>/toRegister" data-toggle="tooltip"
-							data-placement="bottom" title="目前只提供登录功能，暂未开放注册功能" target="_blank">注册</a></li>
-						<%} %>
+							data-placement="bottom" title="目前只提供登录功能，暂未开放注册功能"
+							target="_blank">注册</a></li>
+						<%
+							}
+						%>
 					</ul>
 				</div>
 			</div>
@@ -136,7 +148,7 @@ body {
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="letterModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -147,16 +159,17 @@ body {
 					<h4 class="modal-title" id="modelHead"></h4>
 				</div>
 				<div class="modal-body">
-					<textarea rows="5" cols="50" id="letter-content"></textarea><br>
+					<textarea rows="5" cols="50" id="letter-content"></textarea>
+					<br>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-info sendLetter" >发送</button>
+					<button type="button" class="btn btn-info sendLetter">发送</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -199,12 +212,26 @@ body {
 			$(".sendLetter").click(function(){
 				var content = $("#letter-content").val();
 				sendLetter(uid,uname,content);
+				$("#letter-content").val('');
 				$("#letterModal").modal('hide');
 			});
 		})
 		
 		function sendLetter(uid,uname,content){
-			alert("uid="+uid+",uname="+uname+",content="+content);
+			$.ajax({
+				type:"POST",
+		        url:"<%=root%>/public/letter",
+		        data:{wrt_user_id:uid,content:content,time:new Date().getTime()},
+		        dataType:"json",
+		        cache:false,
+		        success: function(data){
+			       	 if("auth" == data.status){
+			       		window.location.href="<%=root%>/toLogin";
+			       	 }else{
+		       		 	alert(data.msg);
+		        	}
+		        }
+			})
 		}
 		
 		function logout(){
@@ -244,11 +271,11 @@ body {
 					}
 		       	 }else if("auth" == data.status){
 		       		window.location.href="<%=root%>/toLogin";
-		       	 }else{
-		       		 $("#msg").html(data.msg);
-		       	 }
-		        }
-			})
+							} else {
+								$("#msg").html(data.msg);
+							}
+						}
+					})
 		}
 	</script>
 	<script src="<%=root%>/static/js/skill.js"></script>

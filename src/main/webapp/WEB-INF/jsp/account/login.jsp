@@ -137,9 +137,6 @@ String root = request.getContextPath();
 function toWXLogin(){
 	alert("待开发");
 }
-function toWBLogin(){
-	alert("待开发");
-}
 	
 	</script>
 </body>

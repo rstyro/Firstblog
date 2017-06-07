@@ -94,6 +94,7 @@ public class UploadUtil {
 	public static void crop(InputStream input, String result, int x, int y, int w, int h, boolean isPNG)
 			throws Exception {
 		try {
+			createFile(result);
 			BufferedImage srcImg = ImageIO.read(input);
 			int tmpWidth = srcImg.getWidth();
 			int tmpHeight = srcImg.getHeight();

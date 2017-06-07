@@ -128,7 +128,7 @@
 		<div class="row blog-user">
 			<div class="col-sm-2 col-md-2">
 				<div class="uh">
-					<img alt="用户头像" src="${userInfo.img}">
+					<img alt="用户头像" src="${userInfo.img}" onerror="imgerror(this)">
 					<c:if test="${userInfo['user_id'] eq user_id}">
 						<div class="modify">
 							<p>
@@ -162,7 +162,7 @@
 						位置:<span>${userInfo.locate }</span>
 					</p>
 				</div>
-				<p>${userInfo.sign }</p>
+				<p><i class="glyphicon glyphicon-pencil green"></i>${userInfo.sign }</p>
 				<div class="row">
 					<div class="blog-labels">
 						<c:choose>
@@ -228,17 +228,15 @@
 			<div class="tab-pane fade" id="dynamic">
 				<div class="row">
 					<div class="col-sm-10 col-md-10">
-						<p>
-							这个冬天不太冷 发布了文章<a href="#">《linux 操作系统》</a>
-						</p>
+						<p>有空开发！！！！！！！</p>
 					</div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="comment">
 				<div class="row">
-					<p>
-						最近评论了<a href="javascript:void(0);">《Linux 入门到精通》</a>
-					</p>
+					<div class="col-sm-10 col-md-10">
+						<p>有空开发！！！！！！！</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -319,7 +317,13 @@
 					  <div class="form-group">
 					    <label for="locate" class="col-sm-2 control-label">城市</label>
 					    <div class="col-sm-10">
-					      <input type="text" class="form-control" name="locate" value="${userInfo.locate}" id="locate" placeholder="请输入姓">
+					      <input type="text" class="form-control" name="locate" value="${userInfo.locate}" id="locate" placeholder="请输入城市">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="locate" class="col-sm-2 control-label">个性签名</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" name="sign" value="${userInfo.sign}" id="sign" placeholder="请输入个性签名">
 					    </div>
 					  </div>
 					  <div class="form-group">
@@ -379,6 +383,7 @@
 									</div>
 					    </div>
 					  </div>
+					  
 					</form>
 				</div>
 				<div class="modal-footer" style="margin: 0px auto; width: 25%;">
@@ -392,204 +397,128 @@
 	<!-- footer -->
 	<%@include file="../include/footer.jsp"%>
 </body>
+<script type="text/javascript" src="<%=root%>/static/js/user.js"></script>
 <script type="text/javascript">
 	var root ="<%=root%>";
-$(function(){
-	 var element = $('#mypage');
-	  options = {
-	      bootstrapMajorVersion:3, //对应的bootstrap版本
-	      currentPage: ${page.currentPage }, //当前页数，这里是用的EL表达式，获取从后台传过来的值
-	      numberOfPages:${page.showCount }, //每页页数
-	      totalPages:${page.totalPage }, //总页数，这里是用的EL表达式，获取从后台传过来的值
-	      itemTexts: function (type, page, current) {//设置显示的样式，默认是箭头
-	          switch (type) {
-	             case "first":
-	                  return "首页";
-	              case "prev":
-	                  return "上一页";
-	              case "next":
-	                  return "下一页";
-	              case "last":
-	                  return "末页";
-	              case "page":
-	                  return page;
-	          }
-	      },
-	    //点击事件
-	      onPageClicked: function (event, originalEvent, type, page) {
-	          location.href = "<%=right_root%>/user/"+${userInfo.user_id}+"/" + page;
-	      }
-	  };
-	  element.bootstrapPaginator(options);
-	  
-	  var wh = $(window).height();
-	  var h = $(".blog-user").height();
-	  $("#myTabContent").css("height",wh-h-200);
-	 
-	  $(".uh").mouseenter(function(){
-			$(this).find(".modify").stop().animate({bottom:0},300);
-		}).mouseleave(function(){
-			$(this).find(".modify").stop().animate({bottom:"-30%"},300);
-		});
-	  $(".modify a").click(function(){
-		  $("#headModal").modal("show");
-	  });
-	  var index = 1;
-	  var userPath = $(".uimg").attr("src");
-	  $(".changeUI").click(function(){
-		  var path = "/upload/user/i"+index+".png";
-		  $(".uimg").attr("src",path);
-		  index++;
-		  if(index == 101){
-			  index=1;
-		  }
-	  });
-	  $(".uploadUI").click(function(){
-		$("#imgfile").click();
-	  });
-	  
-	  $(".imgsure").click(function(){
-		  var newpath = $(".uimg").attr("src");
-			$("#headModal").modal("hide");
-		  if(userPath != newpath){
-			  updateImg(newpath);
-			  document.location.reload();//当前页面 
-		  }
-	  });
-	  
-	  //上传按钮
-	  $('#uploadimgsure').on('click',function(){
-			uploadI++;
-			if(uploadI > 1){
-				console.log("大于1");
-			}else{
-	  		    var data = $image.cropper('getData');
-	  		    console.log(data);
-	  		    uploadImg(data);
-			}
-		});
-	  
-	  //编辑用户信息
-	  $(".btn-edit").click(function(){
-		  $("#uInfo").modal("show");
-	  });
-	  //编辑的确认按钮
-	  $("#editSure").click(function(){
-		  var name = $("input[name='name']").val();
-		  var locate=$("input[name='locate']").val();
-		  var length = $("input[type='checkbox']:checked").length;
-		  var labels = "";
-		  $("input[type='checkbox']:checked").each(function(i){
-			if(i == 0){
-			  labels=$(this).val();
-			}else{
-			  labels=labels+","+$(this).val();
-			}
+	$(function(){
+		 var element = $('#mypage');
+		  options = {
+		      bootstrapMajorVersion:3, //对应的bootstrap版本
+		      currentPage: ${page.currentPage }, //当前页数，这里是用的EL表达式，获取从后台传过来的值
+		      numberOfPages:${page.showCount }, //每页页数
+		      totalPages:${page.totalPage }, //总页数，这里是用的EL表达式，获取从后台传过来的值
+		      itemTexts: function (type, page, current) {//设置显示的样式，默认是箭头
+		          switch (type) {
+		             case "first":
+		                  return "首页";
+		              case "prev":
+		                  return "上一页";
+		              case "next":
+		                  return "下一页";
+		              case "last":
+		                  return "末页";
+		              case "page":
+		                  return page;
+		          }
+		      },
+		    //点击事件
+		      onPageClicked: function (event, originalEvent, type, page) {
+		          location.href = root+"/user/"+${userInfo.user_id}+"/" + page;
+		      }
+		  };
+		  element.bootstrapPaginator(options);
+		  
+		  var wh = $(window).height();
+		  var h = $(".blog-user").height();
+		  $("#myTabContent").css("height",wh-h-200);
+		 
+		  $(".uh").mouseenter(function(){
+				$(this).find(".modify").stop().animate({bottom:0},300);
+			}).mouseleave(function(){
+				$(this).find(".modify").stop().animate({bottom:"-30%"},300);
+			});
+		  $(".modify").click(function(){
+			  $("#headModal").modal("show");
 		  });
-		  $.ajax({
-				type:"POST",
-		        url:root+"/user/update",
-		        data:{name:name,locate:locate,labels:labels,time:new Date().getTime()},
-		        dataType:"json",
-		        cache:false,
-		        success: function(data){
-			       	 if("success" == data.status){
-			       		 document.location.reload();//当前页面 
-			       	 }else if("auth" == data.status){
-			       		window.location.href=root+"/toLogin";
-			       	 }else{
-			       		 alert(data.msg);
-			       	 }
-		        }
-			})
-	  });
-	  
-	  var input = document.getElementById("imgfile");
-      if (typeof (FileReader) === 'undefined') {
-          result.innerHTML = "抱歉，你的浏览器不支持 FileReader，请使用现代浏览器操作！";
-          input.setAttribute('disabled', 'disabled');
-      } else {
-          input.addEventListener('change', readFile, false);
-      }
-});
-
-	function uploadImg(obj){
-		var x=obj.x;
-	    var y=obj.y;
-	    var width=obj.width;
-	    var height=obj.height;
-	    var rotate=obj.rotate;
-	    $.ajax({
-	    	type:"POST",
-	    	url:root+"/user/uploadImg",
-	    	data:{x:x,y:y,width:width,height:height,rotate:rotate,base64code:base64Code,time:new Date().getTime()},
-	    	dataType:"json",
-	    	cache:false,
-	    	success:function(data){
-	    		console.log(data);
-	    		$("#uploadModal").modal("hide");
-	    		$(".uimg").attr("src",data.data);
-	    		uploadI=0;
-	    	}
-	    });
-	}
-
-	function updateImg(img){
-		$.ajax({
-			type:"POST",
-	        url:root+"/user/update",
-	        data:{img:img,time:new Date().getTime()},
-	        dataType:"json",
-	        cache:false,
-	        success: function(data){
-		       	 if("success" == data.status){
-		       		 document.location.reload();//当前页面 
-		       	 }else if("auth" == data.status){
-		       		window.location.href=root+"/toLogin";
-		       	 }else{
-		       		 alert(data.msg);
-		       	 }
-	        }
-		})
-
-	}
-	
-	var $image = $('#uCropImg');
-	/* 初始化配置 */
-	$image.cropper({
-			background:false,
-			guides:false,
-		    movable: true,
-	        resizable: false,
-	        zoomable: true,
-	        rotatable: false,
-	        scalable: false,
-	        dashed:false,
-	        dragCrop:false,
-	        autoCropArea:0.9,
-	        aspectRatio: 1 / 1,
-	        preview: '.img-preview',
+		  var index = 1;
+		  var userPath = $(".uimg").attr("src");
+		  $(".changeUI").click(function(){
+			  var path = "/upload/user/i"+index+".png";
+			  $(".uimg").attr("src",path);
+			  index++;
+			  if(index == 101){
+				  index=1;
+			  }
+		  });
+		  $(".uploadUI").click(function(){
+			$("#imgfile").click();
+		  });
+		  
+		  $(".imgsure").click(function(){
+			  var newpath = $(".uimg").attr("src");
+				$("#headModal").modal("hide");
+			  if(userPath != newpath){
+				  updateImg(newpath);
+				  document.location.reload();//当前页面 
+			  }
+		  });
+		  
+		  //上传按钮
+		  $('#uploadimgsure').on('click',function(){
+				uploadI++;
+				if(uploadI > 1){
+					console.log("大于1");
+				}else{
+		  		    var data = $image.cropper('getData');
+		  		    console.log(data);
+		  		    uploadImg(data);
+				}
+			});
+		  
+		  //编辑用户信息
+		  $(".btn-edit").click(function(){
+			  $("#uInfo").modal("show");
+		  });
+		  //编辑的确认按钮
+		  $("#editSure").click(function(){
+			  var name = $("input[name='name']").val();
+			  var locate=$("input[name='locate']").val();
+			  var sign=$("input[name='sign']").val();
+			  var length = $("input[type='checkbox']:checked").length;
+			  var labels = "";
+			  $("input[type='checkbox']:checked").each(function(i){
+				if(i == 0){
+				  labels=$(this).val();
+				}else{
+				  labels=labels+","+$(this).val();
+				}
+			  });
+			  $.ajax({
+					type:"POST",
+			        url:root+"/user/update",
+			        data:{name:name,locate:locate,sign:sign,labels:labels,time:new Date().getTime()},
+			        dataType:"json",
+			        cache:false,
+			        success: function(data){
+				       	 if("success" == data.status){
+				       		 document.location.reload();//当前页面 
+				       	 }else if("auth" == data.status){
+				       		window.location.href=root+"/toLogin";
+				       	 }else{
+				       		 alert(data.msg);
+				       	 }
+			        }
+				})
+		  });
+		  
+		  var input = document.getElementById("imgfile");
+	      if (typeof (FileReader) === 'undefined') {
+	          result.innerHTML = "抱歉，你的浏览器不支持 FileReader，请使用现代浏览器操作！";
+	          input.setAttribute('disabled', 'disabled');
+	      } else {
+	          input.addEventListener('change', readFile, false);
+	      }
 	});
-	var uploadI=0;
-	var base64Code;
-	function readFile() {
-		 var file = this.files[0];
-        //判断是否是图片类型
-        if (!/image\/\w+/.test(file.type)) {
-            alert("只能选择图片");
-            return false;
-       }
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function (e) {
-        	base64Code=this.result;
-        	$("#uploadModal").modal("show");
-        	$("#uCropImg").attr("src",this.result);
-        	$image.cropper("reset", true).cropper("replace", this.result).css("width","500px");
-        }
-
-    
-    }
-
+	
 </script>
 </html>

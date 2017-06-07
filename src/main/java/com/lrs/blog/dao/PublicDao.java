@@ -45,6 +45,7 @@ public interface PublicDao {
 	 * @return
 	 */
 	public int saveComment(ParameterMap pm);
+	
 
 	/**
 	 * 保存留言

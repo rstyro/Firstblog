@@ -315,6 +315,12 @@
 					    </div>
 					  </div>
 					  <div class="form-group">
+					    <label for="password" class="col-sm-2 control-label">密码</label>
+					    <div class="col-sm-10">
+					      <input type="password" class="form-control" name="password" value="" id="password" placeholder="可以输入新密码，不填不更改">
+					    </div>
+					  </div>
+					  <div class="form-group">
 					    <label for="locate" class="col-sm-2 control-label">城市</label>
 					    <div class="col-sm-10">
 					      <input type="text" class="form-control" name="locate" value="${userInfo.locate}" id="locate" placeholder="请输入城市">
@@ -482,6 +488,7 @@
 		  //编辑的确认按钮
 		  $("#editSure").click(function(){
 			  var name = $("input[name='name']").val();
+			  var password = $("input[name='password']").val();
 			  var locate=$("input[name='locate']").val();
 			  var sign=$("input[name='sign']").val();
 			  var length = $("input[type='checkbox']:checked").length;
@@ -496,14 +503,16 @@
 			  $.ajax({
 					type:"POST",
 			        url:root+"/user/update",
-			        data:{name:name,locate:locate,sign:sign,labels:labels,time:new Date().getTime()},
+			        data:{name:name,password:password,locate:locate,sign:sign,labels:labels,time:new Date().getTime()},
 			        dataType:"json",
 			        cache:false,
 			        success: function(data){
 				       	 if("success" == data.status){
 				       		 document.location.reload();//当前页面 
 				       	 }else if("auth" == data.status){
-				       		window.location.href=root+"/toLogin";
+				       		 if(confirm("密码已更新，需要跳转登录页面吗？")){
+					       		window.location.href=root+"/toLogin";
+				       		 }
 				       	 }else{
 				       		 alert(data.msg);
 				       	 }

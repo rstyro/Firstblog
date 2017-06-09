@@ -361,6 +361,7 @@
 					$("#commentList").prepend("<p>暂无消息</p>");
 				}
 			}
+			/*
 			function newComment(parentId,tableId){
 				$(this).click(function(){
 					alert($(this).text());
@@ -368,6 +369,7 @@
 				alert(parentId);
 				alert(tableId);
 			}
+			*/
 			
 			
 			//添加关注列表
@@ -669,10 +671,9 @@
 				$("#let"+lastDetailId).remove();
 	       		lastDetailId=tableId;
 				var str = "<div id='let"+tableId+"'><ul class='media-list'>";
+				fromUserId="<%=user_id%>";
 				for(var i=0;i<data.length;i++){
 					var obj = data[i];
-					console.log("======");
-					console.log(obj);
 					if(i==0){
 						if(fromUserId == obj.from_user_id){
 							fromUserId=obj.user_id;

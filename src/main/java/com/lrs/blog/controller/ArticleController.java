@@ -1,6 +1,8 @@
 package com.lrs.blog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -18,6 +20,7 @@ import com.lrs.blog.entity.User;
 import com.lrs.blog.service.IArticleService;
 import com.lrs.blog.service.ICacheService;
 import com.lrs.blog.service.ILabelService;
+import com.lrs.blog.service.IUserService;
 import com.lrs.plugin.Page;
 import com.lrs.thread.ReloadThread;
 import com.lrs.util.Const;
@@ -41,6 +44,9 @@ public class ArticleController extends BaseController {
 
 	@Autowired
 	private ICacheService cacheService;
+	
+	@Autowired
+	private IUserService userService;
 
 	/**
 	 * 获取文章详情
@@ -162,7 +168,52 @@ public class ArticleController extends BaseController {
 				articleList = MyUtil.getRusultList(articleList, page);
 				log.info("缓存获取 归档文章列表");
 			}
+			
+			List<ParameterMap> userLabels = null;
+			ParameterMap userInfo = null;
+			pm.put("user_id", "1");
+			Map<String, Object> userMap = userService.getUserBasicInfo(pm);
+			// 博主信息
+			try {
 
+				userInfo = (ParameterMap) userMap.get("userInfo");
+			} catch (Exception e) {
+				userInfo = new ParameterMap();
+				e.printStackTrace();
+				log.error("获取用户信息失败", e);
+			}
+
+			// 博主信息
+			try {
+				userLabels = (List<ParameterMap>) userMap.get("userLabels");
+			} catch (Exception e) {
+				e.printStackTrace();
+				userLabels = new ArrayList<ParameterMap>();
+			}
+			view.addObject("userInfo", userInfo);
+			view.addObject("userLabels", userLabels);
+
+			ParameterMap concern = null;
+			Subject subject = SecurityUtils.getSubject();
+			User u = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+			if (u != null) {
+				String userId = u.getUser_id();
+				if (subject.isAuthenticated() && !"1".equals(userId)) {
+					pm.put("user_id", u.getUser_id());
+					pm.put("beconcern_user_id", "1");
+					concern = userService.repeatConcern(pm);
+					if (concern != null && concern.size() > 0) {
+						concern.put("concern_flag", "1");
+					}
+				}
+			}
+			if (concern == null) {
+				concern = new ParameterMap();
+				concern.put("concern_flag", "0");
+			}
+			view.addObject("concern", concern);
+			
+			
 			// 分页Map
 			ParameterMap pmpage = new ParameterMap(page);
 			pm.put("type", "month");
@@ -247,7 +298,51 @@ public class ArticleController extends BaseController {
 			}
 			// 分页
 			articleList = MyUtil.getRusultList(articleList, page);
+			
+			List<ParameterMap> userLabels = null;
+			ParameterMap userInfo = null;
+			pm.put("user_id", "1");
+			Map<String, Object> userMap = userService.getUserBasicInfo(pm);
+			// 博主信息
+			try {
 
+				userInfo = (ParameterMap) userMap.get("userInfo");
+			} catch (Exception e) {
+				userInfo = new ParameterMap();
+				e.printStackTrace();
+				log.error("获取用户信息失败", e);
+			}
+
+			// 博主信息
+			try {
+				userLabels = (List<ParameterMap>) userMap.get("userLabels");
+			} catch (Exception e) {
+				e.printStackTrace();
+				userLabels = new ArrayList<ParameterMap>();
+			}
+			view.addObject("userInfo", userInfo);
+			view.addObject("userLabels", userLabels);
+			
+			ParameterMap concern = null;
+			Subject subject = SecurityUtils.getSubject();
+			User u = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+			if (u != null) {
+				String userId = u.getUser_id();
+				if (subject.isAuthenticated() && !"1".equals(userId)) {
+					pm.put("user_id", u.getUser_id());
+					pm.put("beconcern_user_id", "1");
+					concern = userService.repeatConcern(pm);
+					if (concern != null && concern.size() > 0) {
+						concern.put("concern_flag", "1");
+					}
+				}
+			}
+			if (concern == null) {
+				concern = new ParameterMap();
+				concern.put("concern_flag", "0");
+			}
+			view.addObject("concern", concern);
+			
 			// 分页Map
 			ParameterMap pmpage = new ParameterMap(page);
 			pm.put("type", "label");

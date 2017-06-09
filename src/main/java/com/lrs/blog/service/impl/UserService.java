@@ -687,6 +687,10 @@ public class UserService implements IUserService {
 				if (user != null) {
 					String userId = user.getUser_id();
 					pm.put("user_id", userId);
+					String password = pm.getString("password");
+					if(StringUtils.isNotBlank(password)){
+						pm.put("password", new SimpleHash("SHA-1", password, Const.SALT).toString());
+					}
 					userDao.updateUserInfo(pm);
 					String labels = pm.getString("labels");
 					if(StringUtils.isNotBlank(labels)){
@@ -706,6 +710,14 @@ public class UserService implements IUserService {
 							}
 						}
 					}
+					map.put("msg", "ok");
+					map.put("status", "success");
+					if(StringUtils.isNotBlank(password)){
+						session.removeAttribute(Const.BLOG_USER_SESSION);
+						subject.logout();
+						map.put("msg", "更新密码，请重新登陆");
+						map.put("status", "auth");
+					}
 				} else {
 					map.put("msg", "请重新登陆");
 					map.put("status", "auth");
@@ -715,8 +727,6 @@ public class UserService implements IUserService {
 				map.put("status", "failed");
 				return map;
 			}
-			map.put("msg", "ok");
-			map.put("status", "success");
 		} catch (Exception e) {
 			log.error("error:" + e.getMessage(), e);
 			map.put("status", "failed");

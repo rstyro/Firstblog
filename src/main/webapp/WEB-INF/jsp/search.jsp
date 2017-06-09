@@ -69,7 +69,7 @@ body {
 				<div class="row">
 					<div class="col-lg-8 col-md-8">
 						<div class="input-group">
-							<input type="text" name="keyword" value="${keyword }" class="form-control"> <span
+							<input type="text" name="keyword" id="keyword" value="${keyword }" class="form-control"> <span
 								class="input-group-btn">
 								<button class="btn btn-default" id="btn-seartch" type="button">搜一搜</button>
 							</span>
@@ -201,6 +201,7 @@ body {
 	<%@include file="./include/footer.jsp"%>
 
 	<script type="text/javascript">
+		var keyword = $("#keyword").val();
 		$(function() {
 			var wh = $(document).height();
 			$(".search-body").css("height", wh-70);
@@ -229,7 +230,7 @@ body {
 			      },
 			    //点击事件
 			      onPageClicked: function (event, originalEvent, type, page) {
-			          location.href = "<%=root %>/toSearch/" + page;
+			          location.href = "<%=root %>/toSearch/" + page+"?keyword="+keyword;
 			      }
 			  };
 			  element.bootstrapPaginator(options);

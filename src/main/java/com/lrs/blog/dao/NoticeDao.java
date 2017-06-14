@@ -50,6 +50,8 @@ public interface NoticeDao {
 	 * @return
 	 */
 	public int updateNoticeStatus(ParameterMap pm);
+	
+	public int updateLetterStatus(ParameterMap pm);
 
 	/**
 	 * 删除消息

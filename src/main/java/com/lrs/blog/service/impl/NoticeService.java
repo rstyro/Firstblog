@@ -128,6 +128,7 @@ public class NoticeService implements INoticeService {
 			pm.put("user_id", userId);
 			pm.put("create_time", DateUtil.getTime());
 			noticeDao.saveLetter(pm);
+			noticeDao.updateLetterStatus(pm);
 			map.put("status", "success");
 			map.put("msg", "ok");
 		} catch (Exception e) {

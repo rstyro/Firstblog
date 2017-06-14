@@ -112,7 +112,16 @@
 		update blog_notice
 			set is_read=1
 		where
-			notice_type=#{notice_type}
+			notice_type=#{notice_type} and user_id=#{user_id}
+	</update>
+	
+	<update id="updateLetterStatus" parameterType="pm">
+		update blog_notice
+			set is_read=0
+		where
+			notice_type='letter'
+			and from_user_id=#{user_id} 
+			and table_id=#{parent_id} 
 	</update>
 	
 	<delete id="delNotice" parameterType="pm">

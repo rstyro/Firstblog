@@ -393,14 +393,16 @@ public class PublicService implements IPublicService {
 					int issuccess = publicDao.updatePraiseNum(pm);
 					if (issuccess > 0) {// 有修改记录，就保存点赞记录
 						publicDao.savePraise(pm);
-
 						// 添加点赞消息
 						if ("article".equalsIgnoreCase(tableType)) {
-							// 获取文章用户的Id
-							ParameterMap auth = publicDao.getArticleAutherId(pm);
-							pm.put("from_user_id", auth.getString("user_id"));
-							pm.put("create_time", DateUtil.getTime());
-							noticeDao.saveNotice(pm);
+							String authorId = pm.getString("author_id");
+							if(!user.getUser_id().equals(authorId)){//不等于本人才添加点赞消息
+								// 获取文章用户的Id
+								ParameterMap auth = publicDao.getArticleAutherId(pm);
+								pm.put("from_user_id", auth.getString("user_id"));
+								pm.put("create_time", DateUtil.getTime());
+								noticeDao.saveNotice(pm);
+							}
 						}
 					}
 				}

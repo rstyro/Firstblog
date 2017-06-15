@@ -193,7 +193,7 @@
 				$.ajax({
 					type:"POST",
 			        url:"<%=root%>/public/praise",
-			        data:{table_id:${article.article_id},table_type:"article",time:new Date().getTime()},
+			        data:{table_id:${article.article_id},author_id:${article.user_id},table_type:"article",time:new Date().getTime()},
 			        dataType:"json",
 			        cache:false,
 			        success: function(data){

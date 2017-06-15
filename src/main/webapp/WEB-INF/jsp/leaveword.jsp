@@ -8,11 +8,17 @@
 <%@include file="./include/top.jsp" %>
 <style>
 	body{
-			background-image: url("static/images/bg.jpg");
+			/*
+				background-image: url("static/images/bg.jpg");
+			*/
+			background-image: url("");
+			background-color: #000;
+			color: #fff;
 		}
 		.blog-leaveword textarea{
 			resize:none;
-			box-shadow:12px 13px 10px #111;
+			box-shadow:5px 5px 50px #fee;
+			background-color: #000;
 		}
 		.blog-leaveword h2{
 			text-align: left;
@@ -85,6 +91,8 @@
 	<script type="text/javascript" src="<%=root%>/static/js/loader/prefixfree.min.js"></script>
 	<script type="text/javascript">
 	$(function(){
+		//下雪
+		$(document).snowfall({shadow : true, flakeCount:200});
 		var wh = $(document).height();
 		var textareaH = $("#leaveWord").height();
 		$(".blog-leaveword").css("height",wh-textareaH+50);

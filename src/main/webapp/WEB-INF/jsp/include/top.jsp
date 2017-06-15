@@ -5,7 +5,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- 
 <meta property="wb:webmaster" content="7383e34a05d5ab94" />
+ -->
+<meta name="keywords" content="这个冬天不太冷,博客,文章,lrshuai.top" /> 
+<meta name="description" content="博客,blog,文章" /> 
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=root%>/static/images/favicon.ico">
 <title>Blog</title>

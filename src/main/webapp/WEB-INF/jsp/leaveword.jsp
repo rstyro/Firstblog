@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="keywords" content="留言" /> 
+<meta name="description" content="留言" /> 
 <title>写下你想写的，想说...</title>
 <%@include file="./include/top.jsp" %>
 <style>
@@ -89,6 +91,7 @@
 	<%@include file="./include/footer.jsp"%>
 	<script type="text/javascript" src="<%=root%>/static/js/loader/modernizr.js"></script>
 	<script type="text/javascript" src="<%=root%>/static/js/loader/prefixfree.min.js"></script>
+	<script src="<%=root%>/static/js/snow/snowfall.jquery.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		//下雪

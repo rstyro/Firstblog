@@ -17,7 +17,8 @@
 					</div>
 					<div class="title">
 						<a target="_blank"
-							href="<%=right_root%>/article/${article.article_id}"> <c:choose>
+							href="<%=right_root%>/article/${article.article_id}">
+							<c:choose>
 								<c:when test="${fn:length(article.title) > 20}">
 									<c:out value="${fn:substring(article.title, 0, 20)}..." />
 								</c:when>

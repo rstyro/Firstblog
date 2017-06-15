@@ -17,7 +17,6 @@
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个夏天好冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <link href="<%=root%>/static/bootstrap-3.3.7/css/bootstrap.css"
 	rel="stylesheet">
-<link href="<%=root%>/static/css/snow.css" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -189,7 +188,6 @@ body {
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=root%>/static/js/skill.js"></script>
-	<script src="<%=root%>/static/js/snow/snowfall.jquery.js"></script>
 	<script type="text/javascript">
 		var uid="";
 		var uname="";

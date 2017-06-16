@@ -61,7 +61,7 @@ body {
 						class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="javascript:void();"
-					data-toggle="tooltip" data-placement="bottom" title="这是logo">Blog</a>
+					data-toggle="tooltip" data-placement="bottom" title="我的笔名">这个冬天不太冷</a>
 			</div>
 
 			<div id="navbar" class="collapse navbar-collapse">
@@ -89,7 +89,7 @@ body {
 					<form class="bs-example bs-example-form"
 						action="<%=root%>/toSearch/1" method="get" id="searchform"
 						role="search">
-						<div class="input-group">
+						<div class="input-group" data-toggle="tooltip" data-placement="bottom" title="站内搜索">
 							<span class="input-group-addon" id="blog_search"><a
 								class="glyphicon glyphicon-search" href="javascript:void();"></a></span>
 							<input type="text" name="keyword" id="search_key"
@@ -116,13 +116,12 @@ body {
 							} else {
 						%>
 						<li><a class="login btn btn-normal btn-primary navbar-btn"
-							href="<%=root%>/toLogin" data-toggle="tooltip"
-							data-placement="bottom" title="目前只提供登录功能，暂未开放注册功能"
+							href="<%=root%>/toLogin" 
+							data-placement="bottom" 
 							target="_blank">登录</a></li>
 						<li><a
 							class="register btn btn-normal btn-success  navbar-btn"
-							href="<%=root%>/toRegister" data-toggle="tooltip"
-							data-placement="bottom" title="目前只提供登录功能，暂未开放注册功能"
+							href="<%=root%>/toRegister" data-placement="bottom" 
 							target="_blank">注册</a></li>
 						<%
 							}
@@ -188,6 +187,7 @@ body {
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=root%>/static/js/skill.js"></script>
+	<script src="<%=root%>/static/js/3dtabcloud.js"></script>
 	<script type="text/javascript">
 		var uid="";
 		var uname="";

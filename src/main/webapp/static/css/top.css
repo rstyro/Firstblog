@@ -235,6 +235,43 @@ a.index-user{
 	max-height: 100px;
 }
 
+/*标签云*/
+#tagcloud {position:relative; width:100%; min-height:300px; margin: 20px auto 0; }
+#tagcloud a {position:absolute; top:0px; left:0px; font-family: Microsoft YaHei; color:#fff; font-weight:bold; text-decoration:none; padding: 3px 6px; }
+#tagcloud a:hover {border: 1px solid #eee; background: #000; }
+#tagcloud .danger {
+	color: #d9534f;
+}
+
+#tagcloud .info {
+	color: #5BC0DE;
+}
+
+#tagcloud .success {
+	color: #5cb85c;
+}
+
+#tagcloud .warning {
+	color: #f0ad4e;
+}
+
+#tagcloud .primary {
+	color: #337ab7;
+}
+
+#tagcloud .default {
+	color: #ccc;
+}
+
+#tagcloud .friend {
+	color: #7171B2;
+}
+#tagcloud p { font: 16px Microsoft YaHei; text-align: center; color: #ba0c0c; }
+#tagcloud p a { font-size: 14px; color: #ba0c0c; }
+#tagcloud p a:hover { color: red; }
+
+
+
 .blog-article .footer {
 	width: 100%;
 	height:3em;

@@ -68,12 +68,23 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				<i class="glyphicon glyphicon-tasks"></i><strong> 我的技能雷达</strong>
+				<i class="glyphicon glyphicon-tags"></i><strong> 文章标签</strong>
 			</h3>
 		</div>
 		<div class="panel-body">
-			<div class="row">
-				<div id="my-skills"></div>
+			<div id="tagcloud">
+				<c:choose>
+					<c:when test="${not empty article_labels}">
+						<c:forEach items="${article_labels}" var="label" varStatus="vs">
+								<a
+									href="<%=request.getContextPath()%>/article/label/${label.label_id}/1"
+									title="带有${label.label_name }标签的所有文章" class="${label.label_class }">${label.label_name }</a>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<div class="center">没有相关数据</div>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</div>
@@ -104,30 +115,18 @@
 		</div>
 	</div>
 </div>
+
 <div style="height: 10px;"></div>
 <div class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				<i class="glyphicon glyphicon-tags"></i><strong> 文章标签</strong>
+				<i class="glyphicon glyphicon-tasks"></i><strong> 我的技能雷达</strong>
 			</h3>
 		</div>
 		<div class="panel-body">
-			<div class="blog-labels">
-				<c:choose>
-					<c:when test="${not empty article_labels}">
-						<c:forEach items="${article_labels}" var="label" varStatus="vs">
-							<div class="${label.label_class}">
-								<a
-									href="<%=request.getContextPath()%>/article/label/${label.label_id}/1"
-									title="带有${label.label_name }标签的所有文章">${label.label_name }</a>
-							</div>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<div class="center">没有相关数据</div>
-					</c:otherwise>
-				</c:choose>
+			<div class="row">
+				<div id="my-skills"></div>
 			</div>
 		</div>
 	</div>
@@ -190,3 +189,4 @@
 		</div>
 	</div>
 </div>
+

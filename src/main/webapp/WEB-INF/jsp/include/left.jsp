@@ -142,9 +142,11 @@
 		<div class="panel-body">
 			<c:choose>
 				<c:when test="${not empty article_recommend }">
+				<ul class="blog_article_recommend_ul">
 					<c:forEach items="${article_recommend }" var="recommend"
 						varStatus="vs">
-						<p title="${recommend.title }">
+						<li  title="${recommend.title }">
+							<span class="r_n">${vs.index+1 }</span>
 							<a
 								href="<%=request.getContextPath()%>/article/${recommend.article_id }">
 								<c:choose>
@@ -156,11 +158,16 @@
 									</c:otherwise>
 								</c:choose>
 							</a>
-						</p>
+						</li>
 					</c:forEach>
+				</ul>
 				</c:when>
 				<c:otherwise>
-					<p>暂无推荐文章</p>
+					<ul>
+						<li>
+							暂无推荐文章
+						</li>
+					</ul>
 				</c:otherwise>
 			</c:choose>
 		</div>

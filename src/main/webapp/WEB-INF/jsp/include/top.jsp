@@ -46,6 +46,37 @@ body {
 .navbar-toggle .icon-bar {
 	background-color: #fff;
 }
+.blog_article_recommend_ul{
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+.blog_article_recommend_ul li {
+	margin-bottom: 0.5em;
+	padding:0.2em;
+	border-bottom: 1px dashed #efe4e4;
+}
+.blog_article_recommend_ul li span{
+	display: inline-block;
+	background-color: #ccc;
+	vertical-align: middle;
+	padding:0.1em  0.5em;
+	color: #fff;
+}
+.blog_article_recommend_ul li:nth-child(1) span{
+	background-color: red;
+}
+.blog_article_recommend_ul li:nth-child(2) span{
+	background-color: #DE3131;
+}
+.blog_article_recommend_ul li:nth-child(3) span{
+	background-color: #A22E2E;
+}
+.blog_article_recommend_ul li a{
+	margin-left: 0.5em;
+	text-decoration: none;
+}
+
 </style>
 <link href="<%=root%>/static/css/top.css" rel="stylesheet"
 	media="screen" type="text/css">

@@ -266,9 +266,62 @@ public class PageController extends BaseController {
 	@RequestMapping(value = "/toLeaveWord", method = RequestMethod.GET)
 	public ModelAndView toLeaveWord() {
 		ModelAndView view = this.getModelAndView();
+		try {
+			
 		System.out.println(".............leaveWord");
 		String ip = this.getRemortIP();
 		log.info("有人访问留言页面，ip=" + ip);
+		ParameterMap pm = this.getParameterMap();
+		pm.put("user_id", "1");
+		Map<String, Object> userMap = userService.getUserBasicInfo(pm);
+		List<ParameterMap> userLabels = null;
+		ParameterMap userInfo = null;
+		// 博主信息
+		try {
+
+			userInfo = (ParameterMap) userMap.get("userInfo");
+		} catch (Exception e) {
+			userInfo = new ParameterMap();
+			e.printStackTrace();
+			log.error("获取用户信息失败", e);
+		}
+
+		// 博主信息
+		try {
+			userLabels = (List<ParameterMap>) userMap.get("userLabels");
+		} catch (Exception e) {
+			e.printStackTrace();
+			userLabels = new ArrayList<ParameterMap>();
+		}
+
+		//
+		ParameterMap concern = null;
+		Subject subject = SecurityUtils.getSubject();
+		User u = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+		if (u != null) {
+			String userId = u.getUser_id();
+			if (subject.isAuthenticated() && !"1".equals(userId)) {
+				pm.put("user_id", u.getUser_id());
+				pm.put("beconcern_user_id", "1");
+				concern = userService.repeatConcern(pm);
+				if (concern != null && concern.size() > 0) {
+					concern.put("concern_flag", "1");
+				}
+			}
+		}
+		if (concern == null) {
+			concern = new ParameterMap();
+			concern.put("concern_flag", "0");
+		}
+		pm.put("type", "leaveword");
+		ParameterMap jumbotron = articleService.getJumbotron(pm);
+		view.addObject("jumbotron", jumbotron);
+		view.addObject("concern", concern);
+		view.addObject("userInfo", userInfo);
+		view.addObject("userLabels", userLabels);
+		} catch (Exception e) {
+			log.error("err:"+e.getMessage(), e);
+		}
 		view.setViewName("leaveword");
 		return view;
 	}

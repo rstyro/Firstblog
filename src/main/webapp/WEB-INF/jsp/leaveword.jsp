@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -69,21 +70,125 @@
 			top: 50%;
 			left:50%;
 		}
+		.panel-body p{
+			color: #000;
+		}
+		.modal{
+			color: #000;
+		}
 </style>
 </head>
 <body>
 	<div id="blog-mask">
 		<div class='loader loader--glisteningWindow'></div>
 	</div>
+	<div class="jumbotron" style="background-color: #000;background-image: url('');color: #fff;">
+		<div class="container">
+			<h2 class="center">${jumbotron.title}</h2>
+			<p>${jumbotron.content }</p>
+		</div>
+	</div>
 	<div class="container">
-		<div class="blog-leaveword">
-			<header class="">
-				<h1>给我留言</h1>
-				<h2>联系我</h2>
-				<p>邮箱:1006059906@qq.com</p>
-			</header>
-			<textarea id="leaveWord" autofocus="autofocus" cols="100" rows="10" placeholder="写下你的看法，只要不是污言秽语，都可以"></textarea>
-			<p><div id="submit" class="btn btn-info btn-lg">提交</div></p>
+		<div class="row">
+			<div class="col-md-4">
+				<div style="height: 10px;"></div>
+				<div class="row">
+					<div class="panel panel-default wall">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="glyphicon glyphicon-leaf"></i><strong> 个人资料</strong>
+							</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-4 blog-info-head">
+									<a
+										href="<%=request.getContextPath()%>/user/${userInfo.user_id }/1"><img
+										src="${userInfo.img }"></a>
+									<c:if test="${concern.concern_flag == '1' }">
+										<a href="javascript:void(0)" uid="${userInfo.user_id }"
+											class="btn btn-default-concern btn-concern"> <span>已关注</span>
+										</a>
+									</c:if>
+									<c:if test="${concern.concern_flag == '0' }">
+										<a href="javascript:void(0)" uid="${userInfo.user_id }"
+											class="btn btn-info btn-concern"> <span
+											class="glyphicon glyphicon-plus"></span><span> 关注</span>
+										</a>
+									</c:if>
+									<a href="javascript:void(0)" uid="${userInfo.user_id }"
+										uname="${userInfo.name }" class="btn btn-success btn-letter">
+										<span class="glyphicon glyphicon-envelope"></span><span>
+											私信</span>
+									</a>
+								</div>
+								<div class="col-md-8">
+									<a
+										href="<%=request.getContextPath()%>/user/${userInfo.user_id }/1"
+										class="index-user"><h4>
+											<i class="glyphicon glyphicon-fire red"></i> <font
+												style="font-weight: bold;">${userInfo.name }</font>
+										</h4></a>
+									<p>
+										<i class="glyphicon glyphicon-info-sign green"></i>
+										${userInfo.sign }
+									</p>
+									<p>
+										<i class="glyphicon glyphicon-map-marker green"></i>
+										${userInfo.locate }
+									</p>
+									<div class="row">
+										<div class="col-sm-1 col-md-2">
+											<i class="glyphicon glyphicon glyphicon-tags green"></i>
+										</div>
+										<div class="col-sm-11 col-md-10">
+											<div class="blog-labels">
+												<c:choose>
+													<c:when test="${not empty userLabels}">
+														<c:forEach items="${userLabels}" var="label"
+															varStatus="vs">
+															<div class="${label.label_class}">
+																<a title="${label.label_name } 的标签">${label.label_name }</a>
+															</div>
+														</c:forEach>
+													</c:when>
+													<c:otherwise>
+														<div class="center">没有标签</div>
+													</c:otherwise>
+												</c:choose>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="height: 10px;"></div>
+				<div class="row">
+					<div class="panel panel-default wall">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="glyphicon glyphicon-bookmark"></i><strong> 联系方式</strong>
+							</h3>
+						</div>
+						<div class="panel-body">
+							<p><span><i class="glyphicon glyphicon-envelope"></i> 邮箱</span>:1006059906@qq.com</p>
+							<p><span><i class="glyphicon glyphicon-phone"></i> 手机</span>:18818864644</p>
+							<div>
+								<p><span><i class="	glyphicon glyphicon-qrcode"></i> 微信:</span></p>
+								<img src="<%=root %>/static/images/twocode.jpg" style="width:100%;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-7 col-md-offset-1">
+				<div class="blog-leaveword">
+					<textarea id="leaveWord" autofocus="autofocus" cols="80" rows="10" placeholder="写下你的看法，只要不是污言秽语，都可以"></textarea>
+					<p><div id="submit" class="btn btn-info btn-lg">提交</div></p>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -95,7 +200,8 @@
 	<script type="text/javascript">
 	$(function(){
 		//下雪
-		$(document).snowfall({shadow : true, flakeCount:200});
+		$(document).snowfall({shadow : true, flakeCount:200,round : true,filter:true,minSize: 2, maxSize:10,filterNum:1.5,collection:".wall"});
+		
 		var wh = $(document).height();
 		var textareaH = $("#leaveWord").height();
 		$(".blog-leaveword").css("height",wh-textareaH+50);

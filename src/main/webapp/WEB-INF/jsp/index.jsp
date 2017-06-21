@@ -39,6 +39,7 @@
 	<!-- footer -->
 	<%@include file="./include/footer.jsp"%>
 </body>
+<script src="<%=root%>/static/js/3dtabcloud.js"></script>
 <script type="text/javascript">
 $(function(){
 	$(".navbar-nav li:eq(0)").addClass("top-active");

@@ -77,7 +77,9 @@
 				maxSize : 2,
 				minSpeed : 1,
 				maxSpeed : 5,
+				filterNum : 0,
 				round : false,
+				filter : false,
 				shadow : false,
 				collection : false,
 				collectionHeight : 40,
@@ -268,6 +270,10 @@
 			// This adds shadows just below the snowflake so they pop a bit on lighter colored web pages
 			if(options.shadow){
 				$('.snowfall-flakes').css({'-moz-box-shadow' : '1px 1px 1px #555', '-webkit-box-shadow' : '1px 1px 1px #555', 'box-shadow' : '1px 1px 1px #555'});
+			}
+			
+			if(options.filter){
+				$('.snowfall-flakes').css({'-moz-filter' : 'blur('+options.filterNum+'px)', '-webkit-filter' : 'blur('+options.filterNum+'px)', 'filter' : 'blur('+options.filterNum+'px)'});
 			}
 
 			// On newer Macbooks Snowflakes will fall based on deviceorientation

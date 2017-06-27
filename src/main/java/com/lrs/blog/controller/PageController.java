@@ -348,6 +348,20 @@ public class PageController extends BaseController {
 
 		return view;
 	}
+	
+	/**
+	 * 关于我
+	 * @return
+	 */
+	@RequestMapping(value = "/toAboutMe", method = RequestMethod.GET)
+	public ModelAndView toAboutMe() {
+		ModelAndView view = this.getModelAndView();
+		ParameterMap pm = this.getParameterMap();
+		ParameterMap user = userService.getAboutMeInfo(pm);
+		view.addObject("user", user);
+		view.setViewName("about");
+		return view;
+	}
 
 	/**
 	 * 搜索
@@ -383,7 +397,6 @@ public class PageController extends BaseController {
 				articlehot = articleService.gethotArticle(pm);
 				log.info("不是缓存获取 文章热门");
 			}
-			System.out.println("pm=" + pm);
 			// 搜索结果
 			page.setShowCount(10);
 			page.setPm(pm);

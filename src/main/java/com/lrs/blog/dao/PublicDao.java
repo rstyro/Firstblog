@@ -134,6 +134,9 @@ public interface PublicDao {
 	 * @return
 	 */
 	public List<ParameterMap> getCommentlist(ParameterMap pm);
+	
+	
+	public List<ParameterMap> getJokelist(ParameterMap pm);
 
 	/**
 	 * 文章的作者iD

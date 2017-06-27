@@ -8,13 +8,12 @@
 <!-- 
 <meta property="wb:webmaster" content="7383e34a05d5ab94" />
  -->
-<meta name="keywords" content="这个冬天不太冷,博客,文章,lrshuai.top" /> 
-<meta name="description" content="博客,blog,文章" /> 
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=root%>/static/images/favicon.ico">
 <title>Blog</title>
-
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个夏天好冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个冬天不太冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <link href="<%=root%>/static/bootstrap-3.3.7/css/bootstrap.css"
 	rel="stylesheet">
 <!--[if lt IE 9]>
@@ -37,44 +36,6 @@ body {
 
 .jumbotron p, h2 {
 	text-align: center;
-}
-
-.navbar-toggle {
-	background-color: #403c3c;
-}
-
-.navbar-toggle .icon-bar {
-	background-color: #fff;
-}
-.blog_article_recommend_ul{
-	list-style: none;
-	padding: 0px;
-	margin: 0px;
-}
-.blog_article_recommend_ul li {
-	margin-bottom: 0.5em;
-	padding:0.2em;
-	border-bottom: 1px dashed #efe4e4;
-}
-.blog_article_recommend_ul li span{
-	display: inline-block;
-	background-color: #ccc;
-	vertical-align: middle;
-	padding:0.1em  0.5em;
-	color: #fff;
-}
-.blog_article_recommend_ul li:nth-child(1) span{
-	background-color: red;
-}
-.blog_article_recommend_ul li:nth-child(2) span{
-	background-color: #DE3131;
-}
-.blog_article_recommend_ul li:nth-child(3) span{
-	background-color: #A22E2E;
-}
-.blog_article_recommend_ul li a{
-	margin-left: 0.5em;
-	text-decoration: none;
 }
 
 </style>
@@ -111,7 +72,7 @@ body {
 					<%
 						}
 					%>
-					<li data-toggle="modal" data-target="#myModal"><a href="#"><span
+					<li><a href="<%=root%>/toAboutMe"><span
 							class="glyphicon glyphicon-magnet"></span> 关于</a></li>
 				</ul>
 			</div>
@@ -150,10 +111,12 @@ body {
 							href="<%=root%>/toLogin" 
 							data-placement="bottom" 
 							target="_blank">登录</a></li>
+							<%-- 
 						<li><a
 							class="register btn btn-normal btn-success  navbar-btn"
 							href="<%=root%>/toRegister" data-placement="bottom" 
 							target="_blank">注册</a></li>
+							 --%> 
 						<%
 							}
 						%>
@@ -163,25 +126,6 @@ body {
 		</div>
 	</nav>
 	<div style="margin-top: 50px;"></div>
-
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">个人博客</h4>
-				</div>
-				<div class="modal-body">
-					<p>记录我迈过的坑坑坎坎。。。。</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<div class="modal fade" id="letterModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -218,6 +162,7 @@ body {
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=root%>/static/js/skill.js"></script>
+	<script src="<%=root%>/static/js/3dtabcloud.js"></script>
 	<script type="text/javascript">
 		var uid="";
 		var uname="";

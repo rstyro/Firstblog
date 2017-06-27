@@ -121,6 +121,25 @@
 			 or a.username=#{username}
 			</if>
 	</select>
+	
+	
+	<select id="getAboutMeInfo" parameterType="pm" resultType="pm">
+		SELECT 
+			onlineName,
+			locate,
+			nativePlace,
+			profession,
+			skills,
+			phone,
+			content1,
+			content2,
+			content3,
+			content4,
+			content5,
+			create_time
+		from 
+			blog_introduce
+	</select>
 
 	<!-- 更新用户信息 -->
 	<update id="updateUserInfo" parameterType="pm">

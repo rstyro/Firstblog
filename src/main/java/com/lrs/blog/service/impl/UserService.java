@@ -670,6 +670,21 @@ public class UserService implements IUserService {
 		return null;
 	}
 
+	@Override
+	public ParameterMap getAboutMeInfo(ParameterMap pm) {
+		try {
+			pm = userDao.getAboutMeInfo(pm);
+			List<ParameterMap> jokes = publicDao.getJokelist(pm);
+			ParameterMap joke = jokes.get(MyUtil.getRandomNum(0, jokes.size()));
+			pm.put("joke", joke.getString("content"));
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.error("error:"+e.getMessage(), e);
+		}
+		return pm;
+	}
+	
+	
 	/**
 	 * 更改用户信息
 	 * 

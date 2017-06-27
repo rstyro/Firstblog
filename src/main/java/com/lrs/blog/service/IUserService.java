@@ -93,4 +93,6 @@ public interface IUserService {
 	 * @return
 	 */
 	public ParameterMap repeatConcern(ParameterMap pm);
+	
+	public ParameterMap getAboutMeInfo(ParameterMap pm);
 }

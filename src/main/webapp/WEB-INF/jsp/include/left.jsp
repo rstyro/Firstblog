@@ -182,16 +182,18 @@
 			</h3>
 		</div>
 		<div class="panel-body">
-			<c:choose>
-				<c:when test="${not empty linkList }">
-					<c:forEach items="${linkList }" var="link" varStatus="vs">
-						<p><a target="_blank" href="${link.link }">${link.link_name }</a></p>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<h4>暂无友链，添加友链给我留言</h4>
-				</c:otherwise>
-			</c:choose>
+				<ul class="blog_link">
+					<c:choose>
+						<c:when test="${not empty linkList }">
+							<c:forEach items="${linkList }" var="link" varStatus="vs">
+								<li><a target="_blank" href="${link.link }">${link.link_name }</a></li>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<li><a target="_blank" href="http://lrshuai.top">这个冬天不太冷</a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
 		</div>
 	</div>
 </div>

@@ -1,6 +1,9 @@
 a {
 	text-decoration: none;
 }
+a:hover{
+	color: #3399FF;
+}
 .topul {
 	border: 0px;
 }
@@ -19,6 +22,14 @@ a {
 
 .navbar .container {
 	position: relative;
+}
+
+.navbar-toggle {
+	background-color: #403c3c;
+}
+
+.navbar-toggle .icon-bar {
+	background-color: #fff;
 }
 
 .btn-group {
@@ -219,6 +230,9 @@ a.index-user{
 	font-size: 1.7em;
 	font-weight: bold;
 }
+.blog-article .title a:hover{
+	color: #3399FF;
+}
 
 .blog-article .content {
 	min-height: 2em;
@@ -269,7 +283,59 @@ a.index-user{
 #tagcloud p { font: 16px Microsoft YaHei; text-align: center; color: #ba0c0c; }
 #tagcloud p a { font-size: 14px; color: #ba0c0c; }
 #tagcloud p a:hover { color: red; }
+.blog_link{
+	padding: 0px;
+	
+}
 
+.blog_article_recommend_ul{
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+.blog_article_recommend_ul li {
+	margin-bottom: 0.5em;
+	padding:0.2em;
+	border-bottom: 1px dashed #efe4e4;
+}
+.blog_article_recommend_ul li span{
+	display: inline-block;
+	background-color: #ccc;
+	vertical-align: middle;
+	padding:0.1em  0.5em;
+	color: #fff;
+}
+.blog_article_recommend_ul li:nth-child(1) span{
+	background-color: red;
+}
+.blog_article_recommend_ul li:nth-child(2) span{
+	background-color: #DE3131;
+}
+.blog_article_recommend_ul li:nth-child(3) span{
+	background-color: #A22E2E;
+}
+.blog_article_recommend_ul li a{
+	margin-left: 0.5em;
+	text-decoration: none;
+	color: #585555;
+}
+.blog_article_recommend_ul li a:hover{
+	color: #3399FF;
+}
+
+.blog_link li{
+	text-align: center;
+	float: left;
+	width: 50%;
+	list-style: none;
+}
+.blog_link li a{
+	text-decoration: none;
+	color: #999;
+}
+.blog_link li a:hover{
+	color: #3399FF;
+}
 
 .blog-article .footer {
 	width: 100%;

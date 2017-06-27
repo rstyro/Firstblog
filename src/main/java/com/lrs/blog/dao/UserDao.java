@@ -27,6 +27,9 @@ public interface UserDao {
 	 * @return
 	 */
 	public ParameterMap getUserInfo(ParameterMap pm);
+	
+	
+	public ParameterMap getAboutMeInfo(ParameterMap pm);
 
 	/**
 	 * 查看是否有重复的email

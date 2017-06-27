@@ -177,7 +177,7 @@
 							<p><span><i class="glyphicon glyphicon-phone"></i> 手机</span>:18818864644</p>
 							<div>
 								<p><span><i class="	glyphicon glyphicon-qrcode"></i> 微信:</span></p>
-								<img src="<%=root %>/static/images/twocode.jpg" style="width:100%;"/>
+								<img src="<%=root %>/static/images/twocode.png" style="width:100%;"/>
 							</div>
 						</div>
 					</div>
@@ -199,6 +199,7 @@
 	<script src="<%=root%>/static/js/snow/snowfall.jquery.js"></script>
 	<script type="text/javascript">
 	$(function(){
+		$(".navbar-nav li:eq(2)").addClass("top-active");
 		//下雪
 		$(document).snowfall({shadow : true, flakeCount:200,round : true,filter:true,minSize: 2, maxSize:10,filterNum:1.5,collection:".wall"});
 		

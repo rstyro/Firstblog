@@ -180,6 +180,15 @@
 	</select>
 	
 	
+	<select id="getJokelist" parameterType="pm" resultType="pm">
+		SELECT 
+			joke_id,
+			content 
+		FROM 
+			blog_joke
+	</select>
+	
+	
 	<!-- 更新浏览数 -->
 	<update id="updateBrowseNum" parameterType="pm" >
 		update blog_article

@@ -8,6 +8,7 @@ var wh = document.documentElement.clientHeight;
 				        'simpleupload', //单图上传
 				        'insertimage', //多图上传
 				        'emotion', //表情
+				        'link',//链接
 				        'justifyleft', //居左对齐
 				        'justifyright', //居右对齐
 				        'justifycenter', //居中对齐

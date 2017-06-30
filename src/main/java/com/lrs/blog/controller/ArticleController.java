@@ -213,6 +213,15 @@ public class ArticleController extends BaseController {
 			}
 			view.addObject("concern", concern);
 			
+			// 友链
+			List<ParameterMap> linkList = null;
+			try {
+				linkList = (List<ParameterMap>) cacheService.getCacheLinks(pm);
+			} catch (Exception e) {
+				e.printStackTrace();
+				linkList = new ArrayList<ParameterMap>();
+			}
+			view.addObject("linkList", linkList);
 			
 			// 分页Map
 			ParameterMap pmpage = new ParameterMap(page);
@@ -342,6 +351,16 @@ public class ArticleController extends BaseController {
 				concern.put("concern_flag", "0");
 			}
 			view.addObject("concern", concern);
+			
+			// 友链
+			List<ParameterMap> linkList = null;
+			try {
+				linkList = (List<ParameterMap>) cacheService.getCacheLinks(pm);
+			} catch (Exception e) {
+				e.printStackTrace();
+				linkList = new ArrayList<ParameterMap>();
+			}
+			view.addObject("linkList", linkList);
 			
 			// 分页Map
 			ParameterMap pmpage = new ParameterMap(page);

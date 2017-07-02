@@ -4,6 +4,8 @@ var ue = UE.getEditor('article_comment', {
 					        'emotion', //表情
 					        'simpleupload', //单图上传
 					        'insertimage', //多图上传
+					        'link',
+					        'insertcode',
 					    ]
 					],  
 		          initialFrameHeight:200,

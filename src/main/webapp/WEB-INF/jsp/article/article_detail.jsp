@@ -157,9 +157,9 @@
 
 			<div class="row">
 				<div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-					<h2>
+					<h3>
 						<span class="glyphicon glyphicon-edit"></span> 发表评论
-					</h2>
+					</h3>
 					<hr>
 					<script id="article_comment" name="content" type="text/plain"></script>
 					<a href="javascript:void(0);" id="blog_comment" class="btn btn-info pull-right"

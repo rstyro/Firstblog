@@ -37,7 +37,13 @@ body {
 .jumbotron p, h2 {
 	text-align: center;
 }
-
+.toTop{
+		position: fixed;
+		bottom: 100px;
+		right: 1em;
+		font-size: 2em;
+		display: none;
+	}
 </style>
 <link href="<%=root%>/static/css/top.css" rel="stylesheet"
 	media="screen" type="text/css">
@@ -167,7 +173,16 @@ body {
 		var uid="";
 		var uname="";
 		$(function(){
-			
+			$(window).scroll(function(){
+				var wh = $(document.body).height();
+				var sroh = $(document).scrollTop();
+				if(sroh > (wh/2)){
+					$(".toTop").show();
+				}else{
+					$(".toTop").hide();
+				}
+				console.log("wh="+wh+",sroh="+sroh);
+			});
 			$("[data-toggle='tooltip']").tooltip();
 			
 			 $('.list-group li').each(function() {

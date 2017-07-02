@@ -178,12 +178,6 @@ a.index-user{
 	color: #fff;
 }
 
-.toTop{
-		position: fixed;
-		bottom: 0;
-		right: 0;
-		font-size: 2em;
-	}
 	
 	
 .blog-article {
@@ -331,7 +325,7 @@ a.index-user{
 }
 .blog_link li a{
 	text-decoration: none;
-	color: #999;
+	color: #5a5a5a;
 }
 .blog_link li a:hover{
 	color: #3399FF;

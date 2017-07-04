@@ -58,6 +58,7 @@ public class UserController extends BaseController {
 		ParameterMap userInfo = (ParameterMap) map.get("userInfo");
 		List<ParameterMap> articleList = (List<ParameterMap>) map.get("articleList");
 		List<ParameterMap> userLabels = (List<ParameterMap>) map.get("userLabels");
+		ParameterMap num =  (ParameterMap) map.get("totalPraiseNum");
 		List<ParameterMap> labels=null;
 		ParameterMap concern = null;
 		Subject subject = SecurityUtils.getSubject();
@@ -84,8 +85,10 @@ public class UserController extends BaseController {
 			e.printStackTrace();
 			labels = new ArrayList<>();
 		} 
+		
 		System.out.println("concern=" + concern);
 		view.addObject("concern", concern);
+		view.addObject("num", num);
 		ParameterMap page = (ParameterMap) map.get("page");
 		view.addObject("userInfo", userInfo);
 		view.addObject("articles", articleList);

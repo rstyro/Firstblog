@@ -122,6 +122,10 @@
 			</if>
 	</select>
 	
+	<select id="getTotalPraiseNum" parameterType="pm" resultType="pm">
+		SELECT SUM(praise_num) as totalPraiseNum ,user_id from blog_article WHERE user_id=1
+	</select>
+	
 	
 	<select id="getAboutMeInfo" parameterType="pm" resultType="pm">
 		SELECT 

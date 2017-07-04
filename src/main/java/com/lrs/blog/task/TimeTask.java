@@ -25,7 +25,7 @@ public class TimeTask {
 	/**
 	 * 每30分钟刷新一次首页
 	 */
-	@Scheduled(cron = "0 0/30 0 ? * *")
+	@Scheduled(cron = "0 0/30 * ? * *")
 	public void homeArticle() {
 		int issuccess = cacheService.cacheAllArticle(new ParameterMap());
 		if (issuccess == 1) {

@@ -99,6 +99,13 @@ public class UserService implements IUserService {
 			}
 			map.put("userLabels", userLabels);
 
+			ParameterMap totalPraiseNum = userDao.getTotalPraiseNum(pm);
+			if(totalPraiseNum == null || totalPraiseNum.size() == 0){
+				totalPraiseNum=new ParameterMap();
+				totalPraiseNum.put("totalPraiseNum", "888");
+			}
+			map.put("totalPraiseNum", totalPraiseNum);
+			
 		} catch (Exception e) {
 			log.info(e.getMessage(), e);
 		}

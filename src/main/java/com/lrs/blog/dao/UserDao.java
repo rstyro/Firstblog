@@ -11,6 +11,9 @@ public interface UserDao {
 	 * @return
 	 */
 	public int saveUser(ParameterMap pm);
+	
+	
+	public ParameterMap getTotalPraiseNum(ParameterMap pm);
 
 	/**
 	 * 更新用户信息

@@ -156,7 +156,7 @@
 						粉丝数:<span>${userInfo.fans_num }</span>
 					</p>
 					<p class="col-sm-2">
-						获赞数:<span>${userInfo.fans_num }</span>
+						获赞数:<span>${num.totalPraiseNum }</span>
 					</p>
 					<p class="col-sm-4">
 						位置:<span>${userInfo.locate }</span>

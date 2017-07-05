@@ -114,9 +114,8 @@ String root = request.getContextPath();
 					<a href="<%=root%>/toResetPsw">找回密码</a><a href="<%=root%>/toLogin">登录</a>
 				</div>
 				<div class="login-right">
-					<a href="javascript:void();" onclick='toQQLogin()'><img src="<%=root %>/static/images/qq.png"></a>
-					<a href="javascript:void();" onclick='toWXLogin()'><img src="<%=root %>/static/images/weixin.png"></a>
-					<a href="javascript:void();" onclick='toWBLogin()'><img src="<%=root %>/static/images/weibo.png"></a>
+					<a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101401237&redirect_uri=http://www.lrshuai.top/user/qqredirect&state=lrs_blog" ><img src="<%=root %>/static/images/qq.png"></a>
+					<a href="https://api.weibo.com/oauth2/authorize?client_id=884248037&response_type=code&redirect_uri=http://www.lrshuai.top/user/weiboredirect" ><img src="<%=root %>/static/images/weibo.png"></a>
 				</div>
 			</div>
 		</form>

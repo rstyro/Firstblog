@@ -23,9 +23,9 @@ public class TimeTask {
 	private MyLogger log = MyLogger.getLogger(this.getClass());
 
 	/**
-	 * 每30分钟刷新一次首页
+	 * 每天凌晨1点10分刷一次
 	 */
-	@Scheduled(cron = "0 0/30 * ? * *")
+	@Scheduled(cron = "10 1 0 ? * *")
 	public void homeArticle() {
 		int issuccess = cacheService.cacheAllArticle(new ParameterMap());
 		if (issuccess == 1) {

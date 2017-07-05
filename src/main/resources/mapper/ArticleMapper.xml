@@ -193,13 +193,14 @@
 	<select id="getRecommendArticle" parameterType="pm"  resultType="pm">
 		SELECT 
 			article_id,
-			title
+			title,
+			(praise_num * 10)+browse_num as orderNum
 		FROM 
 			blog_article 
 		where 
 			isrecommend=1 and isdel=0
 		ORDER BY
-			praise_num DESC,browse_num DESC,create_time DESC
+			orderNum desc,praise_num DESC,browse_num DESC,create_time DESC
 		LIMIT 0,5
 	</select>
 	

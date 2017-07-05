@@ -56,7 +56,6 @@ public class ArticleController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
-	@ResponseBody
 	public ModelAndView articleDetail(@PathVariable("articleId") String articleId) throws Exception {
 		ModelAndView view = this.getModelAndView();
 		try {
@@ -119,7 +118,6 @@ public class ArticleController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/month/{article_month}/{pageNo}", method = RequestMethod.GET)
-	@ResponseBody
 	public ModelAndView articleMonth(@PathVariable("article_month") String articleMonth,
 			@PathVariable("pageNo") String pageNo) throws Exception {
 		ModelAndView view = this.getModelAndView();
@@ -251,7 +249,6 @@ public class ArticleController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/label/{label_id}/{pageNo}", method = RequestMethod.GET)
-	@ResponseBody
 	public ModelAndView articleLabel(@PathVariable("label_id") String labelId, @PathVariable("pageNo") String pageNo)
 			throws Exception {
 		ModelAndView view = this.getModelAndView();

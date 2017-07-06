@@ -38,7 +38,7 @@ import com.lrs.util.ReflectHelper;
  * 
  * 类名称：PagePlugin.java 类描述：
  * 
- * @author fuhang 作者单位： 联系方式： 创建时间：2014年7月1日
+ * @author fuhang  创建时间：2014年7月1日
  * @version 1.0
  * @Intercepts 是mybaits的拦截器注解
  * @Signature 表明要拦截的接口、方法以及对应的参数类型。
@@ -59,7 +59,8 @@ public class PagePlugin implements Interceptor {
 
 			if (mappedStatement.getId().matches(pageSqlId)) { // 拦截需要分页的SQL
 				BoundSql boundSql = delegate.getBoundSql();
-				Object parameterObject = boundSql.getParameterObject();// 分页SQL<select>中parameterType属性对应的实体参数，即Mapper接口中执行分页方法的参数,该参数不得为空
+				// 分页SQL<select>中parameterType属性对应的实体参数，即Mapper接口中执行分页方法的参数,该参数不得为空
+				Object parameterObject = boundSql.getParameterObject();
 				if (parameterObject == null) {
 					throw new NullPointerException("parameterObject尚未实例化！");
 				} else {

@@ -65,7 +65,7 @@ public class MyUtil {
 	}
 
 	/**
-	 * json回调
+	 * json回调,jsonp跨域
 	 * 
 	 * @param pd
 	 * @param map

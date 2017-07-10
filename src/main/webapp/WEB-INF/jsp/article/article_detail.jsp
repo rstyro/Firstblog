@@ -387,8 +387,8 @@
 							        cache:false,
 							        success: function(data){
 							       	 if("success" == data.status)  {
-							       		addReplycomment(data.data,replyBody);
 							       		$(".replytext").remove();
+							       		addReplycomment(data.data,replyBody);
 							       	 }else if("auth" == data.status){
 							       		window.location.href="<%=root%>/toLogin";
 							       	 }else{

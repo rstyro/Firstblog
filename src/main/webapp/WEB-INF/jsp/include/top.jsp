@@ -168,7 +168,6 @@ body {
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=root%>/static/js/skill.js"></script>
-	<script src="<%=root%>/static/js/3dtabcloud.js"></script>
 	<script type="text/javascript">
 		var uid="";
 		var uname="";
@@ -181,7 +180,6 @@ body {
 				}else{
 					$(".toTop").hide();
 				}
-				console.log("wh="+wh+",sroh="+sroh);
 			});
 			$("[data-toggle='tooltip']").tooltip();
 			

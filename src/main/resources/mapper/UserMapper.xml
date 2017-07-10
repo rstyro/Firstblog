@@ -123,7 +123,7 @@
 	</select>
 	
 	<select id="getTotalPraiseNum" parameterType="pm" resultType="pm">
-		SELECT SUM(praise_num) as totalPraiseNum ,user_id from blog_article WHERE user_id=1
+		SELECT IFNULL(SUM(praise_num),0) as totalPraiseNum ,user_id from blog_article WHERE user_id=#{user_id}
 	</select>
 	
 	

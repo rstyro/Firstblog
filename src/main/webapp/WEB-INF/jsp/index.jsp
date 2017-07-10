@@ -14,6 +14,7 @@
 <body>
 	<%@include file="./include/top.jsp"%>
 	<script src="<%=root%>/static/js/bootstrap-paginator.js"></script>
+	<script src="<%=root%>/static/js/3dtabcloud.js"></script>
 	<div class="jumbotron">
 		<div class="container">
 			<h2 class="center">${jumbotron.title}</h2>

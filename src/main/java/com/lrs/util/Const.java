@@ -64,4 +64,6 @@ public class Const {
 	// 热门搜索缓存的id
 	public static final String HOT_ARTICLE_ID_LIST = "HOT_ARTICLE_ID_LIST"; // 归档下的文字列表
 
+	//登录错误ip限制
+	public static final String LOCK = "LOCK_";
 }

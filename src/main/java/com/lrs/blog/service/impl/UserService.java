@@ -33,6 +33,8 @@ import com.lrs.blog.dao.PublicDao;
 import com.lrs.blog.dao.UserDao;
 import com.lrs.blog.entity.Lock;
 import com.lrs.blog.entity.User;
+import com.lrs.blog.redis.RedisClientTemplate;
+import com.lrs.blog.redis.RedisDataSourceImpl;
 import com.lrs.blog.service.ICacheService;
 import com.lrs.blog.service.IUserService;
 import com.lrs.plugin.Page;
@@ -62,6 +64,9 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private ICacheService cacheService;
+	
+	@Autowired
+	private RedisClientTemplate redis;
 
 	private MyLogger log = MyLogger.getLogger(this.getClass());
 
@@ -143,10 +148,20 @@ public class UserService implements IUserService {
 	@Override
 	public Map<String, Object> login(ParameterMap pm) {
 		Map<String, Object> map = new HashMap<>();
+		String ip = pm.getString("ip");
+		String errNum = redis.get(Const.LOCK+ip);
+		int errorNum =0;
+		if(StringUtils.isNotBlank(errNum)){
+			errorNum = Integer.parseInt(errNum);
+			if(errorNum >= 5){
+				map.put("msg", "登录错误次数过多,账号已被锁定,从锁定开始 &nbsp;&nbsp;3  小时内不能进行登录操作。");
+				map.put("status", "failed");
+				return map;
+			}
+		}
 		try {
 			String username = pm.getString("username");
 			String password = pm.getString("password");
-			String ip = pm.getString("ip");
 			String msg = "";
 			if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
 				Subject subject = SecurityUtils.getSubject();
@@ -155,7 +170,6 @@ public class UserService implements IUserService {
 				pm.put("username", username);
 				// 密码加密
 				String passwd = new SimpleHash("SHA-1", password, Const.SALT).toString();
-				System.out.println("passwd=" + passwd);
 				pm.put("password", passwd);
 				ParameterMap pmUser = userDao.getUserInfo(pm);
 				if (pmUser != null && pmUser.size() > 0) {
@@ -167,6 +181,13 @@ public class UserService implements IUserService {
 				} else {
 					map.put("msg", "用户名或密码错误");
 					map.put("status", "failed");
+					++errorNum;
+					if(errorNum >= 5){
+						map.put("msg", "登录错误次数过多,账号已被锁定,从锁定开始 &nbsp;&nbsp; 3  小时内不能进行登录操作。");
+						redis.setex(Const.LOCK+ip, 60*3*60, errorNum+"");
+					}else{
+						redis.set(Const.LOCK+ip, errorNum+"");
+					}
 					return map;
 				}
 				User user = new User();

@@ -63,6 +63,7 @@ public interface PublicDao {
 	 */
 	public int delPraise(ParameterMap pm);
 
+	
 	/**
 	 * 删除评论
 	 * 

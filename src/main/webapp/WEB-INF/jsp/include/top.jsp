@@ -40,9 +40,12 @@
 <meta name="description" content="这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=root%>/static/images/favicon.ico">
+	
 <title>Blog</title>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个冬天不太冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <link href="<%=root%>/static/bootstrap-3.3.7/css/bootstrap.css"
+	rel="stylesheet">
+<link href="<%=root%>/static/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css"
 	rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -196,7 +199,11 @@ body {
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 	<script src="<%=root%>/static/js/skill.js"></script>
+	<!-- ueditor编辑器  代码高亮 -->
+	<script src="<%=root%>/static/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
 	<script type="text/javascript">
+	
+	 SyntaxHighlighter.all();
 		var uid="";
 		var uname="";
 		$(function(){

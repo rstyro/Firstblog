@@ -1,4 +1,5 @@
 var wh = document.documentElement.clientHeight;
+var text = $("#text").html();
 	var ue = UE.getEditor('article_content', {  
 		toolbars: [
 				    [
@@ -20,10 +21,10 @@ var wh = document.documentElement.clientHeight;
 	          autoFloatEnabled: true ,
 	      }); 
 	
-	var text = $("#text").text();
 	ue.addListener("ready", function() {
 		// editor准备好之后才可以使用
 		ue.setContent(text);
+		//ue.execCommand( 'inserthtml', text);
 	});
 	
 	$(function(){

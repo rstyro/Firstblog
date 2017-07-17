@@ -204,6 +204,7 @@ body {
 	<script type="text/javascript">
 	
 	 SyntaxHighlighter.all();
+	 
 		var uid="";
 		var uname="";
 		$(function(){

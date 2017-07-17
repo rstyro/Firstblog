@@ -47,7 +47,8 @@
 				</div>
 			 </div>
 			<div>
-				<code id="text" name="text" style="display: none;">${article.content }</code>
+				<textarea name="text" style="display: none;"></textarea>
+				<code id="text"  style="display: none;">${article.content }</code>
 				
 				<script id="article_content" name="content" type="text/plain"></script>
 			</div>

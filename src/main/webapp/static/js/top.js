@@ -2,7 +2,7 @@ $(function(){
 			$(window).scroll(function(){
 				var wh = $(document.body).height();
 				var sroh = $(document).scrollTop();
-				if(sroh > (wh/2)){
+				if(sroh > (wh/5)){
 					$(".toTop").show();
 				}else{
 					$(".toTop").hide();

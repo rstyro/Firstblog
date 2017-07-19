@@ -332,6 +332,17 @@
 					      <input type="text" class="form-control" name="sign" value="${userInfo.sign}" id="sign" placeholder="请输入个性签名">
 					    </div>
 					  </div>
+					  
+					  <div class="form-group">
+					    <label for="edit_tool" class="col-sm-2 control-label">编辑器</label>
+					    <div class="col-sm-10">
+					      <select name="editTool" id="editTool">
+					      	<option value="editormd" <c:if test="${userInfo.edit_tool == 'editormd' }">selected</c:if> >editormd 富文本编辑器</option>
+					      	<option value="ueditor" <c:if test="${userInfo.edit_tool == 'ueditor' }">selected</c:if>>ueditor 百度编辑器</option>
+					      </select>
+					    </div>
+					  </div>
+					  
 					  <div class="form-group">
 					    <label for="labels" class="col-sm-2 control-label">标签</label>
 					    <div class="col-sm-10">
@@ -492,6 +503,7 @@
 			  var locate=$("input[name='locate']").val();
 			  var sign=$("input[name='sign']").val();
 			  var length = $("input[type='checkbox']:checked").length;
+			  var edit_tool = $("#editTool").val();
 			  var labels = "";
 			  $("input[type='checkbox']:checked").each(function(i){
 				if(i == 0){
@@ -503,7 +515,7 @@
 			  $.ajax({
 					type:"POST",
 			        url:root+"/user/update",
-			        data:{name:name,password:password,locate:locate,sign:sign,labels:labels,time:new Date().getTime()},
+			        data:{name:name,password:password,locate:locate,sign:sign,labels:labels,edit_tool:edit_tool,time:new Date().getTime()},
 			        dataType:"json",
 			        cache:false,
 			        success: function(data){

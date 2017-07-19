@@ -98,7 +98,7 @@
 	</div>
 	<%@include file="../include/footer.jsp" %>
 	<script type="text/javascript" src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="<%=root%>/static/editormd/editormd.min.js"></script>
+    <script type="text/javascript" src="<%=root%>/static/editormd/editormd.js"></script>
     <script type="text/javascript">
   	  var testEditor;
   	  var root = '<%=root%>';
@@ -123,10 +123,10 @@
                //previewCodeHighlight : false, 			 // 关闭预览 HTML 的代码块高亮，默认开启
                emoji : true,				 // 表情
                taskList : true,			 // 这个具体不知道,知道求告知
-               tocm            : true,       // Using [TOCM]
-               tex : true,                   // 开启科学公式TeX语言支持，默认关闭
-               flowChart : true,             // 开启流程图支持，默认关闭
-               sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+               //tocm            : true,       // Using [TOCM]
+               //tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+               //flowChart : true,             // 开启流程图支持，默认关闭
+               //sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
                //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
                //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
                //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true

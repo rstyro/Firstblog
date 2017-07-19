@@ -765,6 +765,7 @@ public class UserService implements IUserService {
 						map.put("status", "auth");
 					}else{
 						//如果没有修改密码的话，刷新session
+						System.out.println("修改默认编辑器为="+pm.getString("edit_tool"));
 						String editTool = pm.getString("edit_tool");
 						user.setEdit_tool(editTool);
 						session.setAttribute(Const.BLOG_USER_SESSION, user);

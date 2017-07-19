@@ -16,7 +16,7 @@ $(document).ready(function() {
 			$('.emoji').qqFace({
 				id : 'facebox', 
 				assign:'article_comment', 
-				path:'/blog/static/emoji/'	//表情存放的路径
+				path:emojiPath	//表情存放的路径
 			});
 
 		    
@@ -43,6 +43,7 @@ $(document).ready(function() {
 	    	       		$("#commentModal").modal('show');
 	    	       		addcomment(data.data,$("#comment-body"));
 	    	       		task = setInterval("commentTask()",500);
+	    	       		$("#article_comment").val("");
 	    	       	 }else if("auth" == data.status){
 	    	       		window.location.href=root+"/toLogin";
 	    	       	 }else{

@@ -1,3 +1,4 @@
+var emojiPath="/blog/static/emoji/";
 $(function(){
 			//获取评论
 			getComment(1,10);
@@ -157,8 +158,8 @@ $(function(){
 					var replyBody = $(this).parent().parent().parent();
 					var replyUserName = $(this).parent().parent().parent().find("h4.media-heading").text();
 					if($(".replytext > textarea").length == 0){
-						$(".replytext").remove();
-						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' id='rpboy' autofocus='autofocus' style='resize:none;'></textarea><br><div><img class='emojiimg' style='margin-top: 10px ;' src='"+root+"/static/images/emoji.png'><span class='btn btn-info pull-right' style='margin-right: 100px;' id='replyfloor'>回复</span><div></div>")
+						$(".replytext").remove();														
+						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' placeholder='想喷他就喷吧，别憋内伤了......' rows='3' id='rpboy' autofocus='autofocus' style='resize:none;'></textarea><br><div><img class='emojiimg' style='margin-top: 10px ;' src='"+root+"/static/images/emoji.png'><span class='btn btn-info pull-right' style='margin-right: 100px;' id='replyfloor'>回复</span><div></div>")
 						.find("#replyfloor").click(function(){
 								var content = $(this).parent().prev().prev().val();
 								content = replace_em(content);
@@ -184,7 +185,7 @@ $(function(){
 						$(".emojiimg").qqFace({
 							id : 'facebox', 
 							assign:'rpboy', 
-							path:'/blog/static/emoji/'	//表情存放的路径
+							path:emojiPath	//表情存放的路径
 						});
 						
 						}else{
@@ -202,7 +203,7 @@ $(function(){
 					var replyUserName=$(this).parent().prev().find("a").eq(0).html();
 					if($(".replytext > textarea").length == 0){
 						$(".replytext").remove();
-						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' id='recboy' autofocus='autofocus' style='resize:none;'></textarea><br><div><img class='emojiimg' style='margin-top:10px;' src='"+root+"/static/images/emoji.png'><span class='btn btn-info pull-right' style='margin-right: 100px;' id='replyfloor'>回复</span><div></div>").find("#replyfloor").click(function(){
+						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' placeholder='想喷他就喷吧，别憋内伤了......' rows='3' id='recboy' autofocus='autofocus' style='resize:none;'></textarea><br><div><img class='emojiimg' style='margin-top:10px;' src='"+root+"/static/images/emoji.png'><span class='btn btn-info pull-right' style='margin-right: 100px;' id='replyfloor'>回复</span><div></div>").find("#replyfloor").click(function(){
 							var content = $(this).parent().prev().prev().val();
 							content = replace_em(content);
 							replyComment(url,tableId,replyUserId,replyUserName,content,parentId,replyBody)
@@ -211,7 +212,7 @@ $(function(){
 						$(".emojiimg").qqFace({
 							id : 'facebox', 
 							assign:'recboy', 
-							path:'/blog/static/emoji/'	//表情存放的路径
+							path:emojiPath	//表情存放的路径
 						});
 					}else{
 						$(".replytext").remove();

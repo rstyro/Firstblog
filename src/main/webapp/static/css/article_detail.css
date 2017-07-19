@@ -74,3 +74,64 @@
 	background-color: red;
 	color: #fff;
 }
+
+	.comment-li{
+		padding: 1em;
+		border-bottom: 1px dashed #fff;
+	}
+	.comment-li img{
+		height:5em;
+	}
+	.comment-li a img{
+		border-radius: 50%;
+	}
+	.comment-li .media-body p{
+		padding-top: 1em;
+	}
+	.comment-li .media-body p span{
+		padding: 1em;
+	}
+	.comment-li p i{
+		cursor: pointer;
+	}
+	.comment-li .icomment{
+		cursor: pointer;
+	}
+	.comment-li .media-body .media{
+		border-left: 3px solid #ccc;
+		padding-left: 1em;
+	}
+	.comment-li .media-body .pcont{
+		font-size: 1em;
+	}
+	.comment-li .media-body .pcont p span{
+		color: #868282;
+	}
+	.comment-li .media-body .pcont p  a.idelc{
+		text-decoration:none;
+		color: #868282;
+	}
+	.comment-li .media-body .idelc{
+		display: none;
+	}
+	.comment-li .media-body .media div{
+		border-bottom: 1px dashed #ccc;
+	}
+	.comment-li .media-body .media div p{
+		padding: 0;
+	}
+	.comment-li .media-body .media div p span{
+		padding-left: 0;
+		color: #868282;
+	}
+	.comment-li .media-body .media div p a{
+		text-decoration: none;
+		padding-right: 0.1em;
+	}
+	.comment-li .media-body .media div p a.pull-right{
+		padding-right: 1em;
+		color: #868282;
+	}
+	.comment-li .media-body .media div p a.delc{
+		display: none;
+	}

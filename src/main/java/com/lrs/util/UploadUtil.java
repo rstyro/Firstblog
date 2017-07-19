@@ -1,12 +1,6 @@
 package com.lrs.util;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

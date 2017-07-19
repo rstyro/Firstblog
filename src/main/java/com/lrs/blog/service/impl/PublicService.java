@@ -13,6 +13,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.lrs.blog.dao.NoticeDao;
 import com.lrs.blog.dao.PublicDao;
@@ -97,6 +98,7 @@ public class PublicService implements IPublicService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			log.error("关注异常:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "关注失败");
@@ -175,6 +177,7 @@ public class PublicService implements IPublicService {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			log.error("评论异常:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "评论失败");
@@ -225,6 +228,7 @@ public class PublicService implements IPublicService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			log.error("写信异常:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "写信失败");
@@ -293,6 +297,7 @@ public class PublicService implements IPublicService {
 			map.put("data", floorlist);
 		} catch (Exception e) {
 			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			log.error("获取评论异常:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "获取评论失败");
@@ -438,6 +443,7 @@ public class PublicService implements IPublicService {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			log.error("点赞异常:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "点赞失败");
@@ -481,6 +487,7 @@ public class PublicService implements IPublicService {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			log.error("点赞异常:" + e.getMessage(), e);
 			map.put("status", "failed");
 			map.put("msg", "留言失败");

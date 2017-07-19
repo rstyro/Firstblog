@@ -12,9 +12,12 @@
 	href="<%=request.getContextPath()%>/static/images/favicon.ico">
 </head>
 <body>
+<h1 style="display: none;">这个冬天不太冷</h1>
+<h2 style="display: none;">这个冬天不太冷的博客</h2>
 	<%@include file="./include/top.jsp"%>
 	<script src="<%=root%>/static/js/bootstrap-paginator.js"></script>
 	<script src="<%=root%>/static/js/3dtabcloud.js"></script>
+	<script src="<%=root%>/static/js/skill.js"></script>
 	<div class="jumbotron">
 		<div class="container">
 			<h2 class="center">${jumbotron.title}</h2>

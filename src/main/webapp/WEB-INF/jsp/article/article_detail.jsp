@@ -129,6 +129,7 @@
 	<script type="text/javascript"
 		src="<%=root%>/static/ueditor/ueditor.all.js"></script>
 	<script src="<%=root%>/static/js/bootstrap-paginator.js"></script>
+	<script src="<%=root%>/static/js/jquery.qqFace.js"></script>
 	<script src="<%=root%>/static/js/article_detail.js"></script>
 	<script src="<%=root%>/static/js/comment.js"></script>
 	<script>
@@ -142,6 +143,7 @@
 		
 		var authorUserId = $("input[name='authorUserId']").val();
 		var articleId = $("input[name='articleId']").val();
+		
 	</script>
 </body>
 </html>

@@ -11,6 +11,8 @@ import java.net.URLConnection;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
+
 public class UploadUtil {
 
 	/**
@@ -119,6 +121,23 @@ public class UploadUtil {
 				input.close();
 			}
 		}
+	}
+	
+	/**
+	 * 上传文件
+	 * @param filePath 文件名 
+	 * @param in   io流
+	 * @return  返回最终的路径
+	 * @throws IOException 
+	 */
+	public static String uploadImg(String filePath,InputStream in) throws IOException{
+		//获取tomcat 的根目录（webapps 下的路径），editormd.root 在web.xml 中配置
+		String tomcatRootPath = System.getProperty("blog.root")+"../";
+		String resultPath = tomcatRootPath + filePath;
+		createFile(resultPath);
+		File realFile =new File(resultPath);
+		FileUtils.copyInputStreamToFile(in, realFile);
+		return resultPath;
 	}
 
 	public static void main(String[] args) {

@@ -135,3 +135,8 @@
 	.comment-li .media-body .media div p a.delc{
 		display: none;
 	}
+	
+	img.emojiimg{
+		width: 24px;
+		height: 24px;
+	}

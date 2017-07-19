@@ -22,6 +22,17 @@ public class User {
 	private String register_type; // 注册类型
 	private String third_uuid; // 第三方注册Id
 	private String create_time; // 注册时间
+	private String edit_tool;	//常用的编辑器
+	
+	
+
+	public String getEdit_tool() {
+		return edit_tool;
+	}
+
+	public void setEdit_tool(String edit_tool) {
+		this.edit_tool = edit_tool;
+	}
 
 	public String getImg() {
 		return img;
@@ -146,9 +157,9 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [user_id=" + user_id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", sex=" + sex + ", sign=" + sign + ", last_login=" + last_login + ", ip=" + ip + ", status=" + status
-				+ ", email=" + email + ", locate=" + locate + ", register_type=" + register_type + ", third_uuid="
-				+ third_uuid + ", create_time=" + create_time + "]";
+				+ ", img=" + img + ", sex=" + sex + ", sign=" + sign + ", last_login=" + last_login + ", ip=" + ip
+				+ ", status=" + status + ", email=" + email + ", locate=" + locate + ", register_type=" + register_type
+				+ ", third_uuid=" + third_uuid + ", create_time=" + create_time + ", edit_tool=" + edit_tool + "]";
 	}
-
+	
 }

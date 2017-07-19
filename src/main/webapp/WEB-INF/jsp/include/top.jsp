@@ -41,7 +41,7 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=root%>/static/images/favicon.ico">
 	
-<title>Blog</title>
+<title>这个冬天不太了的博客</title>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个冬天不太冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <link href="<%=root%>/static/bootstrap-3.3.7/css/bootstrap.css"
 	rel="stylesheet">
@@ -65,7 +65,7 @@ body {
 	background-image: url("<%=root%>/static/images/bg.jpg");
 }
 
-.jumbotron p, h2 {
+.jumbotron p,.jumbotron h2 {
 	text-align: center;
 }
 .toTop{
@@ -198,13 +198,13 @@ body {
 
 	<script src="<%=root%>/static/jquery/1.12.4/jquery.min.js"></script>
 	<script src="<%=root%>/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-	<script src="<%=root%>/static/js/skill.js"></script>
 	<script src="<%=root%>/static/js/top.js"></script>
 	<!-- ueditor编辑器  代码高亮 -->
 	<script src="<%=root%>/static/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
 	<script type="text/javascript">
 	
 	 SyntaxHighlighter.all();
+	 $("[data-toggle='tooltip']").tooltip();
 	 
 		var uid="";
 		var uname="";

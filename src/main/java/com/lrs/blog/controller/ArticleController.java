@@ -101,7 +101,13 @@ public class ArticleController extends BaseController {
 				}
 			}
 			view.addObject("article", article);
+			
 			view.setViewName("article/article_detail");
+			
+			String viewTool = article.getString("view_tool");
+			if("editormd".equalsIgnoreCase(viewTool)){
+				view.setViewName("article/detail");
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -407,10 +413,19 @@ public class ArticleController extends BaseController {
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 		}
+		
+		view.setViewName("article/article_edit");
+		Subject subject = SecurityUtils.getSubject();
+		User  us = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+		if(us != null ){
+			String editTool = us.getEdit_tool();
+			if("editormd".equalsIgnoreCase(editTool)){
+				view.setViewName("article/edit");
+			}
+		}
 		view.addObject("title", "写文章");
 		view.addObject("btnValue", "发布文章");
 		view.addObject("action", "add/new");
-		view.setViewName("article/article_edit");
 		return view;
 	}
 
@@ -431,11 +446,13 @@ public class ArticleController extends BaseController {
 			Session session = subject.getSession();
 			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
 			String userId = user.getUser_id();
+			String editTool = user.getEdit_tool();
 			pm.put("user_id", userId);
 			String formToken = pm.getString("token");
 			String sessionToken = (String) session.getAttribute("token");
 			if (formToken.equals(sessionToken)) {
 				pm.put("create_time", DateUtil.getTime());
+				pm.put("view_tool", editTool);
 				articleService.saveArticle(pm);
 				session.removeAttribute("token");
 				view.addObject("msg", "保存成功");
@@ -586,6 +603,11 @@ public class ArticleController extends BaseController {
 				}
 				view.addObject("labelList", articleLabels);
 				view.addObject("article", article);
+				String view_tool = article.getString("view_tool");
+				view.setViewName("article/article_edit");
+				if("editormd".equalsIgnoreCase(view_tool)){
+					view.setViewName("article/edit");
+				}
 			} else {
 				view.setViewName("error/404");
 				return view;
@@ -598,7 +620,6 @@ public class ArticleController extends BaseController {
 		view.addObject("title", "编辑文章");
 		view.addObject("btnValue", "发布更新");
 		view.addObject("action", "update/" + articleId);
-		view.setViewName("article/article_edit");
 		return view;
 	}
 

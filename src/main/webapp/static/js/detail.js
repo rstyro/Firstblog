@@ -1,0 +1,55 @@
+$(document).ready(function() {
+    var wordsView;
+    wordsView = editormd.markdownToHTML("codeView", {
+    	htmlDecode      : "style,script,iframe",  // you can filter tags decode
+        emoji           : true,
+        taskList        : true,
+        tex             : true,  // 默认不解析
+        flowChart       : true,  // 默认不解析
+        sequenceDiagram : true,  // 默认不解析
+        previewTheme: "dark",//预览主题
+    });
+})	    
+		
+		$(function(){
+			
+			$('.emoji').qqFace({
+				id : 'facebox', 
+				assign:'article_comment', 
+				path:'/blog/static/emoji/'	//表情存放的路径
+			});
+
+		    
+		    $(".article-detail-title").click(function(){
+		    	if($("#codeView").hasClass("editormd-preview-theme-dark")){
+		    		$("#codeView").removeClass("editormd-preview-theme-dark")
+		    	}else{
+		    		$("#codeView").addClass("editormd-preview-theme-dark")
+		    	}
+		    });
+			
+			//评论
+	    	$("#blog_comment").click(function(){
+	    		var content = $("#article_comment").val();
+	    		content = replace_em(content);
+	    		$.ajax({
+	    			type:"POST",
+	    	        url:root+"/public/comment",
+	    	        data:{table_id:articleId,reply_user_id:authorUserId,content:content,praent_id:"",time:new Date().getTime()},
+	    	        dataType:"json",
+	    	        cache:false,
+	    	        success: function(data){
+	    	       	 if("success" == data.status){
+	    	       		$("#commentModal").modal('show');
+	    	       		addcomment(data.data,$("#comment-body"));
+	    	       		task = setInterval("commentTask()",500);
+	    	       	 }else if("auth" == data.status){
+	    	       		window.location.href=root+"/toLogin";
+	    	       	 }else{
+	    	       		 alert(data.msg);
+	    	       	 }
+	    	        }
+	    		})
+	    	});
+		})
+		

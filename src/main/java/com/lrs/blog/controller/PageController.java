@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.druid.util.StringUtils;
@@ -31,6 +35,8 @@ import com.lrs.util.CodeUtil;
 import com.lrs.util.Const;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
+import com.lrs.util.UploadUtil;
+
 
 /**
  * 页面掉转控制器
@@ -263,6 +269,7 @@ public class PageController extends BaseController {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/toLeaveWord", method = RequestMethod.GET)
 	public ModelAndView toLeaveWord() {
 		ModelAndView view = this.getModelAndView();
@@ -439,5 +446,25 @@ public class PageController extends BaseController {
 		view.addObject("musicList", musicList);
 		view.setViewName("music");
 		return view;
+	}
+	
+	@RequestMapping(value="/uploadImg",method=RequestMethod.POST)
+	public void uploadImg(HttpServletRequest request,HttpServletResponse response,@RequestParam(value = "editormd-image-file", required = false) MultipartFile file){
+		log.info("....图片上传.....");
+		try {
+			String filePath = "/upload/"+com.lrs.util.DateUtil.getDays()+"/"+MyUtil.random(5)+".png";
+			String resultPath = UploadUtil.uploadImg(filePath, file.getInputStream());
+			System.out.println("path="+resultPath);
+			response.getWriter().write( "{\"success\": 1, \"message\":\"上传成功\",\"url\":\"" + filePath + "\"}" );
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("upload failed ", e);
+			try {
+				response.getWriter().write( "{\"success\": 0, \"message\":\"上传失败\",\"url\":\""+ "\"}" );
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
 	}
 }

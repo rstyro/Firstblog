@@ -203,6 +203,7 @@ public class UserService implements IUserService {
 				user.setStatus(pmUser.getString("status"));
 				user.setThird_uuid(pmUser.getString("third_uuid"));
 				user.setRegister_type(pmUser.getString("register_type"));
+				user.setEdit_tool(pmUser.getString("edit_tool"));
 				session.setAttribute(Const.BLOG_USER_SESSION, user);
 				UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 				token.setRememberMe(true);
@@ -753,6 +754,8 @@ public class UserService implements IUserService {
 							}
 						}
 					}
+					
+					
 					map.put("msg", "ok");
 					map.put("status", "success");
 					if(StringUtils.isNotBlank(password)){
@@ -760,6 +763,11 @@ public class UserService implements IUserService {
 						subject.logout();
 						map.put("msg", "更新密码，请重新登陆");
 						map.put("status", "auth");
+					}else{
+						//如果没有修改密码的话，刷新session
+						String editTool = pm.getString("edit_tool");
+						user.setEdit_tool(editTool);
+						session.setAttribute(Const.BLOG_USER_SESSION, user);
 					}
 				} else {
 					map.put("msg", "请重新登陆");

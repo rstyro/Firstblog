@@ -30,28 +30,6 @@ $(function(){
 			        }
 				})
 			});
-			//评论
-			$("#blog_comment").click(function(){
-				$.ajax({
-					type:"POST",
-			        url:root+"/public/comment",
-			        data:{table_id:articleId,reply_user_id:authorUserId,content:ue.getContent(),praent_id:"",time:new Date().getTime()},
-			        dataType:"json",
-			        cache:false,
-			        success: function(data){
-			       	 if("success" == data.status){
-			       		$("#commentModal").modal('show');
-			       		addcomment(data.data,$("#comment-body"));
-			       		task = setInterval("commentTask()",500);
-			       		ue.setContent("");
-			       	 }else if("auth" == data.status){
-			       		window.location.href=root+"/toLogin";
-			       	 }else{
-			       		 alert(data.msg);
-			       	 }
-			        }
-				})
-			});
 		})
 		
 		//弹出框任务
@@ -180,8 +158,10 @@ $(function(){
 					var replyUserName = $(this).parent().parent().parent().find("h4.media-heading").text();
 					if($(".replytext > textarea").length == 0){
 						$(".replytext").remove();
-						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' autofocus='autofocus' style='resize:none;'></textarea><br><span class='btn btn-info' id='replyfloor'>回复</span></div>").find("#replyfloor").click(function(){
-								var content = $(this).prev().prev().val();
+						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' id='rpboy' autofocus='autofocus' style='resize:none;'></textarea><br><div><img class='emojiimg' style='margin-top: 10px ;' src='"+root+"/static/images/emoji.png'><span class='btn btn-info pull-right' style='margin-right: 100px;' id='replyfloor'>回复</span><div></div>")
+						.find("#replyfloor").click(function(){
+								var content = $(this).parent().prev().prev().val();
+								content = replace_em(content);
 								$.ajax({
 									type:"POST",
 							        url:root+"/public/comment",
@@ -200,6 +180,13 @@ $(function(){
 							        }
 								})
 							});
+						
+						$(".emojiimg").qqFace({
+							id : 'facebox', 
+							assign:'rpboy', 
+							path:'/blog/static/emoji/'	//表情存放的路径
+						});
+						
 						}else{
 							$(".replytext").remove();
 						}
@@ -215,9 +202,16 @@ $(function(){
 					var replyUserName=$(this).parent().prev().find("a").eq(0).html();
 					if($(".replytext > textarea").length == 0){
 						$(".replytext").remove();
-						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' autofocus='autofocus' style='resize:none;'></textarea><br><span class='btn btn-info' id='replyfloor'>回复</span></div>").find("#replyfloor").click(function(){
-							var content = $(this).prev().prev().val();
+						$(this).parent().parent().append("<div class='replytext media'><textarea cols='100' rows='3' id='recboy' autofocus='autofocus' style='resize:none;'></textarea><br><div><img class='emojiimg' style='margin-top:10px;' src='"+root+"/static/images/emoji.png'><span class='btn btn-info pull-right' style='margin-right: 100px;' id='replyfloor'>回复</span><div></div>").find("#replyfloor").click(function(){
+							var content = $(this).parent().prev().prev().val();
+							content = replace_em(content);
 							replyComment(url,tableId,replyUserId,replyUserName,content,parentId,replyBody)
+						});
+						
+						$(".emojiimg").qqFace({
+							id : 'facebox', 
+							assign:'recboy', 
+							path:'/blog/static/emoji/'	//表情存放的路径
 						});
 					}else{
 						$(".replytext").remove();
@@ -342,4 +336,15 @@ $(function(){
 		       	 }
 		        }
 			})
-		};
+		}
+		
+		
+		//查看结果
+		function replace_em(str){
+			str = str.replace(/\</g,'&lt;');
+			str = str.replace(/\>/g,'&gt;');
+			str = str.replace(/\n/g,'<br/>');
+			str = str.replace(/\[em_([0-9]*)\]/g,'<img src="/blog/static/emoji/$1.gif" border="0" class="emojiimg" />');
+			return str;
+		
+		}

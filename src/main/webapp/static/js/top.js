@@ -8,7 +8,6 @@ $(function(){
 					$(".toTop").hide();
 				}
 			});
-			$("[data-toggle='tooltip']").tooltip();
 			
 			 $('.list-group li').each(function() {
 	                $(this).click(function() {

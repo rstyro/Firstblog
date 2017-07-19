@@ -179,6 +179,8 @@
 		<script src="<%=root%>/static/js/bootstrap-paginator.js"></script>
 		<script>
 			$(function() {
+				$(".navbar-nav li:eq(3)").addClass("top-active");
+				
 				$("#letterDetailList").hide();
 				var wh = $(document).height();
 				$("#myTabContent").css("min-height",wh-150);

@@ -129,7 +129,18 @@
 </body>
 <script type="text/javascript">
 $(function(){
+	<%
+		if(user_id.equals("0")){
+	%>	
 	$(".navbar-nav li:eq(3)").addClass("top-active");
+	<%
+		}else{
+	%>
+	$(".navbar-nav li:eq(4)").addClass("top-active");
+		
+	<%
+		}
+	%>
 });
 
 </script>

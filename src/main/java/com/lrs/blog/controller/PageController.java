@@ -110,7 +110,7 @@ public class PageController extends BaseController {
 				linkList = new ArrayList<ParameterMap>();
 			}
 
-			page.setShowCount(6);
+			page.setShowCount(10);
 			page.setPm(pm);
 			articleList = cacheService.getCacheAllArticle(pm);
 			if (articleList == null || articleList.size() < 1) {
@@ -446,25 +446,5 @@ public class PageController extends BaseController {
 		view.addObject("musicList", musicList);
 		view.setViewName("music");
 		return view;
-	}
-	
-	@RequestMapping(value="/uploadImg",method=RequestMethod.POST)
-	public void uploadImg(HttpServletRequest request,HttpServletResponse response,@RequestParam(value = "editormd-image-file", required = false) MultipartFile file){
-		log.info("....图片上传.....");
-		try {
-			String filePath = "/upload/"+com.lrs.util.DateUtil.getDays()+"/"+MyUtil.random(5)+".png";
-			String resultPath = UploadUtil.uploadImg(filePath, file.getInputStream());
-			System.out.println("path="+resultPath);
-			response.getWriter().write( "{\"success\": 1, \"message\":\"上传成功\",\"url\":\"" + filePath + "\"}" );
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("upload failed ", e);
-			try {
-				response.getWriter().write( "{\"success\": 0, \"message\":\"上传失败\",\"url\":\""+ "\"}" );
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-		
 	}
 }

@@ -48,6 +48,7 @@ public class UserController extends BaseController {
 		ParameterMap pm = this.getParameterMap();
 		pm.put("user_id", userId);
 		pm.put("page_no", pageNo);
+		pm.put("page_size", "10");
 		if (StringUtils.isBlank(pageNo)) {
 			pm.put("page_no", "1");
 		}

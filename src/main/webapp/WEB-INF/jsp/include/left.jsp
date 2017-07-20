@@ -78,7 +78,7 @@
 						<c:forEach items="${article_labels}" var="label" varStatus="vs">
 								<a
 									href="<%=request.getContextPath()%>/article/label/${label.label_id}/1"
-									title="带有${label.label_name }标签的所有文章" class="${label.label_class }">${label.label_name }</a>
+									title="带有${label.label_name }标签的所有文章" data-toggle="tooltip" data-placement="bottom" class="${label.label_class }">${label.label_name }</a>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
@@ -103,6 +103,7 @@
 					<c:when test="${not empty article_month}">
 						<c:forEach items="${article_month }" var="var" varStatus="vs">
 							<li class="list-group-item" id="${var.article_month }"
+							data-toggle="tooltip" data-placement="bottom"
 								title="${var.article_month } 共发布了 ${var.count } 篇文章">${var.article_month }<span
 								class="badge">${var.count }</span></li>
 						</c:forEach>
@@ -130,7 +131,7 @@
 				<ul class="blog_article_recommend_ul">
 					<c:forEach items="${article_recommend }" var="recommend"
 						varStatus="vs">
-						<li  title="${recommend.title }">
+						<li  title="${recommend.title }" data-toggle="tooltip" data-placement="bottom">
 							<span class="r_n">${vs.index+1 }</span>
 							<a
 								href="<%=request.getContextPath()%>/article/${recommend.article_id }">

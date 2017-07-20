@@ -84,7 +84,6 @@
 			a.last_login,
 			a.ip,
 			a.`status`,
-			a.edit_tool,
 			a.create_time
 		from 
 			blog_user a
@@ -191,10 +190,6 @@
 				
 				<if test="status != null and status != ''">
 					a.status=#{status},
-				</if>
-				
-				<if test="edit_tool != null and edit_tool != ''">
-					a.edit_tool=#{edit_tool},
 				</if>
 				
 				<if test="create_time != null and create_time != ''">

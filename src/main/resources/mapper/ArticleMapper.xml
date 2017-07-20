@@ -13,9 +13,6 @@
 			<if test="text != null and text != ''">
 				text,
 			</if>
-			<if test="view_tool != null and view_tool != ''">
-				view_tool,
-			</if>
 			create_time
 		)values(
 			<if test="user_id != null and user_id != ''">
@@ -25,9 +22,6 @@
 			#{content},
 			<if test="text != null and text != ''">
 				#{text},
-			</if>
-			<if test="view_tool != null and view_tool != ''">
-				#{view_tool},
 			</if>
 			#{create_time}
 		)
@@ -98,7 +92,6 @@
 			a.comment_num,
 			a.praise_num,
 			a.create_time,
-			a.view_tool,
 			b.name,
 			b.img
 			<if test="user_id != null and user_id != ''">

@@ -161,7 +161,7 @@ public class ArticleController extends BaseController {
 			}
 
 			pm.put("article_month", articleMonth);
-			page.setShowCount(6);
+			page.setShowCount(10);
 			page.setPm(pm);
 			articleList = cacheService.getCacheMonthArticle(pm);
 			if (articleList == null || articleList.size() < 1) {
@@ -298,7 +298,7 @@ public class ArticleController extends BaseController {
 			}
 
 			pm.put("label_id", labelId);
-			page.setShowCount(6);
+			page.setShowCount(10);
 			page.setPm(pm);
 			articleList = cacheService.getCacheLabelArticle(pm);
 			if (articleList == null || articleList.size() < 1) {
@@ -421,12 +421,6 @@ public class ArticleController extends BaseController {
 			view.setViewName("error/404");
 			return view;
 		}
-		if(us != null ){
-			String editTool = us.getEdit_tool();
-			if("editormd".equalsIgnoreCase(editTool)){
-				view.setViewName("article/edit");
-			}
-		}
 		view.addObject("title", "写文章");
 		view.addObject("btnValue", "发布文章");
 		view.addObject("action", "add/new");
@@ -450,13 +444,11 @@ public class ArticleController extends BaseController {
 			Session session = subject.getSession();
 			User user = (User) session.getAttribute(Const.BLOG_USER_SESSION);
 			String userId = user.getUser_id();
-			String editTool = user.getEdit_tool();
 			pm.put("user_id", userId);
 			String formToken = pm.getString("token");
 			String sessionToken = (String) session.getAttribute("token");
 			if (formToken.equals(sessionToken)) {
 				pm.put("create_time", DateUtil.getTime());
-				pm.put("view_tool", editTool);
 				articleService.saveArticle(pm);
 				session.removeAttribute("token");
 				view.addObject("msg", "保存成功");
@@ -607,11 +599,7 @@ public class ArticleController extends BaseController {
 				}
 				view.addObject("labelList", articleLabels);
 				view.addObject("article", article);
-				String view_tool = article.getString("view_tool");
 				view.setViewName("article/article_edit");
-				if("editormd".equalsIgnoreCase(view_tool)){
-					view.setViewName("article/edit");
-				}
 			} else {
 				view.setViewName("error/404");
 				return view;

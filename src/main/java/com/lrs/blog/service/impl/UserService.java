@@ -213,6 +213,7 @@ public class UserService implements IUserService {
 					subject.login(token);
 					if (subject.isAuthenticated()) {
 						msg = "身份验证成功";
+						redis.del(Const.LOCK+ip);
 					} else {
 						msg = "身份验证失败";
 					}

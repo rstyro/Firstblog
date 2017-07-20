@@ -1,0 +1,62 @@
+/*success.jsp*/
+.blog-success{
+	margin: 3em auto;
+	font-size: 3em;
+	text-align: center;
+}
+.blog-success .success-icon{
+	border-radius: 50%;
+	height: 2em;
+	width:13%;
+	margin:0 auto;
+	background-color: #5CB85C;
+	color: #fff;
+	font-size: 2em;
+	text-align: center;
+}
+.blog-success .success-icon span{
+	padding-top: 0.3em;
+}
+.blog-success h2 a{
+	text-decoration: none;
+}
+.blog-success p{
+	padding-top: 1.5em;
+}
+.blog-success p a{
+	text-decoration: none;
+	color: #000;
+}
+
+/*failed.jsp*/
+.blog-failed{
+	margin: 3em auto;
+	font-size: 3em;
+	text-align: center;
+}
+.blog-failed .failed-icon{
+	border-radius: 50%;
+	height: 2em;
+	width:13%;
+	margin:0 auto;
+	background-color: #5CB85C;
+	color: #fff;
+	font-size: 2em;
+	text-align: center;
+}
+.blog-failed .failed-icon span{
+	padding-top: 0.3em;
+}
+.blog-failed h2 a{
+	text-decoration: none;
+}
+.blog-failed p{
+	padding-top: 1.5em;
+}
+.blog-failed p a{
+	text-decoration: none;
+	color: #000;
+}
+	
+	
+	

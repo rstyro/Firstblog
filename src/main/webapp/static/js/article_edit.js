@@ -27,29 +27,3 @@ var text = $("#text").html();
 		//ue.execCommand( 'inserthtml', text);
 	});
 	
-	$(function(){
-		$("#submit").click(function(){
-			var length = $("input[type='checkbox']:checked").length;
-			if(length == 0){
-				alert("至少选择一个标签");
-				return false;
-			}
-			if(length > 3){
-				alert("最多只能选择三个标签");
-				return false;
-			}
-			var title = $("#title").val();
-			if(!title){
-				$("#title").focus();
-				alert("标题不能为空");
-				return false;
-			}
-			var content = ue.getContent();
-			if(!content){
-				alert("文章内容不能为空");
-				return false;
-			}
-			$(":input[name='text']").val(ue.getContentTxt());
-			return true;
-		});
-	})

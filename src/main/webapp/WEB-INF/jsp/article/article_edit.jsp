@@ -100,5 +100,6 @@
 	</div>
 	<%@include file="../include/footer.jsp" %>
 	<script src="<%=root%>/static/js/article_edit.js"></script>
+	<script src="<%=root%>/static/js/edit_common.js"></script>
 </body>
 </html>

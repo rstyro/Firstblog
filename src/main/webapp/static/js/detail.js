@@ -1,17 +1,14 @@
 $(document).ready(function() {
     var wordsView;
     wordsView = editormd.markdownToHTML("codeView", {
-    	htmlDecode      : "style,script,iframe",  // you can filter tags decode
-        emoji           : true,
+    	htmlDecode      : false,
+    	emoji           : true,
         taskList        : true,
-        tex             : true,  // 默认不解析
-        flowChart       : true,  // 默认不解析
-        sequenceDiagram : true,  // 默认不解析
         previewTheme: "dark",//预览主题
     });
-})	    
-		
-		$(function(){
+})		
+
+$(function(){
 			
 			$('.emoji').qqFace({
 				id : 'facebox', 

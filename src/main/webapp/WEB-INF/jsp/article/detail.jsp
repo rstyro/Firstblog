@@ -17,6 +17,21 @@
 </c:choose> 
 <title>${article.title }</title>
 <%@include file="../include/top.jsp"%>
+<!-- editormd start -->
+    <script type="text/javascript" src="<%=root%>/static/editormd/editormd.min.js"></script>
+    <script src="<%=root%>/static/editormd/lib/marked.min.js"></script>
+	<script src="<%=root%>/static/editormd/lib/prettify.min.js"></script>
+	<script src="<%=root%>/static/editormd/lib/raphael.min.js"></script>
+	<script src="<%=root%>/static/editormd/lib/underscore.min.js"></script>
+	<script src="<%=root%>/static/editormd/lib/sequence-diagram.min.js"></script>
+	<script src="<%=root%>/static/editormd/lib/flowchart.min.js"></script>
+	<script src="<%=root%>/static/editormd/lib/jquery.flowchart.min.js"></script>
+	<!-- end -->
+	
+	<script src="<%=root%>/static/js/bootstrap-paginator.js"></script>
+	<script src="<%=root%>/static/js/jquery.qqFace.js"></script>
+	<script src="<%=root%>/static/js/detail.js"></script>
+	<script src="<%=root%>/static/js/comment.js"></script>
 <link rel="icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/static/images/favicon.ico">
 <link href="<%=request.getContextPath()%>/static/css/article_detail.css"
@@ -110,7 +125,7 @@
 			<div>
 				<h3><span class="glyphicon glyphicon-edit"></span> 发表评论</h3>
 				<hr>
-				<textarea id="article_comment" name="content" cols="100" rows="5" placeholder="想说点什么就说吧，别墨迹了.........."></textarea>
+				<textarea id="article_comment" name="content" cols="100" style="resize:none;" rows="5" placeholder="想说点什么就说吧，别墨迹了.........."></textarea>
 				<div class="bottom-tip">
 					<img class="emoji" src="<%=root%>/static/images/emoji.png">
 					<a href="javascript:void(0);" id="blog_comment" class="btn btn-info pull-right"
@@ -135,21 +150,6 @@
 		</div>
 	</div>
 	<%@include file="../include/footer.jsp"%>
-	<!-- editormd start -->
-    <script type="text/javascript" src="<%=root%>/static/editormd/editormd.min.js"></script>
-    <script src="<%=root%>/static/editormd/lib/marked.min.js"></script>
-	<script src="<%=root%>/static/editormd/lib/prettify.min.js"></script>
-	<script src="<%=root%>/static/editormd/lib/raphael.min.js"></script>
-	<script src="<%=root%>/static/editormd/lib/underscore.min.js"></script>
-	<script src="<%=root%>/static/editormd/lib/sequence-diagram.min.js"></script>
-	<script src="<%=root%>/static/editormd/lib/flowchart.min.js"></script>
-	<script src="<%=root%>/static/editormd/lib/jquery.flowchart.min.js"></script>
-	<!-- end -->
-	
-	<script src="<%=root%>/static/js/bootstrap-paginator.js"></script>
-	<script src="<%=root%>/static/js/jquery.qqFace.js"></script>
-	<script src="<%=root%>/static/js/detail.js"></script>
-	<script src="<%=root%>/static/js/comment.js"></script>
 	<script>
 		var floorNum=1;
 		var index=0;

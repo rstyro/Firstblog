@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>这个冬天不太冷</title>
+<title>这个冬天不太冷的个人博客</title>
 <link rel="icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/static/images/favicon.ico">
 </head>

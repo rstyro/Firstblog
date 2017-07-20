@@ -1,4 +1,4 @@
-var emojiPath="/blog/static/emoji/";
+var emojiPath="/static/emoji/"; //这个是emoji的表情路径
 $(function(){
 			//获取评论
 			getComment(1,10);

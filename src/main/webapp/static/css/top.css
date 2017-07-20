@@ -65,8 +65,8 @@ a:hover{
 }
 
 .blog-footer p {
-	height: 50px;
-	line-height:50px;
+	padding-top:20px;
+	padding-bottom:10px;
 	text-align: center;
 	font-size: 1.3em;
 	color: #8b9094;

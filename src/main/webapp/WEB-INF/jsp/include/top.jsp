@@ -41,7 +41,7 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=root%>/static/images/favicon.ico">
 	
-<title>这个冬天不太了的博客</title>
+<title>这个冬天不太冷的个人博客</title>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个冬天不太冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <link href="<%=root%>/static/bootstrap-3.3.7/css/bootstrap.css"
 	rel="stylesheet">
@@ -135,7 +135,11 @@ body {
 							data-toggle="dropdown" href="#"><%=name%> <span
 								class="caret"></span></a>
 							<ul class="dropdown-menu">
+								<% 
+									if("1".equals(user_id)){
+								%>
 								<li><a href="<%=root%>/article/add/go">发布文章</a></li>
+								<%} %>
 								<li><a href="<%=root%>/user/<%=user_id%>/1">个人信息</a></li>
 								<li class="divider"></li>
 								<li id="logout"><a href="JavaScript:void(0);"

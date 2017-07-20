@@ -121,21 +121,6 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">
-				<i class="glyphicon glyphicon-tasks"></i><strong> 我的技能雷达</strong>
-			</h3>
-		</div>
-		<div class="panel-body">
-			<div class="row">
-				<div id="my-skills"></div>
-			</div>
-		</div>
-	</div>
-</div>
-<div style="height: 10px;"></div>
-<div class="row">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">
 				<i class="glyphicon glyphicon-bookmark"></i><strong> 文章推荐</strong>
 			</h3>
 		</div>
@@ -173,6 +158,23 @@
 		</div>
 	</div>
 </div>
+
+<div style="height: 10px;"></div>
+<div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<i class="glyphicon glyphicon-tasks"></i><strong> 我的技能雷达</strong>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div id="my-skills"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div style="height: 10px;"></div>
 <div class="row">
 	<div class="panel panel-default">

@@ -417,6 +417,10 @@ public class ArticleController extends BaseController {
 		view.setViewName("article/article_edit");
 		Subject subject = SecurityUtils.getSubject();
 		User  us = (User) subject.getSession().getAttribute(Const.BLOG_USER_SESSION);
+		if(!us.getUser_id().equals("1")){
+			view.setViewName("error/404");
+			return view;
+		}
 		if(us != null ){
 			String editTool = us.getEdit_tool();
 			if("editormd".equalsIgnoreCase(editTool)){

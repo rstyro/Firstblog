@@ -16,7 +16,7 @@
 							style="font-size: 1.3em; padding-top: 10px;">${article.name}</span></a>
 					</div>
 					<div class="title">
-						<a target="_blank" title="详情里面点标题，可能有惊喜哦！" 
+						<a target="_blank"  title="${article.title}"  data-toggle="tooltip" data-placement="bottom"
 							href="<%=right_root%>/article/${article.article_id}">
 							<c:choose>
 								<c:when test="${fn:length(article.title) > 20}">
@@ -70,7 +70,7 @@
 							style="font-size: 1.3em; padding-top: 10px;">${article.name}</span></a>
 					</div>
 					<div class="title">
-						<a title="详情里面点标题，可能有惊喜哦！" href="<%=right_root%>/article/${article.article_id}"> <c:choose>
+						<a  title="${article.title}"  data-toggle="tooltip" data-placement="bottom" href="<%=right_root%>/article/${article.article_id}"> <c:choose>
 								<c:when test="${fn:length(article.title) > 20}">
 									<c:out value="${fn:substring(article.title, 0, 20)}..." />
 								</c:when>

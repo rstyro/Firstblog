@@ -188,11 +188,11 @@
 					<c:choose>
 						<c:when test="${not empty linkList }">
 							<c:forEach items="${linkList }" var="link" varStatus="vs">
-								<li><a target="_blank" href="${link.link }">${link.link_name }</a></li>
+								<li><a target="_blank" href="${link.link }" title="${link.description }"  data-toggle="tooltip" data-placement="bottom">${link.link_name }</a></li>
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
-							<li><a target="_blank" href="http://lrshuai.top">这个冬天不太冷</a></li>
+							<li><a target="_blank" href="http://lrshuai.top" data-toggle="tooltip" data-placement="bottom" title="这个冬天不太冷的博客，一个喜欢编程的帅大叔">这个冬天不太冷</a></li>
 						</c:otherwise>
 					</c:choose>
 				</ul>

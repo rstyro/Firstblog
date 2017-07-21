@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.lrs.blog.controller.base.BaseController;
 import com.lrs.blog.entity.User;
+import com.lrs.blog.redis.RedisClientTemplate;
 import com.lrs.blog.service.IArticleService;
 import com.lrs.blog.service.ICacheService;
 import com.lrs.blog.service.ILabelService;
@@ -25,6 +27,7 @@ import com.lrs.plugin.Page;
 import com.lrs.thread.ReloadThread;
 import com.lrs.util.Const;
 import com.lrs.util.DateUtil;
+import com.lrs.util.ListTranscoder;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
 
@@ -47,6 +50,11 @@ public class ArticleController extends BaseController {
 	
 	@Autowired
 	private IUserService userService;
+	
+	private ListTranscoder<ParameterMap> maplistTranscoder = new ListTranscoder<>();
+
+	@Autowired
+	private RedisClientTemplate redis;
 
 	/**
 	 * 获取文章详情
@@ -100,20 +108,64 @@ public class ArticleController extends BaseController {
 				} catch (Exception e) {
 				}
 			}
-			view.addObject("article", article);
-			
-			view.setViewName("article/article_detail");
-			
-			String viewTool = article.getString("view_tool");
-			if("editormd".equalsIgnoreCase(viewTool)){
-				view.setViewName("article/detail");
+			String KEY = (String) this.getSession().getAttribute(Const.USER_LAST_ARTICLE_LIST);
+			int tarIndex=0;
+			int total =0;
+			List<ParameterMap> tarList = null;
+			System.out.println("KEY="+KEY);
+			if(StringUtils.isNotBlank(KEY)){
+				byte[] tarBys = redis.get(KEY.getBytes());
+				tarList = maplistTranscoder.deserialize(tarBys);
+			}else{
+				byte[] home = redis.get(Const.ARTICLE_HOME.getBytes());
+				tarList = maplistTranscoder.deserialize(home);
 			}
+			ParameterMap lastArticle = new ParameterMap();
+			ParameterMap nextArticle = new ParameterMap();
+			if(tarList != null && tarList.size() > 0){
+				total = tarList.size();
+				tarIndex = findTarIndex(tarList, articleId);
+				int last = tarIndex-1 < 0?total-1:tarIndex-1;
+				int next = tarIndex+1 > total-1?0:tarIndex+1;
+				
+				lastArticle = tarList.get(last);
+				nextArticle = tarList.get(next);
+			}
+			System.out.println("tarList,size="+tarList.size());
+			System.out.println("lastArticle.title="+lastArticle.getString("title"));
+			System.out.println("nextArticle.title="+nextArticle.getString("title"));
+			System.out.println("lastArticle.text="+lastArticle.getString("text"));
+			System.out.println("nextArticle.text="+nextArticle.getString("text"));
+			//上一篇 和下一篇
+			view.addObject("lArticle", lastArticle);
+			view.addObject("nArticle", nextArticle);
+			
+			view.addObject("article", article);
+			view.setViewName("article/article_detail");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 		}
 		return view;
+	}
+	
+	/**
+	 * 获取当前文章在目标集合中的索引
+	 * @param tarList
+	 * @param articleId
+	 * @return
+	 */
+	public int findTarIndex(List<ParameterMap> tarList,String articleId){
+		if(tarList != null && tarList.size() > 0){
+			for(int i=0;i<tarList.size();i++){
+				String artId = tarList.get(i).getString("article_id");
+				if(articleId.equals(artId)){
+					return i;
+				}
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -226,6 +278,11 @@ public class ArticleController extends BaseController {
 				linkList = new ArrayList<ParameterMap>();
 			}
 			view.addObject("linkList", linkList);
+			
+			
+			//设置最后浏览的大分类
+			this.getSession().setAttribute(Const.USER_LAST_ARTICLE_LIST, Const.ARTICLE_MONTH_ + articleMonth);
+			
 			
 			// 分页Map
 			ParameterMap pmpage = new ParameterMap(page);
@@ -364,6 +421,10 @@ public class ArticleController extends BaseController {
 				linkList = new ArrayList<ParameterMap>();
 			}
 			view.addObject("linkList", linkList);
+			
+			
+			//设置最后浏览的大分类
+			this.getSession().setAttribute(Const.USER_LAST_ARTICLE_LIST, Const.ARTICLE_LABEL_ + labelId);
 			
 			// 分页Map
 			ParameterMap pmpage = new ParameterMap(page);

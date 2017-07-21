@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -19,8 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.druid.util.StringUtils;
@@ -35,7 +31,6 @@ import com.lrs.util.CodeUtil;
 import com.lrs.util.Const;
 import com.lrs.util.MyUtil;
 import com.lrs.util.ParameterMap;
-import com.lrs.util.UploadUtil;
 
 
 /**
@@ -177,6 +172,10 @@ public class PageController extends BaseController {
 			System.out.println("pmpage=" + pmpage);
 			System.out.println(",page=" + page);
 			view.setViewName("index");
+			
+			//设置最后浏览的大分类
+			this.getSession().setAttribute(Const.USER_LAST_ARTICLE_LIST, Const.ARTICLE_HOME);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

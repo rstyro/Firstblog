@@ -66,4 +66,8 @@ public class Const {
 
 	//登录错误ip限制
 	public static final String LOCK = "LOCK_";
+	
+	//记录用最后点的一个大分类，为了实现 上一篇  下一篇
+	public static final String USER_LAST_ARTICLE_LIST = "USER_LAST_ARTICLE_LIST";
+	
 }

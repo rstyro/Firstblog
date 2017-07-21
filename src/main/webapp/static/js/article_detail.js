@@ -40,4 +40,8 @@ $(function(){
 		})
 	});
 	
+	$("#rewardMe").click(function(){
+		$("#rewardModal").modal('show');
+	});
+	
 })

@@ -78,6 +78,7 @@ public class ArticleService implements IArticleService {
 		if (article == null || article.size() < 1) {
 			return null;
 		}
+		
 		// 给文章添加标签
 		List<ParameterMap> articleLabel = labelDao.getArticleLabelById(article);
 		if (articleLabel != null && articleLabel.size() > 0) {

@@ -1,5 +1,5 @@
 var d1 = '2017-04-30';
-var lastTime = "2017-08-20";
+var lastTime = "2017-07-21";
 d1 = new Date(d1.replace(/-/g, "/"));
 d2 = new Date();
 var days = d2.getTime() - d1.getTime();

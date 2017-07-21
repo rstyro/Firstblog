@@ -140,3 +140,17 @@
 		width: 24px;
 		height: 24px;
 	}
+	.ln{
+		font-size: 1.2em;
+	}
+	.ln span{
+		font-weight: bold;
+		color: #7b7575;
+	}
+	.ln a{
+		color: #0f78b7;
+	}
+	.ln a:HOVER{
+		text-decoration: none;
+		color: #3399FF;
+	}

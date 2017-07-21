@@ -104,22 +104,6 @@
 						</div>
 					</div>
 				</div>
-				
-				<div style="height: 10px;"></div>
-				<div class="row">
-					<div class="panel panel-default wall">
-						<div class="panel-heading">
-							<h3 class="panel-title">
-								<i class="glyphicon glyphicon-qrcode"></i><strong> 微信二维码</strong>
-							</h3>
-						</div>
-						<div class="panel-body">
-							<div>
-								<img src="static/images/twocode.png" class="img"/>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 
 		</div>

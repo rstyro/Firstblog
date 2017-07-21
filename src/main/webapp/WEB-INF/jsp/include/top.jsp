@@ -118,7 +118,7 @@ body {
 					<form class="bs-example bs-example-form"
 						action="<%=root%>/toSearch/1" method="get" id="searchform"
 						role="search">
-						<div class="input-group" data-toggle="tooltip" data-placement="bottom" title="站内搜索">
+						<div class="input-group" data-toggle="tooltip" data-placement="bottom" title="站内文章搜索">
 							<span class="input-group-addon" id="blog_search"><a
 								class="glyphicon glyphicon-search" href="javascript:void();"></a></span>
 							<input type="text" name="keyword" id="search_key"

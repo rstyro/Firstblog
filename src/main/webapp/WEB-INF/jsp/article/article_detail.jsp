@@ -90,6 +90,72 @@
 								<h4 style="text-align: right;">如果觉得文章对你有帮助，也可以分享到朋友圈哦！</h4>
 							</div>
 						</div>
+						<div class="row ln">
+							<div class="col-md-5">
+								<div><span>上一篇:</span>
+								<c:choose>
+									<c:when test="${fn:length(lArticle.text) > 50}">
+										<a href="<%=root %>/article/${lArticle.article_id }" data-toggle="tooltip" data-placement="bottom" title="${fn:substring(lArticle.text, 0, 50)}...">
+										<c:choose>
+											<c:when test="${fn:length(lArticle.title) > 15}">
+												${fn:substring(lArticle.title, 0, 15)}...
+											</c:when>
+											<c:otherwise>
+												${lArticle.title}
+											</c:otherwise>
+										</c:choose> 
+										</a>
+									</c:when>
+									<c:otherwise>
+										<a href="<%=root %>/article/${lArticle.article_id }" data-toggle="tooltip" data-placement="bottom" title="${lArticle.text}"	>
+										<c:choose>
+											<c:when test="${fn:length(lArticle.title) > 15}">
+												${fn:substring(lArticle.title, 0, 15)}...
+											</c:when>
+											<c:otherwise>
+												${lArticle.title}
+											</c:otherwise>
+										</c:choose> 
+										</a>
+									</c:otherwise>
+								</c:choose> 
+								</div>
+								
+							</div>
+							<div class="col-md-2">
+								<div id="rewardMe" class="btn btn-lg btn-warning" data-toggle="tooltip" data-placement="bottom"  title="打赏，赞助本站，赞助博主 (●'◡'●)">赞助打赏</div>
+							</div>
+							<div class="col-md-5">
+								<div class="pull-right"><span>下一篇:</span>
+									<c:choose>
+									<c:when test="${fn:length(nArticle.text) > 50}">
+										<a href="<%=root %>/article/${nArticle.article_id }" data-toggle="tooltip" data-placement="bottom" title="${fn:substring(nArticle.text, 0, 50)}...">
+										<c:choose>
+											<c:when test="${fn:length(nArticle.title) > 15}">
+												${fn:substring(nArticle.title, 0, 15)}...
+											</c:when>
+											<c:otherwise>
+												${nArticle.title}
+											</c:otherwise>
+										</c:choose> 
+										</a>
+									</c:when>
+									<c:otherwise>
+										<a href="<%=root %>/article/${nArticle.article_id }" data-toggle="tooltip" data-placement="bottom" title="${nArticle.text}"	>
+										<c:choose>
+											<c:when test="${fn:length(nArticle.title) > 15}">
+												${fn:substring(nArticle.title, 0, 15)}...
+											</c:when>
+											<c:otherwise>
+												${nArticle.title}
+											</c:otherwise>
+										</c:choose> 
+										</a>
+									</c:otherwise>
+								</c:choose> 
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -123,6 +189,35 @@
 			</div>
 		</div>
 	</div>
+	<!-- 打赏模态框 -->
+<div class="modal fade" id="rewardModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="modelHead">打赏</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" style="text-align: center;font-weight: bold;font-size: 1.2em;">
+						<div class="col-sm-5">
+							<p >微信打赏</p>
+							<img src="<%=root%>/static/images/wechat.png">
+						</div>
+						<div class="col-sm-5 col-sm-offset-2">
+							<p>支付宝打赏</p>
+							<img src="<%=root%>/static/images/alipay.png">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
 	<%@include file="../include/footer.jsp"%>
 	<script type="text/javascript"
 		src="<%=root%>/static/ueditor/ueditor.config.js"></script>

@@ -14,7 +14,7 @@
 	
 	<!-- 获取友情链接列表 -->
 	<select id="friendlinkList" parameterType="pm" resultType="pm">
-		SELECT link_name,link FROM blog_firend_link
+		SELECT link_name,link,description FROM blog_firend_link
 	</select>
 	
 </mapper>

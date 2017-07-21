@@ -8,7 +8,9 @@
 			username,
 			name,
 			password,
+			<if test="email != null and email != ''">
 			email,
+			</if>
 			img,
 			<if test="sex != null and sex != ''">
 				sex,
@@ -25,6 +27,9 @@
 			<if test="third_uuid != null and third_uuid != ''">
 				third_uuid,
 			</if>
+			<if test="status != null and status != ''">
+				status,
+			</if>
 			last_login,
 			create_time,
 			ip
@@ -32,7 +37,9 @@
 			#{username},
 			#{name},
 			#{password},
+			<if test="email != null and email != ''">
 			#{email},
+			</if>
 			#{img},
 			<if test="sex != null and sex != ''">
 				#{sex},
@@ -49,6 +56,9 @@
 			<if test="third_uuid != null and third_uuid != ''">
 				#{third_uuid},
 			</if>
+			<if test="status != null and status != ''">
+				#{status},
+			</if>
 			#{create_time},
 			#{create_time},
 			#{ip}
@@ -59,7 +69,7 @@
 	<!-- 获取用户信息 -->
 	<select id="getUserInfo" parameterType="pm" resultType="pm">
 		SELECT
-			a.user_id,
+			cast(a.user_id as char) as user_id,
 			a.username,
 			a.password,
 			a.`name`,
@@ -67,11 +77,14 @@
 			a.sex,
 			a.sign,
 			a.locate,
+			a.concern_num,
+			a.fans_num,
 			a.register_type,
 			a.third_uuid,
 			a.last_login,
 			a.ip,
 			a.`status`,
+			a.edit_tool,
 			a.create_time
 		from 
 			blog_user a
@@ -89,6 +102,9 @@
 		<if test="third_uuid != null and third_uuid != ''">
 		and a.third_uuid = #{third_uuid}
 		</if>
+		<if test="register_type != null and register_type != ''">
+		and a.register_type = #{register_type}
+		</if>
 	</select>
 	
 	<!-- 检测邮箱是否重复 -->
@@ -105,6 +121,29 @@
 			<if test="username != nul and username != ''">
 			 or a.username=#{username}
 			</if>
+	</select>
+	
+	<select id="getTotalPraiseNum" parameterType="pm" resultType="pm">
+		SELECT IFNULL(SUM(praise_num),0) as totalPraiseNum ,user_id from blog_article WHERE user_id=#{user_id}
+	</select>
+	
+	
+	<select id="getAboutMeInfo" parameterType="pm" resultType="pm">
+		SELECT 
+			onlineName,
+			locate,
+			nativePlace,
+			profession,
+			skills,
+			phone,
+			content1,
+			content2,
+			content3,
+			content4,
+			content5,
+			create_time
+		from 
+			blog_introduce
 	</select>
 
 	<!-- 更新用户信息 -->
@@ -152,6 +191,10 @@
 				
 				<if test="status != null and status != ''">
 					a.status=#{status},
+				</if>
+				
+				<if test="edit_tool != null and edit_tool != ''">
+					a.edit_tool=#{edit_tool},
 				</if>
 				
 				<if test="create_time != null and create_time != ''">

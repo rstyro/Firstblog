@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lrs.blog.dao.PublicDao" >
+	<!-- 新增关注-->
+	<insert id="saveConcern" parameterType="pm">
+		insert into blog_concern(
+			user_id,
+			beconcern_user_id
+		) values(
+			#{user_id},
+			#{beconcern_user_id}
+		)
+	</insert>
+	
 	<!-- 新增浏览记录-->
 	<insert id="saveBrowse" parameterType="pm">
 		insert into blog_browse(
@@ -79,9 +90,14 @@
 		)
 	</insert>
 	
-	
+	<!-- 是否重复点赞 -->
 	<select id="repeatPraise" parameterType="pm" resultType="pm">
 		select praise_id from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</select>
+	
+	<!-- 是否重复关注 -->
+	<select id="repeatConcern" parameterType="pm" resultType="pm">
+		select concern_id from blog_concern where beconcern_user_id=#{beconcern_user_id} and user_id=#{user_id}
 	</select>
 	
 	<!-- 获取楼主评论 -->
@@ -121,17 +137,55 @@
 			a.create_time,
 			a.praise_num,
 			b.`name`,
-			b.img
+			b.img,
+			c.name as reply_user_name
 		from 
 			blog_comment a 
 		LEFT JOIN
 			blog_user b
 		ON
 			a.user_id = b.user_id
+		left join
+			blog_user c
+		on
+			a.reply_user_id=c.user_id
 		WHERE
 			table_id=#{table_id} and (a.parent_id is not null or a.parent_id != '')
 		order by
 			a.praise_num desc,a.create_time asc
+	</select>
+	
+	<!-- 获取文章作者ID -->
+	<select id="getArticleAutherId" parameterType="pm" resultType="pm">
+		SELECT
+			a.article_id,
+			a.user_id
+		from 
+			blog_article a
+		where
+			a.article_id=#{table_id} and isdel=0
+	</select>
+	
+	
+	<!-- 判断是否是楼层评论id -->
+	<select id="checkCommentId" parameterType="pm" resultType="pm">
+		SELECT
+			a.comment_id,
+			a.parent_id,
+			a.user_id
+		from 
+			blog_comment a
+		where
+			a.comment_id=#{comment_id} and a.user_id=#{user_id}
+	</select>
+	
+	
+	<select id="getJokelist" parameterType="pm" resultType="pm">
+		SELECT 
+			joke_id,
+			content 
+		FROM 
+			blog_joke
 	</select>
 	
 	
@@ -147,6 +201,24 @@
 	<delete id="delPraise" parameterType="pm">
 		delete from blog_praise where table_id=#{table_id} and user_id=#{user_id}
 	</delete>
+	
+	<!-- 取消关注 -->
+	<delete id="delConcern" parameterType="pm">
+		delete from blog_concern where beconcern_user_id=#{beconcern_user_id} and user_id=#{user_id}
+	</delete>
+	
+	<!-- 删除评论记录 -->
+	<delete id="delComment" parameterType="pm">
+		DELETE FROM
+ 			blog_comment
+		where
+			(user_id=#{user_id} AND comment_id=#{comment_id}) 
+			<if test="parent_id != null and parent_id != ''">
+				OR parent_id=#{parent_id}
+			</if>
+			
+	</delete>
+	
 	
 	<!-- 更新浏览数 -->
 	<update id="updatePraiseNum" parameterType="pm" >

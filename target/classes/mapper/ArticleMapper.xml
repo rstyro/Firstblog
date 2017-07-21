@@ -13,6 +13,9 @@
 			<if test="text != null and text != ''">
 				text,
 			</if>
+			<if test="view_tool != null and view_tool != ''">
+				view_tool,
+			</if>
 			create_time
 		)values(
 			<if test="user_id != null and user_id != ''">
@@ -22,6 +25,9 @@
 			#{content},
 			<if test="text != null and text != ''">
 				#{text},
+			</if>
+			<if test="view_tool != null and view_tool != ''">
+				#{view_tool},
 			</if>
 			#{create_time}
 		)
@@ -92,6 +98,7 @@
 			a.comment_num,
 			a.praise_num,
 			a.create_time,
+			a.view_tool,
 			b.name,
 			b.img
 			<if test="user_id != null and user_id != ''">
@@ -115,6 +122,7 @@
 		where
 			a.article_id=#{article_id} and isdel=0
 	</select>
+	
 	
 	<!-- 获取文章列表 -->
 	<select id="getArticlelistPage" parameterType="page" resultType="pm">
@@ -149,6 +157,9 @@
 				or
 				a.title like '%' #{pm.keyword} '%'
 				)
+			</if>
+			<if test="pm.user_id != null and pm.user_id != ''">
+				and a.user_id=#{pm.user_id}
 			</if>
 			and isdel=0
 		order by
@@ -189,13 +200,14 @@
 	<select id="getRecommendArticle" parameterType="pm"  resultType="pm">
 		SELECT 
 			article_id,
-			title
+			title,
+			(praise_num * 10)+browse_num as orderNum
 		FROM 
 			blog_article 
 		where 
 			isrecommend=1 and isdel=0
 		ORDER BY
-			praise_num DESC,browse_num DESC,create_time DESC
+			orderNum desc,praise_num DESC,browse_num DESC,create_time DESC
 		LIMIT 0,5
 	</select>
 	

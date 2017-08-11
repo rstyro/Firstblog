@@ -75,6 +75,13 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 						pm.put("user_id", null);
 					}
 				}
+				String ip="";
+				if (request.getHeader("x-forwarded-for") == null) {
+					ip = request.getRemoteAddr();
+				} else {
+					ip = request.getHeader("x-forwarded-for");
+				}
+				pm.put("ip", ip);
 				String articleId = path.substring(path.lastIndexOf("/") + 1, path.length());
 				log.info("浏览拦截");
 				int id = 0;

@@ -111,6 +111,7 @@ public class UserController extends BaseController {
 		ParameterMap pm = this.getParameterMap();
 		System.out.println("pm=" + pm);
 		pm.put("ip", this.getRemortIP());
+		printLogger(this.log, "登录，ip="+this.getRemortIP());
 		Map<String, Object> map = userService.login(pm);
 		return MyUtil.returnObject(pm, map);
 	}
@@ -127,6 +128,7 @@ public class UserController extends BaseController {
 		System.out.println("pm=" + pm);
 		pm.put("servletContent", this.getServletContent());
 		pm.put("ip", this.getRemortIP());
+		printLogger(this.log, "注册，ip="+this.getRemortIP());
 		Map<String, Object> map = userService.register(pm);
 		return MyUtil.returnObject(pm, map);
 	}

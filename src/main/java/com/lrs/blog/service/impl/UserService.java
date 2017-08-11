@@ -156,6 +156,7 @@ public class UserService implements IUserService {
 			if(errorNum >= 5){
 				map.put("msg", "登录错误次数过多,账号已被锁定,从锁定开始 &nbsp;&nbsp;3  小时内不能进行登录操作。");
 				map.put("status", "failed");
+				log.info("登录错误次数超过5次，username="+pm.getString("username")+" , ip="+ip);
 				return map;
 			}
 		}

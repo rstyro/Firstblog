@@ -131,11 +131,6 @@ public class ArticleController extends BaseController {
 				lastArticle = tarList.get(last);
 				nextArticle = tarList.get(next);
 			}
-			System.out.println("tarList,size="+tarList.size());
-			System.out.println("lastArticle.title="+lastArticle.getString("title"));
-			System.out.println("nextArticle.title="+nextArticle.getString("title"));
-			System.out.println("lastArticle.text="+lastArticle.getString("text"));
-			System.out.println("nextArticle.text="+nextArticle.getString("text"));
 			//上一篇 和下一篇
 			view.addObject("lArticle", lastArticle);
 			view.addObject("nArticle", nextArticle);

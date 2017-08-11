@@ -89,7 +89,7 @@ body {
 					<span class="sr-only">Blog</span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="javascript:void();"
+				<a class="navbar-brand" href="<%=root%>/"
 					data-toggle="tooltip" data-placement="bottom" title="我的笔名">这个冬天不太冷</a>
 			</div>
 

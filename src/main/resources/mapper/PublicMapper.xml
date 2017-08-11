@@ -19,10 +19,16 @@
 			<if test="user_id != null and user_id != ''">
 				,user_id
 			</if>
+			<if test="ip != null and ip != ''">
+				,ip
+			</if>
 		) values(
 			#{table_id}
 			<if test="user_id != null and user_id != ''">
 				,#{user_id}
+			</if>
+			<if test="ip != null and ip != ''">
+				,#{ip}
 			</if>
 		)
 	</insert>

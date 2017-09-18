@@ -33,9 +33,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- 
-<meta property="wb:webmaster" content="7383e34a05d5ab94" />
- -->
 <meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
 <meta name="description" content="这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
 <link rel="shortcut icon" type="image/x-icon"

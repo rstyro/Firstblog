@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
+		<div class="row" >
 			<div class="col-sm-9 col-md-8" id="aboutMe">
 				<h1>关于我</h1>
 				<div class="row">

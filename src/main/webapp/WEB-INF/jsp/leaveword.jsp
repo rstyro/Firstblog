@@ -201,7 +201,7 @@
 	$(function(){
 		$(".navbar-nav li:eq(2)").addClass("top-active");
 		//下雪
-		$(document).snowfall({shadow : true, flakeCount:200,round : true,filter:true,minSize: 2, maxSize:10,filterNum:1.5,collection:".wall"});
+		//$(document).snowfall({shadow : true, flakeCount:200,round : true,filter:true,minSize: 2, maxSize:10,filterNum:1.5,collection:".wall"});
 		
 		var wh = $(document).height();
 		var textareaH = $("#leaveWord").height();

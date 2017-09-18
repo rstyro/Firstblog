@@ -28,7 +28,7 @@
 			<div class="row">
 				<input type="hidden" name="authorUserId" value="${article.user_id}">
 				<input type="hidden" name="articleId" value="${article.article_id}">
-				<div
+				<div style="background-color: #fff;"
 					class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 article-detail">
 					<p class="article-detail-title">${article.title }</>
 					<div class="row">

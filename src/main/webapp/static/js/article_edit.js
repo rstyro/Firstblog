@@ -14,6 +14,15 @@ var text = $("#text").html();
 				        'justifyright', //居右对齐
 				        'justifycenter', //居中对齐
 				        'justifyjustify', //两端对齐
+				        'horizontal', //分隔线
+				        'inserttable', //插入表格
+				        'insertparagraphbeforetable', //"表格前插入行"
+				        'mergecells', //合并多个单元格
+				        'deletetable', //删除表格
+				        'deleterow', //删除行
+				        'deletecol', //删除列
+				        'forecolor', //字体颜色
+				        'backcolor', //背景色
 				    ]
 				],  
 	          initialFrameHeight:wh-200,

@@ -39,7 +39,10 @@
 	href="<%=root%>/static/images/favicon.ico">
 	
 <title>这个冬天不太冷的个人博客</title>
+<!-- 
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个冬天不太冷","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+ -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"这个冬天不太冷的博客","bdMini":"2","bdMiniList":["qzone","tsina","bdysc","weixin","tqq","tqf","tieba","douban","sqq","isohu","fbook","twi","linkedin","h163"],"bdPic":"http://www.lrshuai.top/upload/user/20170612/05976238.png","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":"167.5"},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <link href="<%=root%>/static/bootstrap-3.3.7/css/bootstrap.css"
 	rel="stylesheet">
 <link href="<%=root%>/static/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css"
